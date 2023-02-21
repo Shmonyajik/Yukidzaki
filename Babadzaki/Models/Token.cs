@@ -16,6 +16,7 @@ namespace Babadzaki.Models
         [Required]
         [Range(typeof(decimal), "0,0", "100000,9999999", ErrorMessage = "The lowest value is 0.00 ETH, as a decimal and partially used comma separator")]
         public decimal Price { get; set; }
+        
         [StringLength(255, ErrorMessage = "Maximum number of characters 255")]
         #region
         //TODO: No store type was specified for the decimal property 'Price' on entity type 'Token'.
@@ -28,7 +29,7 @@ namespace Babadzaki.Models
         public string? Image { get; set; }
         // [^s]+(.(?i)(jpg|png|gif|bmp))$
 
-        [DisplayName("SeasonCollection Type")]
+        [DisplayName("Season Collection")]
         [Range(0, Int32.MaxValue, ErrorMessage = "This Collection is not exist")]
         public int? SeasonCollectionId { get; set; }
 

@@ -1,15 +1,11 @@
 ﻿@model Babadzaki.Models.Token
-@{
-    ViewData["Title"] = "Create";
-}
 
-<h1>Create</h1>
-
-<form method="post" asp-action="Create">
+<form method="post" asp-action="DeletePost">
+    <input asp-for="Id" hidden />
     <div class="border p-3">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+       
         <div class="form-group row">
-            <h2 class="text-indo pl-3">Add Token</h2>
+            <h2 class="text-info pl-3">Delete Token</h2>
         </div>
         <div class="row">
             <div class="col-8">
@@ -18,8 +14,7 @@
                         <label asp-for="Name"></label>
                     </div>
                     <div class="col-8">
-                       <input asp-for="Name" class="form-control" />
-                       <span asp-validation-for="Name"class="text-danger"></span>
+                        <input asp-for="Name" disabled class="form-control" />
                     </div>
 
                 </div>
@@ -28,19 +23,16 @@
                         <label asp-for="Price"></label>
                     </div>
                     <div class="col-8">
-                        <input asp-for="Price" class="form-control" />
-                         <span asp-validation-for="Price"class="text-danger"></span>
+                        <input asp-for="Price" disabled class="form-control" />
                     </div>
 
                 </div>
-                 <div class="form-group row">
+                <div class="form-group row">
                     <div class="col-4">
                         <label asp-for="SeasonCollectionId"></label>
                     </div>
                     <div class="col-8">
-                        <input asp-for="SeasonCollectionId" class="form-control" />
-                         @*<span asp-validation-for="Name"class="text-danger"></span>*@
-                         <!--TODO: подумать над валидацией-->
+                        <input asp-for="SeasonCollectionId" disabled class="form-control" />
                     </div>
 
                 </div>
@@ -49,8 +41,7 @@
                         <label asp-for="Description"></label>
                     </div>
                     <div class="col-8">
-                        <input asp-for="Description" class="form-control" />
-                         <span asp-validation-for="Description"class="text-danger"></span>
+                        <input asp-for="Description" disabled class="form-control" />
                     </div>
 
                 </div>
@@ -59,8 +50,7 @@
                         <label asp-for="Image"></label>
                     </div>
                     <div class="col-8">
-                        <input asp-for="Image" class="form-control" />
-                         <span asp-validation-for="Image"class="text-danger"></span>
+                        <input asp-for="Image" disabled class="form-control" />
                     </div>
 
                 </div>
@@ -68,11 +58,10 @@
                     <div class="col-8 offset-4 row">
 
                         <div class="col">
-                           <input type="submit" class="btn btn-info w-100"value="Create"/>
+                            <input type="submit" class="btn btn-danger w-100" value="Delete" />
                         </div>
                         <div class="col">
-                             <a  asp-action="Index" class="btn btn-success w-100">
-                                 Back</a>
+                            <a asp-action="Index" class="btn btn-success w-100"><i class="fas fa-sign-out-alt"></i> Back</a>
                         </div>
                     </div>
                 </div>
@@ -82,9 +71,13 @@
             </div>
         </div>
     </div>
+
 </form>
 
 @section Scripts{
 
-    @{<partial name-"_ValidationScriptsPartial"/>}
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+
 }
