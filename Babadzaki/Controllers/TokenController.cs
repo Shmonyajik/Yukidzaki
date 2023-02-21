@@ -22,7 +22,7 @@ namespace Babadzaki.Controllers
             ViewBag.Time = timeService.GetTime();
             return View(_context.Tokens.Include(t => t.SeasonCollection));
         }
-        // TODO: изменить вывод коллекции(не идентификаор а название)
+        
         public IActionResult Details(int? Id)
         {
             return View(_context.Tokens.First(t => t.Id == Id));
