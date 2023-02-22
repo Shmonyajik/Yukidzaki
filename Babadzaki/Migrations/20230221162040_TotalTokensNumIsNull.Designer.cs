@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Babadzaki.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230217055439_SecondInitialMigration")]
-    partial class SecondInitialMigration
+    [Migration("20230221162040_TotalTokensNumIsNull")]
+    partial class TotalTokensNumIsNull
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,7 +37,7 @@ namespace Babadzaki.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<short>("TotalTokensNum")
+                    b.Property<short?>("TotalTokensNum")
                         .HasColumnType("smallint");
 
                     b.HasKey("Id");
@@ -53,6 +53,13 @@ namespace Babadzaki.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Description")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -67,7 +74,10 @@ namespace Babadzaki.Migrations
 
                     b.HasIndex("SeasonCollectionId");
 
-                    b.ToTable("Tokens");
+                    b.ToTable("Tokens", t =>
+                        {
+                            t.HasTrigger("UpdateTotalTokensNumAfterUpdate");
+                        });
                 });
 
             modelBuilder.Entity("Babadzaki.Models.Token", b =>

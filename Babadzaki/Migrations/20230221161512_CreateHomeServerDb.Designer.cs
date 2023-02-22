@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Babadzaki.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230216140013_ThirdMigration")]
-    partial class ThirdMigration
+    [Migration("20230221161512_CreateHomeServerDb")]
+    partial class CreateHomeServerDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,21 +53,31 @@ namespace Babadzaki.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Description")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("SeasonCollectionId")
                         .HasColumnType("int");
 
-                    b.Property<string>("name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("SeasonCollectionId");
 
-                    b.ToTable("Tokens");
+                    b.ToTable("Tokens", t =>
+                        {
+                            t.HasTrigger("UpdateTotalTokensNumAfterUpdate");
+                        });
                 });
 
             modelBuilder.Entity("Babadzaki.Models.Token", b =>
