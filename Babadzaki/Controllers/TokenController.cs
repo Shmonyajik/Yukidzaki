@@ -67,7 +67,7 @@ namespace Babadzaki.Controllers
         }
 
         //POST - DELETE
-        [HttpPost]
+        [HttpPost,ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeletePost(int? id)
         {
@@ -124,7 +124,7 @@ namespace Babadzaki.Controllers
         }
         // Update/Create
         [HttpPost]
-        public IActionResult Upsert(TokenVM tokenVM)
+        public IActionResult Upsert(TokenVM tokenVM)//TODO: сделать кнопку для удаления картинки в обновлении
         {
 
             //using (StreamWriter w = new StreamWriter("C:\\Users\\shmon\\source\\repos\\Shmonyajik\\Babadzaki\\Babadzaki\\imageValidateLog.txt", false, Encoding.GetEncoding(1251)))
