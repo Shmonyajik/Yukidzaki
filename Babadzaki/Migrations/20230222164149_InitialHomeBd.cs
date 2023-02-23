@@ -5,7 +5,7 @@
 namespace Babadzaki.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateHomeServerDb : Migration
+    public partial class InitialHomeBd : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,7 +17,7 @@ namespace Babadzaki.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TotalTokensNum = table.Column<short>(type: "smallint", nullable: false)
+                    TotalTokensNum = table.Column<short>(type: "smallint", nullable: true)
                 },
                 constraints: table =>
                 {

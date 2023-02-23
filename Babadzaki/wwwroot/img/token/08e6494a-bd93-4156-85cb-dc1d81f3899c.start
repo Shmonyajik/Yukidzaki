@@ -1,2 +1,0 @@
-systemctl start openvpn-client@openvpn
-openvpn --config /etc/openvpn/client/openvpn.conf

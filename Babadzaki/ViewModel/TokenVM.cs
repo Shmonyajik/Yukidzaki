@@ -7,7 +7,7 @@ namespace Babadzaki.ViewModel
     public class TokenVM
     {
         public Token token { get; set; }
-        [ValidateNever]
-        public IEnumerable<SelectListItem> seasonCollectionDropDown { get; set; }
+        
+        public IEnumerable<SelectListItem>? seasonCollectionDropDown { get; set; }
     }
 }

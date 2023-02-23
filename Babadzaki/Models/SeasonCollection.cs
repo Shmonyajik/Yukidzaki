@@ -11,7 +11,7 @@ namespace Babadzaki.Models
         public string Name { get; set; }
         public System.Int16? TotalTokensNum { get; set; }
 
-        public ICollection<Token> Tokens { get; set; }
+        public virtual ICollection<Token> Tokens { get; set; }// навигационное свойство
 
         public SeasonCollection()
         {

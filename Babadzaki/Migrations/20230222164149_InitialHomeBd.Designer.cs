@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Babadzaki.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230221161512_CreateHomeServerDb")]
-    partial class CreateHomeServerDb
+    [Migration("20230222164149_InitialHomeBd")]
+    partial class InitialHomeBd
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,7 +37,7 @@ namespace Babadzaki.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<short>("TotalTokensNum")
+                    b.Property<short?>("TotalTokensNum")
                         .HasColumnType("smallint");
 
                     b.HasKey("Id");

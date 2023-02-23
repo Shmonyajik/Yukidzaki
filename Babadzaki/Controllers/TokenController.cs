@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging.Signing;
+using System.Text;
 
 namespace Babadzaki.Controllers
 {
@@ -53,11 +55,13 @@ namespace Babadzaki.Controllers
             {
                 return NotFound();
             }
-            var token = _context.Tokens.Find(id);
+            var token = _context.Tokens.Include(u => u.SeasonCollection).FirstOrDefault(u => u.Id == id);
+            
             if (token == null)
             {
                 return NotFound();
             }
+            
 
             return View(token);
         }
@@ -72,6 +76,14 @@ namespace Babadzaki.Controllers
             {
                 return NotFound();
             }
+
+            string filePath =_webHostEnvironment.WebRootPath+ WebConstants.ImagePath + token.Image;
+
+            if(!string.IsNullOrEmpty(filePath)&& System.IO.File.Exists(filePath))
+            {
+               System.IO.File.Delete(filePath);
+            }
+
             _context.Tokens.Remove(token);
             _context.SaveChanges();
             return RedirectToAction("Index");
@@ -114,6 +126,14 @@ namespace Babadzaki.Controllers
         [HttpPost]
         public IActionResult Upsert(TokenVM tokenVM)
         {
+
+            //using (StreamWriter w = new StreamWriter("C:\\Users\\shmon\\source\\repos\\Shmonyajik\\Babadzaki\\Babadzaki\\imageValidateLog.txt", false, Encoding.GetEncoding(1251)))
+            //{
+            //    string imageState = ModelState.FirstOrDefault(x => x.Key == "Item").Value.ToString();
+            //    w.WriteLine(DateTime.Now.ToString());
+            //    w.Write(imageState);
+                
+            //}
             if (ModelState.IsValid)
             {
                 var files = HttpContext.Request.Form.Files;// загруженые файлы
@@ -122,11 +142,21 @@ namespace Babadzaki.Controllers
                 if (tokenVM.token.Id!=0)
                 {
                     //Update
-                    if(files.Count>0)
+                    var tokenFromDb = _context.Tokens.AsNoTracking().FirstOrDefault(t => t.Id == tokenVM.token.Id);//AsNo
+                    //!!!!AsNoTracking для явного указания не отслеживать tokenFromDb для EFCore,
+                    //!!!!так как tokenFromDB и tokenVM.token указывают на один объект в БД
+                    if (files.Count>0)
                     {
                         string upload = webRootPath + WebConstants.ImagePath;// Babadzaki\wwwroot\ + img\token\
                         string fileName = Guid.NewGuid().ToString();
                         string extension = Path.GetExtension(files[0].FileName).ToLower();
+
+                        var oldFile = Path.Combine(upload, tokenFromDb.Image==null?"": tokenFromDb.Image);
+
+                        if(System.IO.File.Exists(oldFile))
+                        {
+                            System.IO.File.Delete(oldFile);
+                        }
 
                         using (FileStream fileStream = new FileStream(Path.Combine(upload, fileName + extension), FileMode.Create))
                         {
@@ -134,6 +164,10 @@ namespace Babadzaki.Controllers
                         }
                         tokenVM.token.Image = fileName + extension;
                         
+                    }
+                    else
+                    {
+                        tokenVM.token.Image = tokenFromDb.Image;
                     }
                     _context.Tokens.Update(tokenVM.token);
 
@@ -160,14 +194,12 @@ namespace Babadzaki.Controllers
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(new TokenVM {
-                    token = new Token(),
-                    seasonCollectionDropDown = _context.SeasonCollections.Select(item => new SelectListItem
-                    {
-                        Text = item.Name,
-                        Value = item.Id.ToString()
-                    })
+            tokenVM.seasonCollectionDropDown = _context.SeasonCollections.Select(item => new SelectListItem//Подумать надо ли это
+            {
+                Text = item.Name,
+                Value = item.Id.ToString()
             });
+            return View(tokenVM);
         }
         #region create/edit
         //[HttpGet]
@@ -223,18 +255,7 @@ namespace Babadzaki.Controllers
         //}
         #endregion
 
-        //private string SaveFiles(IFormFileCollection files, string webRootPath)
-        //{
-        //    string upload = webRootPath + WebConstants.ImagePath;// Babadzaki\wwwroot\ + img\token\
-        //    string fileName = Guid.NewGuid().ToString();
-        //    string extension = Path.GetExtension(files[0].FileName).ToLower();
-
-        //    using (FileStream fileStream = new FileStream(Path.Combine(upload, fileName + extension), FileMode.Create))
-        //    {
-        //        files[0].CopyTo(fileStream);
-        //    }
-        //    return fileName + extension;
-        //}
+      
     }
 }
 

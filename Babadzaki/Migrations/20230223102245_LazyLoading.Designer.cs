@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Babadzaki.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230221162040_TotalTokensNumIsNull")]
-    partial class TotalTokensNumIsNull
+    [Migration("20230223102245_LazyLoading")]
+    partial class LazyLoading
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -14,7 +14,7 @@ namespace Babadzaki.Models
         [Required]
         public string Name { get; set; }
         [Required]
-        //[Range(typeof(decimal), "0,0", "100000,9999999", ErrorMessage = "The lowest value is 0.00 ETH, as a decimal and partially used comma separator")]
+        [Range(typeof(decimal), "0,0","99999,99999" , ErrorMessage = "The lowest value is 0.00 ETH, as a decimal and partially used comma separator")]
         public decimal Price { get; set; }
         
         
@@ -26,7 +26,9 @@ namespace Babadzaki.Models
         #endregion
         [StringLength(maximumLength: 255, MinimumLength = 3, ErrorMessage = "Maximum number of characters 255")]
         public string? Description { get; set; }
-        [RegularExpression(@"[^s]+(.(?i)(jpg|png|gif|bmp))$", ErrorMessage = "Incorrect path")]
+        //TODO: регулярное выражение скорректировать
+        [RegularExpression(@"([^\\s]+(\\.(?i)(jpg|png|gif|bmp))$)", ErrorMessage = "Incorrect path")]
+        //[RegularExpression(@"^.*\.(jpg|gif|jpeg|png|bmp)$", ErrorMessage = "Некорректный адрес")]
         public string? Image { get; set; }
         // [^s]+(.(?i)(jpg|png|gif|bmp))$
 
@@ -36,7 +38,7 @@ namespace Babadzaki.Models
 
         [ValidateNever]//костыль?
         [ForeignKey("SeasonCollectionId")]
-        public virtual SeasonCollection? SeasonCollection { get; set; }//virtual для ленивой загрузки
+        public virtual SeasonCollection? SeasonCollection { get; set; }//virtual для ленивой загрузки(навигационное свойство)
 
 
 
