@@ -38,10 +38,17 @@
             @Html.DisplayNameFor(model => model.SeasonCollection)
         </dt>
         <dd class = "col-sm-10">
-            @ViewBag.SeasonCollection.Name
+            @Html.DisplayFor(model => model.SeasonCollection.Name)
         </dd>
     </dl>
 </div>
+<div class="col-4 ">
+    @* Keep this empty *@
+    @if (Model.Image != null)
+    {
+                        <img src ="@WebConstants.ImagePath@Model.Image" width="100%" style="border-radius:5px;border:1px; solid #bbb"/>
+    }
+            </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>

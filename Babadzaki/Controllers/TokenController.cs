@@ -36,8 +36,8 @@ namespace Babadzaki.Controllers
             {
                 return NotFound();
             }
-            var token = _context.Tokens.Find(id);
-            ViewBag.SeasonCollection = _context.SeasonCollections.Find(token.SeasonCollectionId);//TODO: подумать как получить название коллекции
+            var token = _context.Tokens.Include(u=>u.SeasonCollection).FirstOrDefault(t=>t.Id==id);
+            
             if(token==null)
             {
                 return NotFound();
