@@ -23,10 +23,9 @@ namespace Babadzaki.Controllers
         //ApplicationDbContext _context = new ApplicationDbContext();
         public IActionResult Index()
         {
-            var timeService = HttpContext.RequestServices.GetRequiredService<ITimeService>();
+            
             var tokens = _context.Tokens.Include(t => t.SeasonCollection);
             ViewBag.Count = tokens.Count();
-            ViewBag.Time = timeService.GetTime();
             return View(tokens);
         }
 
@@ -86,7 +85,7 @@ namespace Babadzaki.Controllers
 
             _context.Tokens.Remove(token);
             _context.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
 
 
         }
@@ -192,7 +191,7 @@ namespace Babadzaki.Controllers
                     _context.Tokens.Add(tokenVM.token);
                 }
                 _context.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             tokenVM.seasonCollectionDropDown = _context.SeasonCollections.Select(item => new SelectListItem//Подумать надо ли это
             {

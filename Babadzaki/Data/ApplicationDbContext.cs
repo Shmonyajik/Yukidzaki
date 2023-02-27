@@ -2,12 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using Babadzaki.Models;
 using System.Reflection.Metadata;
-
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Babadzaki.Data
 {
 
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -15,6 +15,10 @@ namespace Babadzaki.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+            //The entity type 'IdentityUserLogin<string>' requires a primary key to be defined.
+            //If you intended to use a keyless entity type, call 'HasNoKey' in 'OnModelCreating'.
+            //For more information on keyless entity types, see https://go.microsoft.com/fwlink/?linkid=2141943
             modelBuilder.Entity<Token>()
                 .ToTable(tb => tb.HasTrigger("UpdateTotalTokensNumAfterUpdate"));//костыль
         }
@@ -26,5 +30,7 @@ namespace Babadzaki.Data
         public DbSet<Token> Tokens { get; set; }
 
         public DbSet<SeasonCollection> SeasonCollections { get; set; }
+
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
     }
 }
