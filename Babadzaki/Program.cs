@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Babadzaki.Data;
 using Microsoft.AspNetCore.Identity;
+using Babadzaki.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,7 @@ builder.Services.AddRazorPages().AddRazorRuntimeCompilation();//компил€ци€ razor
 
 // Add services to the container.
 
+builder.Services.AddTransient<IMailService,DefaultMailService>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor(); //добавление сессий
 builder.Services.AddSession(options => //добавление сессий
@@ -58,4 +60,23 @@ app.MapControllerRoute(
 
 app.Run();
 
+//interface IDefaultUserRole
+//{
+
+//    public void SetDefaultUserRole();
+//}
+
+//public class DefaultUserRole : IDefaultUserRole
+//{
+//    private readonly RoleManager<IdentityRole> _roleManager;
+    
+//    public DefaultUserRole(RoleManager<IdentityRole> roleManager)
+//    {
+//        _roleManager = roleManager;
+//    }
+//    public void SetDefaultUserRole()
+//    {
+       
+//    }
+//}
 

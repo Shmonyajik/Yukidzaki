@@ -1,5 +1,6 @@
 ﻿using Babadzaki.Data;
 using Babadzaki.Models;
+using Babadzaki.Utility;
 using Babadzaki.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,9 +12,11 @@ namespace Babadzaki.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context; 
+        private readonly IMailService _mailService;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, IMailService mailService)
         {
+            _mailService = mailService;
             _context= context;
             _logger = logger;
         }
@@ -37,6 +40,22 @@ namespace Babadzaki.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult SendEmail()
+        {
+            ViewBag.MailService = _mailService;
+            return View();
+        }
+        public IActionResult SendDefault()
+        {
+            _mailService.SendMessage();
+            return RedirectToAction(nameof(SendEmail));
+        }
+        public IActionResult SendCustom()
+        {
+            _mailService.SendMessage();
+            return RedirectToAction(nameof(SendEmail));
         }
     }
 }
