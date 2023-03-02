@@ -26,7 +26,9 @@ namespace Babadzaki.Controllers
             HomeVM homeVM = new HomeVM
             {
                 Tokens = _context.Tokens.Include(u => u.SeasonCollection),
-                SeasonCollections = _context.SeasonCollections
+                SeasonCollections = _context.SeasonCollections,
+                Email = new Email()
+                
             };
             return View(homeVM);
         }
@@ -42,20 +44,23 @@ namespace Babadzaki.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public IActionResult SendEmail()
+        [HttpPost]
+        [ValidateAntiForgeryToken]//TODO: разобраться как работает
+        public IActionResult IndexPost(HomeVM homeVM)//отправка email
         {
-            ViewBag.MailService = _mailService;
-            return View();
-        }
-        public IActionResult SendDefault()
-        {
+            if (!ModelState.IsValid/*&&homeVM.Email.Name!=null*/)
+            {
+                var email = _context.Emails.Where(e => e.Name == homeVM.Email.Name).FirstOrDefault(); 
+                if(homeVM.Email!=null&&email!=null)
+                {
+                    _context.Emails.Add(homeVM.Email);
+                    _mailService.SendMessage();
+                }
+            }
+            
             _mailService.SendMessage();
-            return RedirectToAction(nameof(SendEmail));
+            return RedirectToAction(nameof(Index));
         }
-        public IActionResult SendCustom()
-        {
-            _mailService.SendMessage();
-            return RedirectToAction(nameof(SendEmail));
-        }
+
     }
 }

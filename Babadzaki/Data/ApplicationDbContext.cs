@@ -32,5 +32,7 @@ namespace Babadzaki.Data
         public DbSet<SeasonCollection> SeasonCollections { get; set; }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+
+        public DbSet<Email> Emails{ get; set; }
     }
 }
