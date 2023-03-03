@@ -8,6 +8,6 @@ namespace Babadzaki.Models
         public int Id { get; set; }
         [Required]
         [EmailAddress(ErrorMessage = "Некорректный электронный адрес")]
-        public string? Name { get; set; }
+        public string Name { get; set; }
 }
 }

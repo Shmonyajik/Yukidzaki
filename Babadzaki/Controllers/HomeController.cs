@@ -5,6 +5,7 @@ using Babadzaki.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Babadzaki.Controllers
 {
@@ -50,15 +51,14 @@ namespace Babadzaki.Controllers
         {
             if (!ModelState.IsValid/*&&homeVM.Email.Name!=null*/)
             {
-                var email = _context.Emails.Where(e => e.Name == homeVM.Email.Name).FirstOrDefault(); 
-                if(homeVM.Email!=null&&email!=null)
+                var email = _context.Emails.Where(e => e.Name == homeVM.Email.Name).FirstOrDefault();
+                if (homeVM.Email != null && email != null)
                 {
                     _context.Emails.Add(homeVM.Email);
-                    _mailService.SendMessage();
+                    _mailService.SendMessage(homeVM.Email.Name, "test", "test");
                 }
             }
             
-            _mailService.SendMessage();
             return RedirectToAction(nameof(Index));
         }
 

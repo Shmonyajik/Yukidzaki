@@ -1,34 +1,70 @@
 ﻿using System.Net.Mail;
 using System.Net;
 using MimeKit;
+using Babadzaki.Models;
 
 namespace Babadzaki.Utility
 {
     public class CustomMailService : IMailService
     {
         private readonly ILogger<CustomMailService> _logger;
+
         public CustomMailService(ILogger<CustomMailService> logger)
         {
             _logger = logger;
         }
-
-        public void SendMessage()
+        //TODO: Подумать как нормально реализовать(перегрузка или необязательные параметры)
+        public void SendMessage(string to, string subject = "", string bodyText = "")
         {
             try
             {
                 MimeMessage message = new MimeMessage();
                 
-                message.From.Add(new MailboxAddress("Google", "vjxfkrf2000@gmail.com"));
-                message.To.Add(new MailboxAddress("Zimbra","naugolniidi@zdohrana.ru"));
-                message.Subject = "Message from MailKit";
-                message.Body =new BodyBuilder() { HtmlBody = "<div style=\"color:red;\">Привет от Babadzaki</div>" }.ToMessageBody();
+                message.From.Add(new MailboxAddress(WebConstants.CompanyName, WebConstants.EmailFrom));
+                message.To.Add(new MailboxAddress($"Client_{Guid.NewGuid()}", to));
+                message.Subject = subject;
+                message.Body =new BodyBuilder() { HtmlBody = $"<div style=\"color:red;\">{bodyText}</div>" }.ToMessageBody();
                 //message.Attachments.Add(new Attachment("path"));
 
                 using (MailKit.Net.Smtp.SmtpClient smtpClient = new MailKit.Net.Smtp.SmtpClient())
                 {
-                    smtpClient.Connect("smtp.gmail.com", 587, true);
-                    smtpClient.Authenticate("vjxfkrf2000@gmail.com", "rqdxhffvhumrldqt");
+                    smtpClient.Connect(WebConstants.SmtpHost, WebConstants.SmtpHostPort, WebConstants.UseSsl);
+                    smtpClient.Authenticate(WebConstants.EmailFrom, WebConstants.EmailPass);
                     
+                    smtpClient.Send(message);
+                    smtpClient.Disconnect(true);
+        
+                }
+                _logger.LogInformation("Message sent successfully!");
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError($"Sending message failed! {ex}");
+            }
+        }
+
+        public void SendMessage(IEnumerable<Email> emailList, string subject = "", string bodyText = "")
+        {
+            try
+            {
+                MimeMessage message = new MimeMessage();
+
+                message.From.Add(new MailboxAddress(WebConstants.CompanyName, WebConstants.EmailFrom));
+                
+                foreach(Email email in emailList)
+                {
+                    message.To.Add(new MailboxAddress($"Client_{Guid.NewGuid().ToString()}", email.Name));
+                }
+                message.Subject = subject;
+                message.Body = new BodyBuilder() { HtmlBody = $"<div style=\"color:red;\">{bodyText}</div>" }.ToMessageBody();
+                //message.Attachments.Add(new Attachment("path"));
+
+                using (MailKit.Net.Smtp.SmtpClient smtpClient = new MailKit.Net.Smtp.SmtpClient())
+                {
+                    smtpClient.Connect(WebConstants.SmtpHost, WebConstants.SmtpHostPort, WebConstants.UseSsl);
+                    smtpClient.Authenticate(WebConstants.EmailFrom, WebConstants.EmailPass);
+
                     smtpClient.Send(message);
                     smtpClient.Disconnect(true);
 
@@ -41,5 +77,8 @@ namespace Babadzaki.Utility
                 _logger.LogError($"Sending message failed! {ex}");
             }
         }
+
     }
+
+
 }
