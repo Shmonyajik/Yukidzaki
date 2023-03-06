@@ -6,15 +6,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.Json;
 
 namespace Babadzaki.Controllers
 {
+    [Consumes("application/json")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context; 
         private readonly IMailService _mailService;
 
+        
         public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, IMailService mailService)
         {
             _mailService = mailService;
@@ -45,22 +48,30 @@ namespace Babadzaki.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]//TODO: разобраться как работает
-        public IActionResult IndexPost(HomeVM homeVM)//отправка email
-        {
-            if (!ModelState.IsValid/*&&homeVM.Email.Name!=null*/)
-            {
-                var email = _context.Emails.Where(e => e.Name == homeVM.Email.Name).FirstOrDefault();
-                if (homeVM.Email != null && email != null)
-                {
-                    _context.Emails.Add(homeVM.Email);
-                    _mailService.SendMessage(homeVM.Email.Name, "test", "test");
-                }
-            }
-            
-            return RedirectToAction(nameof(Index));
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]//TODO: разобраться как работает
+        //public IActionResult IndexPost(HomeVM homeVM)//отправка email
+        //{
+        //    if (!ModelState.IsValid/*&&homeVM.Email.Name!=null*/)
+        //    {
+        //        var email = _context.Emails.Where(e => e.Name == homeVM.Email.Name).FirstOrDefault();
+        //        if (homeVM.Email != null && email != null)
+        //        {
+        //            _context.Emails.Add(homeVM.Email);
+        //            _mailService.SendMessage(homeVM.Email.Name, "test", "test");
+        //        }
+        //    }\
 
+        //    return RedirectToAction(nameof(Index));
+        //}
+        //[Consumes("application/json")]
+        [HttpPost(Name = "JsonPostEmailSend")]
+        //[Route("Home/JsonPostEmailSend")]
+        public void JsonPostEmailSend([FromBody] Email email)
+        {
+
+            _logger.LogError("Hyu");
+            
+        }
     }
 }

@@ -49,15 +49,20 @@
         <div class="col">
         <input asp-action="IndexPost" type="submit"  class="btn btn-primary w-100"  />
         </div>
+    </form>*@
+    <form method="post" action="Home/JsonPostEmailSend" id="subscribe-form">
+        <input asp-for="Email.Id" hidden />
+        <input asp-for="Email.Name"  type="email" placeholder="Enter your email address" required="" id="subscribe-email">
+        <button class="tf-button-st2 btn-effect" type="submit" id="subscribe-button"> <span class="effect">Subscribe</span></button>
     </form>
-</div>*@
+</div>
 @section Scripts{
 
     @{
         <partial name-"_ValidationScriptsPartial"/>/*Валидация на стороне клиента*/
     }
         
-            <script src="~/js/common.js"></script>
+            <script src="~/js/app.js"></script>
     <script>
         $(document).ready(function () {
 
