@@ -4,6 +4,7 @@ using Babadzaki.Utility;
 using Babadzaki.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Linq;
 
@@ -12,16 +13,16 @@ namespace Babadzaki.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ApplicationDbContext _context; 
+        private readonly ApplicationDbContext _context;
         private readonly IMailService _mailService;
 
         public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, IMailService mailService)
         {
             _mailService = mailService;
-            _context= context;
+            _context = context;
             _logger = logger;
         }
-
+        [HttpGet]
         public IActionResult Index()
         {
             HomeVM homeVM = new HomeVM
@@ -29,7 +30,7 @@ namespace Babadzaki.Controllers
                 Tokens = _context.Tokens.Include(u => u.SeasonCollection),
                 SeasonCollections = _context.SeasonCollections,
                 Email = new Email()
-                
+
             };
             return View(homeVM);
         }
@@ -47,20 +48,36 @@ namespace Babadzaki.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]//TODO: разобраться как работает
-        public IActionResult IndexPost(HomeVM homeVM)//отправка email
+                                  //public IActionResult IndexPost(HomeVM homeVM)//отправка email
+                                  //{
+                                  //    if (!ModelState.IsValid/*&&homeVM.Email.Name!=null*/)
+                                  //    {
+                                  //        var email = _context.Emails.Where(e => e.Name == homeVM.Email.Name).FirstOrDefault();
+                                  //        if (homeVM.Email != null && email != null)
+                                  //        {
+                                  //            _context.Emails.Add(homeVM.Email);
+                                  //            _mailService.SendMessage(homeVM.Email.Name, "test", "test");
+                                  //        }
+                                  //    }
+
+        //    return RedirectToAction(nameof(Index));
+        //}
+        //[Route("/HomeController/JsonWriteEmail")]
+        [HttpPost]
+        public JsonResult JsonWriteEmail(string email)
         {
-            if (!ModelState.IsValid/*&&homeVM.Email.Name!=null*/)
+            if (!ModelState.IsValid&& email != ""/*&&homeVM.Email.Name!=null*/)
             {
-                var email = _context.Emails.Where(e => e.Name == homeVM.Email.Name).FirstOrDefault();
-                if (homeVM.Email != null && email != null)
+                var _email = _context.Emails.Where(e => e.Name == email).FirstOrDefault();
+                if (email != "" && _email != null)
                 {
-                    _context.Emails.Add(homeVM.Email);
-                    _mailService.SendMessage(homeVM.Email.Name, "test", "test");
+                    _context.Emails.Add(new Email {Name= email });
+                    _mailService.SendMessage(email, "test", "test");
+                    return Json(Ok());
                 }
             }
-            
-            return RedirectToAction(nameof(Index));
-        }
 
+            return Json(Ok());
+        }
     }
 }
