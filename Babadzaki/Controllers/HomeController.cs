@@ -4,6 +4,7 @@ using Babadzaki.Utility;
 using Babadzaki.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
@@ -14,17 +15,17 @@ namespace Babadzaki.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ApplicationDbContext _context; 
+        private readonly ApplicationDbContext _context;
         private readonly IMailService _mailService;
 
         
         public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, IMailService mailService)
         {
             _mailService = mailService;
-            _context= context;
+            _context = context;
             _logger = logger;
         }
-
+        [HttpGet]
         public IActionResult Index()
         {
             HomeVM homeVM = new HomeVM
@@ -32,7 +33,7 @@ namespace Babadzaki.Controllers
                 Tokens = _context.Tokens.Include(u => u.SeasonCollection),
                 SeasonCollections = _context.SeasonCollections,
                 Email = new Email()
-                
+
             };
             return View(homeVM);
         }

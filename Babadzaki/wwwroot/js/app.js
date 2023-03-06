@@ -279,7 +279,7 @@
                 url: action,
                 type: 'POST',
                 dataType: 'json',
-                contentType: 'application/json; charset=utf-8',
+                contentType: 'application/json',
                 data: JSON.stringify(data),
                 success: function (responseData, textStatus, jqXHR) {
                     if (responseData.status) {

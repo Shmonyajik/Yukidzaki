@@ -1,26 +1,48 @@
-﻿@model Babadzaki.ViewModel.HomeVM
-@using Microsoft.AspNetCore.Components
-<div class="container">
-    <div class="text-center">
-        <button class="btn btn-dark filter-button" data-filter="all">All</button>
-        @foreach (var obj in Model.SeasonCollections)
+﻿
+@model Babadzaki.ViewModel.HomeVM
+
+
+@if (Model.SeasonCollections.Count()>0)
+{
+    <div class="container">
+        <div class="text-center">
+            <button class="btn btn-dark filter-button" data-filter="all">All</button>
+
+            @foreach (var obj in Model.SeasonCollections)
+            {
+                <button class="btn btn-outline-secondary filter-button" data-filter="@obj.Name.Replace(' ','_')">
+                    @obj.Name
+                </button>
+            }
+
+
+        </div>
+        <br />
+        @if (Model.Tokens.Count() > 0)
         {
-            <button class="btn btn-outline-secondary filter-button" data-filter="@obj.Name.Replace(' ','_')">
-                @obj.Name
-            </button>
+            <div class="row">
+                @foreach (var token in Model.Tokens)
+                {
+                    <partial name="_IndividualTokenCard" model="token" />
+                    //display all product
+                }
+            </div>
         }
-    </div>
-    <br />
-    <div class="row">
-        @foreach (var token in Model.Tokens)
+        else
         {
-            <partial name="_IndividualTokenCard" model="token" />
-            //display all product
+             <p> No tokens exists.</p> 
         }
+
     </div>
-    
-</div>
-<div>
+}
+else
+{
+ <p> No category exists.</p>
+}
+
+
+ 
+            
    @* <form method="post" data-ajax="true" data-ajax-method="post">
      <div class="form-group row">
                     <div class="col-4">
@@ -34,20 +56,21 @@
                 </div>
     <input  type="submit" onclick="return validateInput()" class="btn btn-primary w-100" value="Subscribe" />
 </form>*@
-@*<form method="post" id="form">
+<div>
+@*<form id="form">
         <input asp-for="Email.Id" hidden /> 
          <div class="form-group row">
                     <div class="col-4">
                         <label asp-for="Email.Name"></label>
                     </div>
                     <div class="col-8">
-                        <input  asp-for="Email.Name" class="form-control" required ></input>
+                        <input  asp-for="Email.Name" item id="email" class="form-control" required ></input>
                         <span asp-validation-for="Email.Name" class="text-danger"></span>
                     </div>
 
                 </div>
         <div class="col">
-        <input asp-action="IndexPost" type="submit"  class="btn btn-primary w-100"  />
+        <input type="submit"  class="btn btn-primary w-100"  >Subscribe</input>
         </div>
     </form>*@
     <form method="post" action="Home/JsonPostEmailSend" id="subscribe-form">
