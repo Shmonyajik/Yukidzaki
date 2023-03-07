@@ -241,6 +241,8 @@
     var ajaxSubscribe = {
         obj: {
             subscribeEmail: $('#subscribe-email'),
+            subscribeEmailID: $('#subscribe-email-id'),
+            
             subscribeButton: $('#subscribe-button'),
             subscribeMsg: $('#subscribe-msg'),
             subscribeContent: $("#subscribe-content"),
@@ -269,18 +271,31 @@
         },
 
         ajaxCall: function (action) {
+            //window.ajaxCalling = true;
+            //var objUse = ajaxSubscribe.obj;
+            //var messageDiv = objUse.subscribeMsg.html('').hide();
+            //var data = {
+            //    Id: objUse.subscribeEmailId.val(),
+            //    Name: objUse.subscribeEmail.val()
+            //}
+            //var dataType = 'application/json; charset=utf-8';
+            //$.ajax({
+            //    url: action,
+            //    type: 'POST',
+            //    dataType: 'json',
+            //    contentType: dataType,
+            //    data: data,
             window.ajaxCalling = true;
             var objUse = ajaxSubscribe.obj;
             var messageDiv = objUse.subscribeMsg.html('').hide();
-            var data = {
-                subscribeEmail: objUse.subscribeEmail.val()
-            }
+            var data = $('form').serialize();
+            var dataType = 'application/x-www-form-urlencoded; charset=utf-8';
             $.ajax({
                 url: action,
                 type: 'POST',
                 dataType: 'json',
-                contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify(data),
+                contentType: dataType,
+                data: data,
                 success: function (responseData, textStatus, jqXHR) {
                     if (responseData.status) {
                         objUse.subscribeContent.fadeOut(500, function () {
@@ -312,7 +327,7 @@
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    alert("Connection !error");
+                    alert("Connection !error//" + jqXHR + "//" + textStatus + "//" + errorThrown);
                 },
                 complete: function (data) {
                     window.ajaxCalling = false;
