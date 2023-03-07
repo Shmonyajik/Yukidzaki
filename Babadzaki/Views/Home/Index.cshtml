@@ -56,8 +56,8 @@ else
                 </div>
     <input  type="submit" onclick="return validateInput()" class="btn btn-primary w-100" value="Subscribe" />
 </form>*@
-<div>
-@*<form id="form">
+@*<div>
+<form id="form">
         <input asp-for="Email.Id" hidden /> 
          <div class="form-group row">
                     <div class="col-4">
@@ -73,9 +73,9 @@ else
         <input type="submit"  class="btn btn-primary w-100"  >Subscribe</input>
         </div>
     </form>*@
-    <form method="post" action="Home/JsonPostEmailSend" id="subscribe-form">
-        <input asp-for="Email.Id" hidden />
-        <input asp-for="Email.Name"  type="email" placeholder="Enter your email address" required="" id="subscribe-email">
+    <form method="post" action="api/api" id="subscribe-form">
+        <input asp-for="Email.Id" hidden id="subscribe-email-id"/>
+        <input asp-for="Email.Name"  type="email" placeholder="Enter your email address" required="true" id="subscribe-email">
         <button class="tf-button-st2 btn-effect" type="submit" id="subscribe-button"> <span class="effect">Subscribe</span></button>
     </form>
 </div>

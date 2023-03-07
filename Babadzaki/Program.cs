@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Babadzaki.Data;
 using Microsoft.AspNetCore.Identity;
 using Babadzaki.Utility;
+using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +13,13 @@ builder.Services.AddRazorPages().AddRazorRuntimeCompilation();//компиляция razor
 // Add services to the container.
 
 builder.Services.AddTransient<IMailService,DefaultMailService>();
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+     .AddNewtonsoftJson(options =>//МБ удалить
+    {
+        options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+    });
+
+
 builder.Services.AddHttpContextAccessor(); //добавление сессий
 builder.Services.AddSession(options => //добавление сессий
 { 
