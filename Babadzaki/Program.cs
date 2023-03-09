@@ -12,7 +12,7 @@ builder.Services.AddRazorPages().AddRazorRuntimeCompilation();//компиляция razor
 
 // Add services to the container.
 
-builder.Services.AddTransient<IMailService,DefaultMailService>();
+builder.Services.AddTransient<IMailService,CustomMailService>();
 builder.Services.AddControllersWithViews()
      .AddNewtonsoftJson(options =>//МБ удалить
     {

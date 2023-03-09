@@ -296,7 +296,7 @@
                 dataType: 'json',
                 contentType: dataType,
                 data: data,
-                success: function (responseData, textStatus, jqXHR) {
+                success: function (responseData, textStatus, jqXHR) {//выполняется если все нормально
                     if (responseData.status) {
                         objUse.subscribeContent.fadeOut(500, function () {
                             messageDiv.html(objUse.success_message).fadeIn(500);

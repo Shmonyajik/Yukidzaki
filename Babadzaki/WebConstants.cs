@@ -17,7 +17,7 @@
         public static string EmailFrom = "vjxfkrf2000@gmail.com";
         public static string EmailPass = "rqdxhffvhumrldqt";
         public static string SmtpHost = "smtp.gmail.com";
-        public static int SmtpHostPort = 587;
+        public static int SmtpHostPort = 465;
         public static bool UseSsl = true;
         
 
