@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Babadzaki.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class ApiController : ControllerBase
     {
@@ -43,30 +43,29 @@ namespace Babadzaki.Controllers
             }
             return new JsonResult(Ok(email));
         }
-        //[HttpPost]
-        //[Route("api/question")]
-        //public async Task<JsonResult> JsonPostQuestionSendAsync([FromForm] QuestionVM questionVM)
-        //{
+        [HttpPost]
+        public async Task<JsonResult> JsonPostQuestionSendAsync([FromForm] QuestionVM questionVM)
+        {
 
-        //    _logger.LogWarning("Hyu");
+            _logger.LogWarning("Hyu");
 
-        //    if (!ModelState.IsValid/*&&homeVM.Email.Name!=null*/)
-        //    {
+            if (!ModelState.IsValid/*&&homeVM.Email.Name!=null*/)
+            {
 
-        //        if (questionVM.Email != null)
-        //        {
-        //            var _email = await _context.Emails.Where(e => e.Name == questionVM.Email).FirstOrDefaultAsync();
-        //            if (_email != null)
-        //            {
-        //                await _context.Emails.AddAsync(new Email { Name = questionVM.Email });
-        //                await _context.SaveChangesAsync();
-        //            }
-        //            _mailService.SendMessage(WebConstants.EmailFrom, "test", "test");
-        //            _mailService.SendMessage(questionVM.Email, "test", "test");
-        //        }
+                if (questionVM.Email != null)
+                {
+                    var _email = await _context.Emails.Where(e => e.Name == questionVM.Email).FirstOrDefaultAsync();
+                    if (_email != null)
+                    {
+                        await _context.Emails.AddAsync(new Email { Name = questionVM.Email });
+                        await _context.SaveChangesAsync();
+                    }
+                    _mailService.SendMessage(WebConstants.EmailFrom, "test", "test");
+                    _mailService.SendMessage(questionVM.Email, "test", "test");
+                }
 
-        //    }
-        //    return new JsonResult(Ok(questionVM.Email));
-        //}
+            }
+            return new JsonResult(Ok(questionVM));
+        }
     }
 }

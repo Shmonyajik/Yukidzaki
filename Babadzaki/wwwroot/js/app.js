@@ -288,8 +288,10 @@
             window.ajaxCalling = true;
             var objUse = ajaxSubscribe.obj;
             var messageDiv = objUse.subscribeMsg.html('').hide();
-            var data = $('form').serialize();
-            var dataType = 'application/x-www-form-urlencoded; charset=utf-8';
+            var data = {
+                Name: objUse.subscribeEmail.val()
+            },
+            var dataType = 'application/json; charset=utf-8';
             $.ajax({
                 url: action,
                 type: 'POST',
