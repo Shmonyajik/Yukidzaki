@@ -552,5 +552,39 @@
         loadmore();
         Preloader();
     });
+    //////////////////////////////
+    $('#subscribe-form').submit(function (q) {
+        q.preventDefault();
+        let th = $(this);
+        let messi = $('.mes');
+        /*let btn = th.find('.btn');*/
 
+        $.ajax({
+            url: 'home/JsonPostEmailSend',
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            data: th.serialize(),
+            success: function (data) {
+                if (data == 1) {
+                    messi.html('<div class="messf"></div>');
+                    return false;
+                } else {
+                    messi.html('<div class="messt"></div>');
+                    th.trigger('reset');
+                    setTimeout(function () {
+                        messi.html('<div"></div>');
+                    }, 3000)
+                }
+            }, error: function () {
+                messi.html('<div class="messf"></div>');
+                th.trigger('reset');
+                setTimeout(function () {
+                    messi.html('<div></div>');
+                }, 3000)
+            }
+
+
+        })
+    })
 })(jQuery);

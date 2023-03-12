@@ -3,23 +3,23 @@ using Babadzaki.Models;
 using Babadzaki.Utility;
 using Babadzaki.ViewModel;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp;
+
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
+
 using System.Diagnostics;
-using System.Linq;
+
 //using System.Text.Json;
 
 namespace Babadzaki.Controllers
 {
-    [Consumes("application/json")]
+    [Consumes("application/x-www-form-urlencoded")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
         private readonly IMailService _mailService;
 
-        
+
         public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, IMailService mailService)
         {
             _mailService = mailService;
@@ -73,12 +73,12 @@ namespace Babadzaki.Controllers
         //{
 
         //    _logger.LogError("Hyu");
-            
+
         //}
         [HttpPost]
 
         //[Route("Home/JsonPostEmailSend")]
-        public async Task<JsonResult> JsonPostEmailSendAsync([FromBody] Email email)
+        public async Task<JsonResult> JsonPostEmailSendAsync([FromForm]Email  email)
         {
 
             _logger.LogWarning("Hyu");
