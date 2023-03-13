@@ -271,31 +271,21 @@
         },
 
         ajaxCall: function (action) {
-            //window.ajaxCalling = true;
-            //var objUse = ajaxSubscribe.obj;
-            //var messageDiv = objUse.subscribeMsg.html('').hide();
-            //var data = {
-            //    Id: objUse.subscribeEmailId.val(),
-            //    Name: objUse.subscribeEmail.val()
-            //}
-            //var dataType = 'application/json; charset=utf-8';
-            //$.ajax({
-            //    url: action,
-            //    type: 'POST',
-            //    dataType: 'json',
-            //    contentType: dataType,
-            //    data: data,
             window.ajaxCalling = true;
             var objUse = ajaxSubscribe.obj;
             var messageDiv = objUse.subscribeMsg.html('').hide();
             var data = $('form').serialize();
             var dataType = 'application/x-www-form-urlencoded; charset=utf-8';
+            action.preventDefault()
             $.ajax({
                 url: action,
                 type: 'POST',
                 dataType: 'json',
                 contentType: dataType,
                 data: data,
+                //success: function (data) {
+                //    alert(data);
+                //}
                 success: function (responseData, textStatus, jqXHR) {
                     if (responseData.status) {
                         objUse.subscribeContent.fadeOut(500, function () {
@@ -332,6 +322,7 @@
                 complete: function (data) {
                     window.ajaxCalling = false;
                     alert('Thank you for joining our mailing list!');
+
                 }
             });
         }
