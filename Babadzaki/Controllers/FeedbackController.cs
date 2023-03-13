@@ -2,47 +2,29 @@
 using Babadzaki.Models;
 using Babadzaki.Utility;
 using Babadzaki.ViewModel;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace Babadzaki.Controllers
 {
-    [Route("api/[controller]/[action]")]
-    [ApiController]
-    public class ApiController : ControllerBase
+    [Consumes("application/x-www-form-urlencoded")]
+    public class FeedbackController : Controller
     {
-        private readonly ILogger<ApiController> _logger;
+        private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
         private readonly IMailService _mailService;
-        public ApiController(ILogger<ApiController> logger, ApplicationDbContext context, IMailService mailService) 
+
+        public FeedbackController(ILogger<HomeController> logger, ApplicationDbContext context, IMailService mailService)
         {
+            _mailService = mailService;
             _context = context;
             _logger = logger;
-            _context= context;
-            _mailService= mailService;
         }
-        [HttpPost]
-        
-        //[Route("Home/JsonPostEmailSend")]
-        public async Task<JsonResult> JsonPostEmailSendAsync([FromForm] Email email)
+        public ActionResult Index()
         {
-
-            _logger.LogWarning("Hyu");
-
-            if (ModelState.IsValid/*&&homeVM.Email.Name!=null*/)
-            {
-                var _email = await _context.Emails.Where(e => e.Name == email.Name).FirstOrDefaultAsync();
-                if (email != null && _email == null)
-                {
-                    await _context.Emails.AddAsync(email);
-                    await _context.SaveChangesAsync();
-                    
-                }
-                _mailService.SendMessage(email.Name, "test", "test");
-
-            }
-            return new JsonResult(Ok(email));
+            
+            return View(new QuestionVM());
         }
         [HttpPost]
         public async Task<JsonResult> JsonPostQuestionSendAsync([FromForm] QuestionVM questionVM)

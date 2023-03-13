@@ -42,42 +42,13 @@ else
 
 
  
-            
-   @* <form method="post" data-ajax="true" data-ajax-method="post">
-     <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="token.Description"></label>
-                    </div>
-                    <div class="col-8">
-                        <textarea  asp-for="token.Description" class="form-control summernote" ></textarea>
-                        <span asp-validation-for="token.Description" class="text-danger"></span>
-                    </div>
-
-                </div>
-    <input  type="submit" onclick="return validateInput()" class="btn btn-primary w-100" value="Subscribe" />
-</form>*@
-@*<div>
-<form id="form">
-        <input asp-for="Email.Id" hidden /> 
-         <div class="form-group row">
-                    <div class="col-4">
-                        <label asp-for="Email.Name"></label>
-                    </div>
-                    <div class="col-8">
-                        <input  asp-for="Email.Name" item id="email" class="form-control" required ></input>
-                        <span asp-validation-for="Email.Name" class="text-danger"></span>
-                    </div>
-
-                </div>
-        <div class="col">
-        <input type="submit"  class="btn btn-primary w-100"  >Subscribe</input>
-        </div>
-    </form>*@
-    <form method="post" action="api/api" id="subscribe-form">
-        <input asp-for="Email.Id" hidden id="subscribe-email-id"/>
-        <input asp-for="Email.Name"  type="email" placeholder="Enter your email address" required="true" id="subscribe-email">
-        <button class="tf-button-st2 btn-effect" type="submit" id="subscribe-button"> <span class="effect">Subscribe</span></button>
-    </form>
+<div>
+<form  method="post"id="subscribe-form">
+    <input asp-for="Email.Id" hidden id="subscribe-email-id"/>
+    <input asp-for="Email.Name"type="email" placeholder="Enter your email address" required="" id="subscribe-email"/>
+    <div class="mes"></div>
+    <button class="tf-button-st2 btn-effect" type="submit" id="subscribe-button"> <span class="effect">Subscribe</span></button>
+</form>
 </div>
 @section Scripts{
 
@@ -85,7 +56,7 @@ else
         <partial name-"_ValidationScriptsPartial"/>/*Валидация на стороне клиента*/
     }
         
-            <script src="~/js/app.js"></script>
+            <script src="~/js/common.js"></script>
     <script>
         $(document).ready(function () {
 
