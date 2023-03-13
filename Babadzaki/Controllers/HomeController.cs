@@ -88,40 +88,17 @@ namespace Babadzaki.Controllers
                 var _email = await _context.Emails.Where(e => e.Name == email.Name).FirstOrDefaultAsync();
                 if (email != null && _email == null)
                 {
-                    await _context.Emails.AddAsync(email);
+                    await _context.Emails.AddAsync(email);//TODO: поменять местами
                     await _context.SaveChangesAsync();
 
                 }
-                _mailService.SendMessage(email.Name, "test", "test");
+                _mailService.SendMessage(to:email.Name, subject:"test",bodyText: "test");
 
             }
             return new JsonResult(Ok(email));
         }
 
-        [HttpPost]
-        public async Task<JsonResult> JsonPostQuestionSendAsync([FromBody] QuestionVM questionVM)
-        {
-
-            _logger.LogWarning("Hyu");
-
-            if (!ModelState.IsValid/*&&homeVM.Email.Name!=null*/)
-            {
-
-                if (questionVM.Email != null)
-                {
-                    var _email = await _context.Emails.Where(e => e.Name == questionVM.Email).FirstOrDefaultAsync();
-                    if (_email != null)
-                    {
-                        await _context.Emails.AddAsync(new Email { Name = questionVM.Email });
-                        await _context.SaveChangesAsync();
-                    }
-                    _mailService.SendMessage(WebConstants.EmailFrom, "test", "test");
-                    _mailService.SendMessage(questionVM.Email, "test", "test");
-                }
-
-            }
-            return new JsonResult(Ok(questionVM));
-        }
+        
     }
 
 }

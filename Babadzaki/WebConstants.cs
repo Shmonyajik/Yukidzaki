@@ -6,9 +6,6 @@
 
         public static string ImagePath = @"\img\token\";
 
-        public static string AdminRole = "Admin";
-        public static string CustomerRole = "Customer";
-        public static string NotAuthorizedRole = "NotAuthorizedRole";
 
 
         /// <summary>

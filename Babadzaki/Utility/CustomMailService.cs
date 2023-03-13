@@ -2,6 +2,8 @@
 using System.Net;
 using MimeKit;
 using Babadzaki.Models;
+using Bdev.Net.Dns;
+using Bdev.Net.Dns.Records;
 
 namespace Babadzaki.Utility
 {
@@ -14,68 +16,81 @@ namespace Babadzaki.Utility
             _logger = logger;
         }
         //TODO: Подумать как нормально реализовать(перегрузка или необязательные параметры)
-        public void SendMessage(string to, string subject = "", string bodyText = "")
+        public void SendMessage(string to, string from = "vjxfkrf2000@gmail.com", string subject = "", string bodyText = "")
         {
-            try
+            string DomainName = to.Substring(to.IndexOf('@')+1);
+            MXRecord[] records = Resolver.MXLookup(DomainName);//TODO: обернуть в try cath
+            if (records.Count()>0)
             {
-                MimeMessage message = new MimeMessage();
-                
-                message.From.Add(new MailboxAddress(WebConstants.CompanyName, WebConstants.EmailFrom));
-                message.To.Add(new MailboxAddress($"Client_{Guid.NewGuid()}", to));
-                message.Subject = subject;
-                message.Body =new BodyBuilder() { HtmlBody = $"<div style=\"color:red;\">{bodyText}</div>" }.ToMessageBody();
-                //message.Attachments.Add(new Attachment("path"));
-
-                using (MailKit.Net.Smtp.SmtpClient smtpClient = new MailKit.Net.Smtp.SmtpClient())
+                try
                 {
-                    smtpClient.Connect(WebConstants.SmtpHost, WebConstants.SmtpHostPort, WebConstants.UseSsl);
-                    smtpClient.Authenticate(WebConstants.EmailFrom, WebConstants.EmailPass);
-                    
-                    smtpClient.Send(message);
-                    smtpClient.Disconnect(true);
-        
-                }
-                _logger.LogInformation("Message sent successfully!");
-            }
-            catch (Exception ex)
-            {
+                    MimeMessage message = new MimeMessage();
 
-                _logger.LogError($"Sending message failed! {ex}");
+                    message.From.Add(new MailboxAddress(WebConstants.CompanyName, from));
+                    message.To.Add(new MailboxAddress($"Client_{Guid.NewGuid()}", to));
+                    message.Subject = subject;
+                    message.Body = new BodyBuilder() { HtmlBody = $"<div style=\"color:red;\">{bodyText}</div>" }.ToMessageBody();
+                    //message.Attachments.Add(new Attachment("path"));
+
+                    using (MailKit.Net.Smtp.SmtpClient smtpClient = new MailKit.Net.Smtp.SmtpClient())
+                    {
+                        smtpClient.Connect(WebConstants.SmtpHost, WebConstants.SmtpHostPort, WebConstants.UseSsl);
+                        smtpClient.Authenticate(WebConstants.EmailFrom, WebConstants.EmailPass);
+
+                        smtpClient.Send(message);
+                        smtpClient.Disconnect(true);
+
+                    }
+                    _logger.LogInformation("Message sent successfully!");
+                }
+                catch (Exception ex)
+                {
+
+                    _logger.LogError($"Sending message failed! {ex}");
+                }
             }
+            else
+            {
+                _logger.LogError($"{DomainName} не содержит MX записей!");
+            }
+            
         }
 
-        public void SendMessage(IEnumerable<Email> emailList, string subject = "", string bodyText = "")
+        public void SendMessage(IEnumerable<Email> emailList, string from = "vjxfkrf2000@gmail.com", string subject = "", string bodyText = "")
         {
-            try
-            {
-                MimeMessage message = new MimeMessage();
-
-                message.From.Add(new MailboxAddress(WebConstants.CompanyName, WebConstants.EmailFrom));
-                
-                foreach(Email email in emailList)
+            
+                try
                 {
-                    message.To.Add(new MailboxAddress($"Client_{Guid.NewGuid().ToString()}", email.Name));
-                }
-                message.Subject = subject;
-                message.Body = new BodyBuilder() { HtmlBody = $"<div style=\"color:red;\">{bodyText}</div>" }.ToMessageBody();
-                //message.Attachments.Add(new Attachment("path"));
+                    MimeMessage message = new MimeMessage();
 
-                using (MailKit.Net.Smtp.SmtpClient smtpClient = new MailKit.Net.Smtp.SmtpClient())
+                    message.From.Add(new MailboxAddress(WebConstants.CompanyName, from));
+
+                    foreach (Email email in emailList)
+                    {
+                        message.To.Add(new MailboxAddress($"Client_{Guid.NewGuid().ToString()}", email.Name));
+                    }
+                    message.Subject = subject;
+                    message.Body = new BodyBuilder() { HtmlBody = $"<div style=\"color:red;\">{bodyText}</div>" }.ToMessageBody();
+                    //message.Attachments.Add(new Attachment("path"));
+
+                    using (MailKit.Net.Smtp.SmtpClient smtpClient = new MailKit.Net.Smtp.SmtpClient())
+                    {
+                        smtpClient.Connect(WebConstants.SmtpHost, WebConstants.SmtpHostPort, WebConstants.UseSsl);
+                        smtpClient.Authenticate(WebConstants.EmailFrom, WebConstants.EmailPass);
+
+                        smtpClient.Send(message);
+                        smtpClient.Disconnect(true);
+
+                    }
+                    _logger.LogInformation("Message sent successfully!");
+                }
+                catch (Exception ex)
                 {
-                    smtpClient.Connect(WebConstants.SmtpHost, WebConstants.SmtpHostPort, WebConstants.UseSsl);
-                    smtpClient.Authenticate(WebConstants.EmailFrom, WebConstants.EmailPass);
 
-                    smtpClient.Send(message);
-                    smtpClient.Disconnect(true);
-
+                    _logger.LogError($"Sending message failed! {ex}");
                 }
-                _logger.LogInformation("Message sent successfully!");
-            }
-            catch (Exception ex)
-            {
-
-                _logger.LogError($"Sending message failed! {ex}");
-            }
+            
+            
         }
 
     }
