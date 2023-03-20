@@ -12,7 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Babadzaki.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
+<<<<<<<< HEAD:Babadzaki/Migrations/20230313055818_InitialMigration.Designer.cs
     [Migration("20230313055818_InitialMigration")]
+========
+    [Migration("20230313155032_InitialMigration")]
+>>>>>>>> 3ce4e061ec5ecd632c5292517978d08183126516:Babadzaki/Migrations/20230313155032_InitialMigration.Designer.cs
     partial class InitialMigration
     {
         /// <inheritdoc />

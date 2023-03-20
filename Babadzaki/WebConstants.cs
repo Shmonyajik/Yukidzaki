@@ -6,6 +6,8 @@
 
         public static string ImagePath = @"\img\token\";
 
+
+
         /// <summary>
         /// TODO: Перенести в appsettings.json
         /// </summary>
