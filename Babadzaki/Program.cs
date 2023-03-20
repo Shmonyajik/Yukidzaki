@@ -3,6 +3,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Babadzaki.Data;
 using Microsoft.AspNetCore.Identity;
+using Babadzaki.Utility;
+using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +12,14 @@ builder.Services.AddRazorPages().AddRazorRuntimeCompilation();//компил€ци€ razor
 
 // Add services to the container.
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddTransient<IMailService,CustomMailService>();
+builder.Services.AddControllersWithViews()
+     .AddNewtonsoftJson(options =>//ћЅ удалить
+    {
+        options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+    });
+
+
 builder.Services.AddHttpContextAccessor(); //добавление сессий
 builder.Services.AddSession(options => //добавление сессий
 { 
@@ -22,10 +31,10 @@ builder.Services.AddSession(options => //добавление сессий
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddIdentity<IdentityUser,IdentityRole>()//ƒобавление системы идентификации
-    .AddDefaultTokenProviders()//предоставл€ет токены по умолчанию(например если пароль будет утер€н)
-    .AddDefaultUI()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+//builder.Services.AddIdentity<IdentityUser,IdentityRole>()//ƒобавление системы идентификации
+//    .AddDefaultTokenProviders()//предоставл€ет токены по умолчанию(например если пароль будет утер€н)
+//    .AddDefaultUI()
+//    .AddEntityFrameworkStores<ApplicationDbContext>();
     
     
     
@@ -33,7 +42,7 @@ builder.Services.AddIdentity<IdentityUser,IdentityRole>()//ƒобавление системы ид
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {   
     
     app.UseExceptionHandler("/Home/Error");
@@ -45,8 +54,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication();
-app.UseAuthorization();
+//app.UseAuthentication();
+//app.UseAuthorization();
 app.UseSession();
 
 app.MapRazorPages();
@@ -58,4 +67,23 @@ app.MapControllerRoute(
 
 app.Run();
 
+//interface IDefaultUserRole
+//{
+
+//    public void SetDefaultUserRole();
+//}
+
+//public class DefaultUserRole : IDefaultUserRole
+//{
+//    private readonly RoleManager<IdentityRole> _roleManager;
+    
+//    public DefaultUserRole(RoleManager<IdentityRole> roleManager)
+//    {
+//        _roleManager = roleManager;
+//    }
+//    public void SetDefaultUserRole()
+//    {
+       
+//    }
+//}
 

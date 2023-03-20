@@ -1,0 +1,32 @@
+﻿@model Babadzaki.ViewModel.QuestionVM
+<form method="post"class="form-contact" id="contactform" data-aos="fade-right" data-aos-duration="800">
+    <fieldset>
+        <input asp-for="Name" type="text"  id="name" placeholder="Name" required>
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </fieldset>
+
+    <fieldset>
+        <input asp-for="Email"type="email"  id="mail" placeholder="Email Address" required>
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </fieldset>
+
+    <fieldset>
+        <input asp-for="Phone" type="number" name="phone" id="phone" placeholder="Phone" required>
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </fieldset>
+
+    <fieldset>
+        <textarea asp-for="Message"placeholder="Type your Messege" rows="5" tabindex="4" name="message" class="message" id="message"></textarea>
+        <span asp-validation-for="Message" class="text-danger"></span>
+    </fieldset>
+
+    <button class="tf-button btn-effect" type="submit"><span class="boder-fade"></span><span class="effect">Send Message</span></button>
+
+</form>
+
+<div class="mess"></div>
+
+@section scripts
+{
+    <script src="~/js/question.js"> </script>
+}

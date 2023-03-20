@@ -2,12 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using Babadzaki.Models;
 using System.Reflection.Metadata;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
 
 namespace Babadzaki.Data
 {
 
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext:DbContext /*: IdentityDbContext*/
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -31,6 +31,7 @@ namespace Babadzaki.Data
 
         public DbSet<SeasonCollection> SeasonCollections { get; set; }
 
-        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+
+        public DbSet<Email> Emails{ get; set; }
     }
 }

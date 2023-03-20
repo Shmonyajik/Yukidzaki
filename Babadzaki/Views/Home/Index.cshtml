@@ -1,26 +1,62 @@
-﻿@model Babadzaki.ViewModel.HomeVM
+﻿
+@model Babadzaki.ViewModel.HomeVM
 
-<div class="container">
-    <div class="text-center">
-        <button class="btn btn-dark filter-button" data-filter="all">All</button>
-        @foreach (var obj in Model.SeasonCollections)
+
+@if (Model.SeasonCollections.Count()>0)
+{
+    <div class="container">
+        <div class="text-center">
+            <button class="btn btn-dark filter-button" data-filter="all">All</button>
+
+            @foreach (var obj in Model.SeasonCollections)
+            {
+                <button class="btn btn-outline-secondary filter-button" data-filter="@obj.Name.Replace(' ','_')">
+                    @obj.Name
+                </button>
+            }
+
+
+        </div>
+        <br />
+        @if (Model.Tokens.Count() > 0)
         {
-            <button class="btn btn-outline-secondary filter-button" data-filter="@obj.Name.Replace(' ','_')">
-                @obj.Name
-            </button>
+            <div class="row">
+                @foreach (var token in Model.Tokens)
+                {
+                    <partial name="_IndividualTokenCard" model="token" />
+                    //display all product
+                }
+            </div>
         }
-    </div>
-    <br />
-    <div class="row">
-        @foreach (var token in Model.Tokens)
+        else
         {
-            <partial name="_IndividualTokenCard" model="token" />
-            //display all product
+             <p> No tokens exists.</p> 
         }
+
     </div>
+}
+else
+{
+ <p> No category exists.</p>
+}
+
+
+ 
+<div>
+<form  method="post"id="subscribe-form">
+    <input asp-for="Email.Id" hidden id="subscribe-email-id"/>
+    <input asp-for="Email.Name"type="email" placeholder="Enter your email address" required="" id="subscribe-email"/>
+    <div class="mes"></div>
+    <button class="tf-button-st2 btn-effect" type="submit" id="subscribe-button"> <span class="effect">Subscribe</span></button>
+</form>
 </div>
-
 @section Scripts{
+
+    @{
+        <partial name-"_ValidationScriptsPartial"/>/*Валидация на стороне клиента*/
+    }
+        
+            <script src="~/js/common.js"></script>
     <script>
         $(document).ready(function () {
 
