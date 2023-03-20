@@ -32,7 +32,7 @@ namespace Babadzaki.Controllers
 
             _logger.LogWarning("Hyu");
 
-            if (!ModelState.IsValid/*&&homeVM.Email.Name!=null*/)
+            if (ModelState.IsValid/*&&homeVM.Email.Name!=null*/)
             {
 
                 if (questionVM.Email != null)
@@ -43,8 +43,8 @@ namespace Babadzaki.Controllers
                         await _context.Emails.AddAsync(new Email { Name = questionVM.Email });
                         await _context.SaveChangesAsync();
                     }
-                    _mailService.SendMessage(WebConstants.EmailFrom, "test", "test");
-                    _mailService.SendMessage(questionVM.Email, "test", "test");
+                    _mailService.SendMessage(WebConstants.EmailFrom,questionVM.Email, "Question", questionVM.Message);
+                    _mailService.SendMessage(questionVM.Email, "Question", "Thanks for your question!");
                 }
 
             }

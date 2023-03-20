@@ -3,6 +3,7 @@ using System.Net;
 using MimeKit;
 using Babadzaki.Models;
 
+
 namespace Babadzaki.Utility
 {
     public class CustomMailService : IMailService
@@ -14,13 +15,15 @@ namespace Babadzaki.Utility
             _logger = logger;
         }
         //TODO: Подумать как нормально реализовать(перегрузка или необязательные параметры)
-        public void SendMessage(string to, string subject = "", string bodyText = "")
+        public void SendMessage(string to, string from = "vjxfkrf2000@gmail.com", string subject = "", string bodyText = "")
         {
+            //PingTest pingTest = new PingTest();
+            if()
             try
             {
                 MimeMessage message = new MimeMessage();
                 
-                message.From.Add(new MailboxAddress(WebConstants.CompanyName, WebConstants.EmailFrom));
+                message.From.Add(new MailboxAddress(WebConstants.CompanyName, from));
                 message.To.Add(new MailboxAddress($"Client_{Guid.NewGuid()}", to));
                 message.Subject = subject;
                 message.Body =new BodyBuilder() { HtmlBody = $"<div style=\"color:red;\">{bodyText}</div>" }.ToMessageBody();
@@ -44,13 +47,13 @@ namespace Babadzaki.Utility
             }
         }
 
-        public void SendMessage(IEnumerable<Email> emailList, string subject = "", string bodyText = "")
+        public void SendMessage(IEnumerable<Email> emailList, string from = "vjxfkrf2000@gmail.com", string subject = "", string bodyText = "")
         {
             try
             {
                 MimeMessage message = new MimeMessage();
 
-                message.From.Add(new MailboxAddress(WebConstants.CompanyName, WebConstants.EmailFrom));
+                message.From.Add(new MailboxAddress(WebConstants.CompanyName, from));
                 
                 foreach(Email email in emailList)
                 {

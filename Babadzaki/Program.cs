@@ -31,10 +31,10 @@ builder.Services.AddSession(options => //добавление сессий
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddIdentity<IdentityUser,IdentityRole>()//Добавление системы идентификации
-    .AddDefaultTokenProviders()//предоставляет токены по умолчанию(например если пароль будет утерян)
-    .AddDefaultUI()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+//builder.Services.AddIdentity<IdentityUser,IdentityRole>()//Добавление системы идентификации
+//    .AddDefaultTokenProviders()//предоставляет токены по умолчанию(например если пароль будет утерян)
+//    .AddDefaultUI()
+//    .AddEntityFrameworkStores<ApplicationDbContext>();
     
     
     
@@ -54,8 +54,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication();
-app.UseAuthorization();
+//app.UseAuthentication();
+//app.UseAuthorization();
 app.UseSession();
 
 app.MapRazorPages();

@@ -15,13 +15,13 @@ namespace Babadzaki.Utility
         }
 
 
-        public void SendMessage(string to, string subject="", string bodyText="")
+        public void SendMessage(string to, string from = "vjxfkrf2000@gmail.com", string subject="", string bodyText="")
         {
             try
             {
                 MailMessage message = new MailMessage();
                 message.IsBodyHtml = true;
-                message.From = new MailAddress(WebConstants.EmailFrom, WebConstants.CompanyName);
+                message.From = new MailAddress(from, WebConstants.CompanyName);
                 message.To.Add(new MailAddress(to));
                 message.Subject = subject;
                 message.Body = $"<div style=\"color:red;\">{bodyText}</div>";
@@ -44,13 +44,13 @@ namespace Babadzaki.Utility
             }
         }
 
-        public void SendMessage(IEnumerable<Email> emailList, string subject = "", string bodyText = "")
+        public void SendMessage(IEnumerable<Email> emailList, string from = "vjxfkrf2000@gmail.com", string subject = "", string bodyText = "")
         {
             try
             {
                 MailMessage message = new MailMessage();
                 message.IsBodyHtml = true;
-                message.From = new MailAddress(WebConstants.EmailFrom, WebConstants.CompanyName);
+                message.From = new MailAddress(from, WebConstants.CompanyName);
                 
                 foreach (Email email in emailList)
                 {
