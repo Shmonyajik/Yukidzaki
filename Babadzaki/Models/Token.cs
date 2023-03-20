@@ -40,6 +40,15 @@ namespace Babadzaki.Models
         [ForeignKey("SeasonCollectionId")]
         public virtual SeasonCollection? SeasonCollection { get; set; }//virtual для ленивой загрузки(навигационное свойство)
 
+        //[StringLength(maximumLength: 255, MinimumLength = 3, ErrorMessage = "Maximum number of characters 255")]
+
+        public virtual ICollection<TokensAttributes> TokensAttributes { get; set; }// навигационное свойство
+
+        public Token()
+        {
+            TokensAttributes = new List<TokensAttributes>();
+        }
+
 
 
     }

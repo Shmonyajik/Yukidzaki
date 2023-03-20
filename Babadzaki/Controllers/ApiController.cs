@@ -45,7 +45,7 @@ namespace Babadzaki.Controllers
             return new JsonResult(Ok(email));
         }
         [HttpPost]
-        public async Task<JsonResult> JsonPostQuestionSendAsync([FromForm] QuestionVM questionVM)
+        public async Task<JsonResult> JsonPostQuestionSendAsync([FromForm] FeefbackVM questionVM)
         {
 
             _logger.LogWarning("Hyu");

@@ -24,10 +24,10 @@ namespace Babadzaki.Controllers
         public ActionResult Index()
         {
             
-            return View(new QuestionVM());
+            return View(new FeefbackVM());
         }
         [HttpPost]
-        public async Task<JsonResult> JsonPostQuestionSendAsync([FromForm] QuestionVM questionVM)
+        public async Task<JsonResult> JsonPostQuestionSendAsync([FromForm] FeefbackVM questionVM)
         {
 
             _logger.LogWarning("Hyu");
