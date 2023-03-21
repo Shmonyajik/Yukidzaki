@@ -7,12 +7,12 @@ namespace Babadzaki.Models
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-        public bool IsChecked { get; set; } = false;
-        public virtual ICollection<Attribute> Attributes { get; set; }// навигационное свойство
+       
+        public virtual ICollection<TokensFilters> TokensFilters { get; set; }// навигационное свойство
 
         public Filter()
         {
-            Attributes = new List<Attribute>();
+            TokensFilters = new List<TokensFilters>();
 
         }
     }

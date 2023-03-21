@@ -1,0 +1,19 @@
+{
+  "TokensFilters": [
+    {
+      "Id": 1,
+      "FilterId": 1,
+      "Value": "Red Rise"
+    },
+    {
+      "Id": 1,
+      "FilterId": 1,
+      "Value": "Blue Mount"
+    },
+    {
+      "Id": 1,
+      "FilterId": 2,
+      "Value": "Pricheska"
+    }
+  ]
+}

@@ -4,20 +4,25 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Babadzaki.Models
 {
-    public class TokensAttributes
+    public class TokensFilters
     {
         [Key]
         public int Id { get; set; }
         public int TokenId { get; set; }
         [ValidateNever]//костыль?
-        [ForeignKey("SeasonCollectionId")]
+        [ForeignKey("TokenId")]
         public virtual Token Token { get; set; }
 
         [Range(0, Int32.MaxValue, ErrorMessage = "This Collection is not exist")]
-        public int AttributeId { get; set; }
+        public int FilterId { get; set; }
         [ValidateNever]//костыль?
-        [ForeignKey("AttributeId")]
-        public virtual Attribute Attribute { get; set; }
+        [ForeignKey("FilterId")]
+        public virtual Filter Filter { get; set; }
+
+        [StringLength(maximumLength: 255, ErrorMessage = "Maximum number of characters 255")]
+        public string Value { get; set; }
+
+        public bool IsChecked { get; set; }//Сделать мапинг(убрать из бд => добавить в контроллер)
 
 
 

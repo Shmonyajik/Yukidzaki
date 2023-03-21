@@ -42,11 +42,11 @@ namespace Babadzaki.Models
 
         //[StringLength(maximumLength: 255, MinimumLength = 3, ErrorMessage = "Maximum number of characters 255")]
 
-        public virtual ICollection<TokensAttributes> TokensAttributes { get; set; }// навигационное свойство
+        public virtual ICollection<TokensFilters> TokensFilters { get; set; }// навигационное свойство
 
         public Token()
         {
-            TokensAttributes = new List<TokensAttributes>();
+            TokensFilters = new List<TokensFilters>();
         }
 
 

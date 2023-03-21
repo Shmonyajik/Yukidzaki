@@ -33,5 +33,9 @@ namespace Babadzaki.Data
 
 
         public DbSet<Email> Emails{ get; set; }
+
+        public DbSet<Filter> Filters { get; set; }
+        public DbSet<TokensFilters> TokensFilters { get; set; }
+        
     }
 }

@@ -4,6 +4,7 @@ using Babadzaki.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Babadzaki.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230321051204_AddFiltersAndAttributes")]
+    partial class AddFiltersAndAttributes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,31 @@ namespace Babadzaki.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Babadzaki.Models.Attribute", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("FilterId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsChecked")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FilterId");
+
+                    b.ToTable("Attributes");
+                });
 
             modelBuilder.Entity("Babadzaki.Models.Email", b =>
                 {
@@ -46,6 +74,9 @@ namespace Babadzaki.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsChecked")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -111,7 +142,7 @@ namespace Babadzaki.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Babadzaki.Models.TokensFilters", b =>
+            modelBuilder.Entity("Babadzaki.Models.TokensAttributes", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -119,27 +150,28 @@ namespace Babadzaki.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("FilterId")
+                    b.Property<int>("AttributeId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("IsChecked")
-                        .HasColumnType("bit");
 
                     b.Property<int>("TokenId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("FilterId");
+                    b.HasIndex("AttributeId");
 
                     b.HasIndex("TokenId");
 
-                    b.ToTable("TokensFilters");
+                    b.ToTable("TokensAttributes");
+                });
+
+            modelBuilder.Entity("Babadzaki.Models.Attribute", b =>
+                {
+                    b.HasOne("Babadzaki.Models.Filter", "Filter")
+                        .WithMany("Attributes")
+                        .HasForeignKey("FilterId");
+
+                    b.Navigation("Filter");
                 });
 
             modelBuilder.Entity("Babadzaki.Models.Token", b =>
@@ -151,28 +183,33 @@ namespace Babadzaki.Migrations
                     b.Navigation("SeasonCollection");
                 });
 
-            modelBuilder.Entity("Babadzaki.Models.TokensFilters", b =>
+            modelBuilder.Entity("Babadzaki.Models.TokensAttributes", b =>
                 {
-                    b.HasOne("Babadzaki.Models.Filter", "Filter")
-                        .WithMany("TokensFilters")
-                        .HasForeignKey("FilterId")
+                    b.HasOne("Babadzaki.Models.Attribute", "Attribute")
+                        .WithMany("TokensAttributes")
+                        .HasForeignKey("AttributeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Babadzaki.Models.Token", "Token")
-                        .WithMany("TokensFilters")
+                        .WithMany("TokensAttributes")
                         .HasForeignKey("TokenId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Filter");
+                    b.Navigation("Attribute");
 
                     b.Navigation("Token");
                 });
 
+            modelBuilder.Entity("Babadzaki.Models.Attribute", b =>
+                {
+                    b.Navigation("TokensAttributes");
+                });
+
             modelBuilder.Entity("Babadzaki.Models.Filter", b =>
                 {
-                    b.Navigation("TokensFilters");
+                    b.Navigation("Attributes");
                 });
 
             modelBuilder.Entity("Babadzaki.Models.SeasonCollection", b =>
@@ -182,7 +219,7 @@ namespace Babadzaki.Migrations
 
             modelBuilder.Entity("Babadzaki.Models.Token", b =>
                 {
-                    b.Navigation("TokensFilters");
+                    b.Navigation("TokensAttributes");
                 });
 #pragma warning restore 612, 618
         }

@@ -5,7 +5,10 @@ using Babadzaki.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using NuGet.Packaging.Signing;
 using NuGet.Protocol;
+using System.IO;
+using System.Text;
 
 namespace Babadzaki.Controllers
 {
@@ -32,36 +35,46 @@ namespace Babadzaki.Controllers
             return new JsonResult(tokens);
             
         }
+        
         [HttpGet]
-        public  JsonResult Filter([FromBody]GalleryVM filterVM)
+        public JsonResult Filter(/*[FromBody] GalleryVM galleryVM*/)
         {
-            _logger.LogWarning("Hyu");
-
-
-            if (ModelState.IsValid)
+            _logger.LogWarning("Filter");
+            GalleryVM galleryVM = new GalleryVM();
+            try
             {
-                var tokens = new List<Token>();
-
-                foreach (var filter in filterVM.Filters)
+                using (FileStream streamReader = new FileStream(@"json.json", FileMode.Open, FileAccess.Read))
                 {
-                    if(filter.IsChecked)
-                    {
-                        foreach (var attribute in filter.Attributes)
-                        {
-                            if(attribute.IsChecked)
-                            {
-                                tokens.AddRange(_context.Tokens.Where(t => t.TokensAttributes.First(a => a.AttributeId == attribute.Id) != null)
-                                    .Include(c => c.SeasonCollection));
-
-                            }
-                        }
-                    }
-                    
+                    galleryVM = System.Text.Json.JsonSerializer.Deserialize<GalleryVM>(streamReader);
+                    streamReader.Close();
                 }
-
-                
-                return new JsonResult(tokens);
+                _logger.LogInformation("Vnature Chetko");
             }
+            catch (Exception)
+            {
+
+                _logger.LogError("Vse Huinya");
+            }
+
+            if (galleryVM == null)
+                _logger.LogCritical("NE NASHEL!!!!");
+            if (ModelState.IsValid)
+                {
+                    var tokens = new List<Token>();
+
+                    foreach (var filter in galleryVM.TokensFilters)
+                    {
+                        tokens.AddRange(_context.Tokens.Where(t=>t.TokensFilters.FirstOrDefault(tf=>tf.Value==filter.Value)!=null))/*(t => t.TokensFilters.Contains(filter)))*/;
+                    //не выбирает несколько токенов и добавляет те что уже есть
+
+                    }
+
+                if (tokens.Count > 0)
+                {
+                    tokens = tokens.Union(tokens).ToList();
+                    return new JsonResult(tokens);
+                }
+                }
             return new JsonResult(NotFound());
 
         }
