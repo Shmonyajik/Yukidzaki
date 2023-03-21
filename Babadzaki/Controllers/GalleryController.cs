@@ -37,24 +37,24 @@ namespace Babadzaki.Controllers
         }
         
         [HttpGet]
-        public JsonResult Filter(/*[FromBody] GalleryVM galleryVM*/)
+        public async Task<JsonResult> FilterAsync([FromBody] GalleryVM galleryVM)
         {
             _logger.LogWarning("Filter");
-            GalleryVM galleryVM = new GalleryVM();
-            try
-            {
-                using (FileStream streamReader = new FileStream(@"json.json", FileMode.Open, FileAccess.Read))
-                {
-                    galleryVM = System.Text.Json.JsonSerializer.Deserialize<GalleryVM>(streamReader);
-                    streamReader.Close();
-                }
-                _logger.LogInformation("Vnature Chetko");
-            }
-            catch (Exception)
-            {
+            //GalleryVM galleryVM = new GalleryVM();
+            //try
+            //{
+            //    using (FileStream streamReader = new FileStream(@"json.json", FileMode.Open, FileAccess.Read))
+            //    {
+            //        galleryVM = System.Text.Json.JsonSerializer.Deserialize<GalleryVM>(streamReader);
+            //        streamReader.Close();
+            //    }
+            //    _logger.LogInformation("Vnature Chetko");
+            //}
+            //catch (Exception)
+            //{
 
-                _logger.LogError("Vse Huinya");
-            }
+            //    _logger.LogError("Vse Huinya");
+            //}
 
             if (galleryVM == null)
                 _logger.LogCritical("NE NASHEL!!!!");
@@ -64,16 +64,15 @@ namespace Babadzaki.Controllers
 
                     foreach (var filter in galleryVM.TokensFilters)
                     {
-                        tokens.AddRange(_context.Tokens.Where(t=>t.TokensFilters.FirstOrDefault(tf=>tf.Value==filter.Value)!=null))/*(t => t.TokensFilters.Contains(filter)))*/;
-                    //не выбирает несколько токенов и добавляет те что уже есть
-
+                        tokens.AddRange(_context.Tokens.Where(t=>t.TokensFilters.FirstOrDefault(tf=>tf.Value==filter.Value)!=null));
+                    
                     }
 
-                if (tokens.Count > 0)
-                {
-                    tokens = tokens.Union(tokens).ToList();
-                    return new JsonResult(tokens);
-                }
+                    if (tokens.Count > 0)
+                    {
+                        tokens =  tokens.Union(tokens).ToList();
+                        return new JsonResult(tokens);
+                    }
                 }
             return new JsonResult(NotFound());
 
