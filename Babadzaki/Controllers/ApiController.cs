@@ -1,6 +1,6 @@
 ﻿using Babadzaki.Data;
 using Babadzaki.Models;
-using Babadzaki.Utility;
+using Babadzaki_Utility;
 using Babadzaki.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -45,7 +45,7 @@ namespace Babadzaki.Controllers
             return new JsonResult(Ok(email));
         }
         [HttpPost]
-        public async Task<JsonResult> JsonPostQuestionSendAsync([FromForm] FeefbackVM questionVM)
+        public async Task<JsonResult> JsonPostQuestionSendAsync([FromForm] FeedbackVM questionVM)
         {
 
             _logger.LogWarning("Hyu");

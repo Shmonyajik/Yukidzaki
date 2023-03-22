@@ -1,101 +1,110 @@
 ﻿using Babadzaki.Data;
-using Babadzaki.Models;
 using Babadzaki.ViewModel;
+using Babadzaki_Utility;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Packaging.Signing;
-using Babadzaki_Utility;
-using System.Text;
 
 namespace Babadzaki.Controllers
 {
-    public class TokenManagementController : Controller
+    public class FilterManagementController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-
-        public TokenManagementController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+        private readonly ILogger<FilterManagementController> _logger;
+        public FilterManagementController(ApplicationDbContext context, ILogger<FilterManagementController> logger)
         {
             _context = context;
-            _webHostEnvironment = webHostEnvironment;
-        }
-        //ApplicationDbContext _context = new ApplicationDbContext();
-        public IActionResult Index()
+            _logger = logger;
+
+       }
+        // GET: FilterManagmentController
+        public ActionResult Index()
         {
-            
-            var tokens = _context.Tokens.Include(t => t.SeasonCollection);
-            ViewBag.Count = tokens.Count();
-            return View(tokens);
+            var filters = _context.TokensFilters.Include(f => f.Filter);
+            ViewBag.Count = filters.Count();
+            return View(filters);
         }
 
-        public IActionResult Details(int? id)
+        // GET: FilterManagmentController/Details/5
+        public ActionResult Details(int id)
         {
-            if(id==null||id==0)
-            {
-                return NotFound();
-            }
-            var token = _context.Tokens.Include(u=>u.SeasonCollection).FirstOrDefault(t=>t.Id==id);
-            
-            if(token==null)
-            {
-                return NotFound();
-            }
-                
-            return View(token);
+            return View();
         }
 
-
-
-       
-        public IActionResult Delete(int? id)
+        // GET: FilterManagmentController/Create
+        public ActionResult Create()
         {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            var token = _context.Tokens.Include(u => u.SeasonCollection).FirstOrDefault(u => u.Id == id);
-            
-            if (token == null)
-            {
-                return NotFound();
-            }
-            
-
-            return View(token);
+            return View();
         }
 
-        //POST - DELETE
-        [HttpPost,ActionName("Delete")]
+        // POST: FilterManagmentController/Create
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult DeletePost(int? id)
+        public ActionResult Create(IFormCollection collection)
         {
-            var token = _context.Tokens.Find(id);
-            if (token == null)
+            try
             {
-                return NotFound();
+                return RedirectToAction(nameof(Index));
             }
-
-            string filePath =_webHostEnvironment.WebRootPath+ WebConstants.ImagePath + token.Image;
-
-            if(!string.IsNullOrEmpty(filePath)&& System.IO.File.Exists(filePath))
+            catch
             {
-               System.IO.File.Delete(filePath);
+                return View();
             }
-
-            _context.Tokens.Remove(token);
-            _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
-
-
         }
-        // Update/Create
+
+        // GET: FilterManagmentController/Edit/5
+        public ActionResult Edit(int id)
+        {
+            return View();
+        }
+
+        // POST: FilterManagmentController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, IFormCollection collection)
+        {
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: FilterManagmentController/Delete/5
+        public ActionResult Delete(int id)
+        {
+            return View();
+        }
+
+        // POST: FilterManagmentController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, IFormCollection collection)
+        {
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        /// <summary>
+        /// ///////////////
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Upsert(int? id)//
         {
-            
-            TokenVM tokenVM = new TokenVM
+
+            FilterVM filterVM = new FilterVM
             {
                 token = new Token(),
                 seasonCollectionDropDown = _context.SeasonCollections.Select(item => new SelectListItem
@@ -105,21 +114,21 @@ namespace Babadzaki.Controllers
                 })
             };
 
-            
+
             if (id == null)
             {
                 return View(tokenVM);
             }
             try
             {
-                tokenVM.token = _context.Tokens.First(t=>t.Id==id);
+                tokenVM.token = _context.Tokens.First(t => t.Id == id);
             }
             catch//Добавить конкретное исключение
             {
-                
+
                 return NotFound();
             }
-            
+
             return View(tokenVM);
         }
         // Update/Create
@@ -132,28 +141,28 @@ namespace Babadzaki.Controllers
             //    string imageState = ModelState.FirstOrDefault(x => x.Key == "Item").Value.ToString();
             //    w.WriteLine(DateTime.Now.ToString());
             //    w.Write(imageState);
-                
+
             //}
             if (ModelState.IsValid)
             {
                 var files = HttpContext.Request.Form.Files;// загруженые файлы
                 string webRootPath = _webHostEnvironment.WebRootPath;//абсолютный путь к каталогу
 
-                if (tokenVM.token.Id!=0)
+                if (tokenVM.token.Id != 0)
                 {
                     //Update
                     var tokenFromDb = _context.Tokens.AsNoTracking().FirstOrDefault(t => t.Id == tokenVM.token.Id);//AsNo
                     //!!!!AsNoTracking для явного указания не отслеживать tokenFromDb для EFCore,
                     //!!!!так как tokenFromDB и tokenVM.token указывают на один объект в БД
-                    if (files.Count>0)
+                    if (files.Count > 0)
                     {
                         string upload = webRootPath + WebConstants.ImagePath;// Babadzaki\wwwroot\ + img\token\
                         string fileName = Guid.NewGuid().ToString();
                         string extension = Path.GetExtension(files[0].FileName).ToLower();
 
-                        var oldFile = Path.Combine(upload, tokenFromDb.Image==null?"": tokenFromDb.Image);
+                        var oldFile = Path.Combine(upload, tokenFromDb.Image == null ? "" : tokenFromDb.Image);
 
-                        if(System.IO.File.Exists(oldFile))
+                        if (System.IO.File.Exists(oldFile))
                         {
                             System.IO.File.Delete(oldFile);
                         }
@@ -163,7 +172,7 @@ namespace Babadzaki.Controllers
                             files[0].CopyTo(fileStream);
                         }
                         tokenVM.token.Image = fileName + extension;
-                        
+
                     }
                     else
                     {
@@ -201,61 +210,5 @@ namespace Babadzaki.Controllers
             });
             return View(tokenVM);
         }
-        #region create/edit
-        //[HttpGet]
-        //public IActionResult Create()
-        //{
-
-        //    return View();
-        //}
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]//проверка на валидность токена(безопасность)
-        //public IActionResult Create(Token token)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(token);
-        //        _context.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View(token);//Обратно в Create
-
-
-        //}
-
-        //[HttpGet]
-        //public IActionResult Edit(int? id)
-        //{
-        //    if (id == null || id == 0)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var token = _context.Tokens.Find(id);
-        //    if (token == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(token);
-        //}
-
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult Edit(Token token)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Tokens.Update(token);
-        //        _context.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View(token);
-
-        //}
-        #endregion
-
-      
     }
 }
-

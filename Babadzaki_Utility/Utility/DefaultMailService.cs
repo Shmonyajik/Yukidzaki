@@ -1,11 +1,12 @@
-﻿using Babadzaki.Models;
+﻿
 using Bdev.Net.Dns.Records;
 using Bdev.Net.Dns;
 using MimeKit;
 using System.Net;
 using System.Net.Mail;//устаревший 
+using Microsoft.Extensions.Logging;
 
-namespace Babadzaki.Utility
+namespace Babadzaki_Utility
 {
        
     public class DefaultMailService: IMailService
@@ -56,7 +57,7 @@ namespace Babadzaki.Utility
 
         }
 
-        public void SendMessage(IEnumerable<Email> emailList, string from = "vjxfkrf2000@gmail.com", string subject = "", string bodyText = "")
+        public void SendMessage(IEnumerable<string> emailList, string from = "vjxfkrf2000@gmail.com", string subject = "", string bodyText = "")
         {
             
                 try
@@ -65,9 +66,9 @@ namespace Babadzaki.Utility
                     message.IsBodyHtml = true;
                     message.From = new MailAddress(from, WebConstants.CompanyName);
 
-                    foreach (Email email in emailList)
+                    foreach (string email in emailList)
                     {
-                        message.To.Add(new MailAddress(email.Name));
+                        message.To.Add(new MailAddress(email));
 
                     }
                     message.Subject = subject;

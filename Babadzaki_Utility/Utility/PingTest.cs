@@ -1,9 +1,10 @@
 ﻿using Bdev.Net.Dns;
 using Bdev.Net.Dns.Records;
+using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-namespace Babadzaki.Utility
+namespace Babadzaki_Utility
 {
     
     public class PingTest
