@@ -10,12 +10,12 @@ using System.Text;
 
 namespace Babadzaki.Controllers
 {
-    public class TokenManagmentController : Controller
+    public class TokenManagementController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public TokenManagmentController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+        public TokenManagementController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;

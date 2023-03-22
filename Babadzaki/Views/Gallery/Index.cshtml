@@ -1,0 +1,97 @@
+﻿
+@model Babadzaki.ViewModel.GalleryVM
+@if (Model.Filters.Count() > 0)
+{
+    @foreach (var filter in Model.Filters)
+    {
+        <div class="text-info h5" >@Html.DisplayFor(modelItem => filter.Name)</div>
+        @if (filter.TokensFilters.Count() > 0)
+        {
+            @foreach (var attr in filter.TokensFilters)
+            {
+                <div class="text-info pl-3" >@Html.DisplayFor(modelItem => attr.Value)</div>
+            }
+        }
+        else
+        {
+                <p> No attributes exists.</p>
+        }
+
+    }
+
+}
+else
+{
+        <p> No filters exists.</p>
+}
+
+            </div>
+}
+
+
+@if (Model.SeasonCollections.Count() > 0)
+{
+        <div class="container">
+            <div class="text-center">
+                <button class="btn btn-dark filter-button" data-filter="all">All</button>
+
+            @foreach (var obj in Model.SeasonCollections)
+            {
+                        <button class="btn btn-outline-secondary filter-button" data-filter="@obj.Name.Replace(' ','_')">
+                    @obj.Name
+                        </button>
+            }
+            </div>
+            <br />
+        @if (Model.Tokens.Count() > 0)
+        {
+                    <div class="row">
+                @foreach (var token in Model.Tokens)
+                {
+                                <partial name="_IndividualTokenCard" model="token" />
+                    //display all product
+                }
+                    </div>
+        }
+        else
+        {
+                     <p> No tokens exists.</p> 
+        }
+
+        </div>
+}
+else
+{
+     <p> No category exists.</p>
+}
+
+
+
+
+@section Scripts{
+
+    @{
+        <partial name-"_ValidationScriptsPartial"/>
+        /*Валидация на стороне клиента*/
+    }
+
+                <script src="~/js/common.js"></script>
+        <script>
+            $(document).ready(function () {
+
+                $(".filter-button").click(function () {
+
+                    var value = $(this).attr('data-filter');
+                    if (value == "all") {
+                        $('.filter').show('1000');
+                    }
+                    else {
+                        $(".filter").not('.' + value).hide('3000');
+                        $('.filter').filter('.' + value).show('3000');
+
+                    }
+                });
+
+            });
+        </script>
+}

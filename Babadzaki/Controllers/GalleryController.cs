@@ -26,7 +26,14 @@ namespace Babadzaki.Controllers
         }
         public IActionResult Index()
         {
-            return View(_context.Tokens.Include(u => u.SeasonCollection));
+            GalleryVM galleryVM = new GalleryVM
+            {
+                Tokens = _context.Tokens.Include(u => u.SeasonCollection).ToList(),
+                SeasonCollections = _context.SeasonCollections.ToList(),
+                Filters = _context.Filters.ToList(),
+                TokensFilters = _context.TokensFilters.Include(f => f.Filter).ToList()
+            };
+            return View(galleryVM);
         }
         [HttpGet]
         public async Task<JsonResult> GetTokensByCollectionAsync(int collectionId)
@@ -37,7 +44,7 @@ namespace Babadzaki.Controllers
         }
         
         [HttpGet]
-        public async Task<JsonResult> FilterAsync([FromBody] GalleryVM galleryVM)
+        public async Task<JsonResult> FilterAsync([FromBody] IEnumerable<TokensFilters> tokensFilters)
         {
             _logger.LogWarning("Filter");
             //GalleryVM galleryVM = new GalleryVM();
@@ -56,13 +63,13 @@ namespace Babadzaki.Controllers
             //    _logger.LogError("Vse Huinya");
             //}
 
-            if (galleryVM == null)
+            if (tokensFilters == null)
                 _logger.LogCritical("NE NASHEL!!!!");
             if (ModelState.IsValid)
                 {
                     var tokens = new List<Token>();
 
-                    foreach (var filter in galleryVM.TokensFilters)
+                    foreach (var filter in tokensFilters)
                     {
                         tokens.AddRange(_context.Tokens.Where(t=>t.TokensFilters.FirstOrDefault(tf=>tf.Value==filter.Value)!=null));
                     
@@ -70,7 +77,7 @@ namespace Babadzaki.Controllers
 
                     if (tokens.Count > 0)
                     {
-                        tokens =  tokens.Union(tokens).ToList();
+                        tokens =  tokens.Union(tokens).ToList();//TODO подумать как удалять дубликаты
                         return new JsonResult(tokens);
                     }
                 }
