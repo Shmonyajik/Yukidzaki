@@ -1,4 +1,5 @@
 ﻿@model Babadzaki.Models.Token
+@using Babadzaki_Utility
 
 @{
     ViewData["Title"] = "Details";
@@ -40,6 +41,15 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.SeasonCollection.Name)
         </dd>
+        @foreach(var type in Model.TokensFilters)
+        {
+            <dt class = "col-sm-2">
+                @Html.DisplayFor(modelItem => type.Filter.Name)
+            </dt>
+           <dd class = "col-sm-10">
+                @Html.DisplayFor(modelItem => type.Value)
+           </dd>
+        }
     </dl>
 </div>
 <div class="col-4 ">

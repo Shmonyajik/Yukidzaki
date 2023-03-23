@@ -1,6 +1,6 @@
 ﻿using Babadzaki.Data;
 using Babadzaki.Models;
-using Babadzaki.Utility;
+using Babadzaki_Utility;
 using Babadzaki.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -44,7 +44,7 @@ namespace Babadzaki.Controllers
         }
         
         [HttpGet]
-        public async Task<JsonResult> FilterAsync([FromBody] IEnumerable<TokensFilters> tokensFilters)
+        public JsonResult Filter([FromBody] IEnumerable<TokensFilters> tokensFilters)
         {
             _logger.LogWarning("Filter");
             //GalleryVM galleryVM = new GalleryVM();
@@ -71,13 +71,13 @@ namespace Babadzaki.Controllers
 
                     foreach (var filter in tokensFilters)
                     {
-                        tokens.AddRange(_context.Tokens.Where(t=>t.TokensFilters.FirstOrDefault(tf=>tf.Value==filter.Value)!=null));
+                        tokens.AddRange(_context.Tokens.Where(t=>t.TokensFilters.FirstOrDefault(tf=>tf.Value==filter.Value)!=null).Distinct());
                     
                     }
 
                     if (tokens.Count > 0)
                     {
-                        tokens =  tokens.Union(tokens).ToList();//TODO подумать как удалять дубликаты
+                        //tokens =  tokens.Union(tokens).ToList();//TODO подумать как удалять дубликаты
                         return new JsonResult(tokens);
                     }
                 }

@@ -1,10 +1,10 @@
 ﻿using Babadzaki.Data;
 using Babadzaki.Models;
-using Babadzaki.Utility;
+using Babadzaki_Utility;
 using Babadzaki.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.CodeAnalysis.Elfie.Extensions;
 
 namespace Babadzaki.Controllers
 {
@@ -24,10 +24,10 @@ namespace Babadzaki.Controllers
         public ActionResult Index()
         {
             
-            return View(new FeefbackVM());
+            return View(new FeedbackVM());
         }
         [HttpPost]
-        public async Task<JsonResult> JsonPostQuestionSendAsync([FromForm] FeefbackVM questionVM)
+        public async Task<JsonResult> JsonPostQuestionSendAsync([FromForm] FeedbackVM questionVM)
         {
 
             _logger.LogWarning("Hyu");

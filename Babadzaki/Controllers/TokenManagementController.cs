@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Packaging.Signing;
+using Babadzaki_Utility;
 using System.Text;
 
 namespace Babadzaki.Controllers
@@ -35,7 +36,7 @@ namespace Babadzaki.Controllers
             {
                 return NotFound();
             }
-            var token = _context.Tokens.Include(u=>u.SeasonCollection).FirstOrDefault(t=>t.Id==id);
+            var token = _context.Tokens.Include(u=>u.SeasonCollection).Include(f=>f.TokensFilters).ThenInclude(tf=>tf.Filter).FirstOrDefault(t=>t.Id==id);
             
             if(token==null)
             {
@@ -54,7 +55,7 @@ namespace Babadzaki.Controllers
             {
                 return NotFound();
             }
-            var token = _context.Tokens.Include(u => u.SeasonCollection).FirstOrDefault(u => u.Id == id);
+            var token = _context.Tokens.Include(u => u.SeasonCollection).FirstOrDefault(u => u.Id == id);//TOO : узнать почему сначала include
             
             if (token == null)
             {

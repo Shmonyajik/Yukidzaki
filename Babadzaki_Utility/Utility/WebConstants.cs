@@ -1,4 +1,4 @@
-﻿namespace Babadzaki
+﻿namespace Babadzaki_Utility
 {
     public static class WebConstants
     {

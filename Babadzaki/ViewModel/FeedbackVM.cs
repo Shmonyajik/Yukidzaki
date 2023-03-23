@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Babadzaki.ViewModel
 {
-    public class FeefbackVM
+    public class FeedbackVM
     {
         [Required]
         public string? Name { get; set; }
