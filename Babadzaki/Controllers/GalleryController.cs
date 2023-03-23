@@ -1,6 +1,6 @@
 ﻿using Babadzaki.Data;
 using Babadzaki.Models;
-using Babadzaki_Utility;
+using Babadzaki.Utility;
 using Babadzaki.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -44,7 +44,7 @@ namespace Babadzaki.Controllers
         }
         
         [HttpGet]
-        public JsonResult Filter([FromBody] IEnumerable<TokensFilters> tokensFilters)
+        public async Task<JsonResult> FilterAsync([FromBody] IEnumerable<TokensFilters> tokensFilters)
         {
             _logger.LogWarning("Filter");
             //GalleryVM galleryVM = new GalleryVM();

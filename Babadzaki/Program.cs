@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Babadzaki.Data;
 using Microsoft.AspNetCore.Identity;
-using Babadzaki_Utility;
+using Babadzaki.Utility;
 using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
