@@ -9,5 +9,9 @@ namespace Babadzaki.ViewModel
         public Token token { get; set; }
         
         public IEnumerable<SelectListItem>? seasonCollectionDropDown { get; set; }
+
+        public IEnumerable<SelectListItem>? filtersDropDown { get; set; }
+
+
     }
 }

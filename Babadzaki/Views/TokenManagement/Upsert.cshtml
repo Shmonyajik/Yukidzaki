@@ -60,6 +60,24 @@
                     </div>
 
                 </div>
+@*///////////////////////////////////////////////////////////////////////////////////////////////////////////TODO: Сделать добавление атрибутов через аякс запросы*@
+                @foreach (var item in Model.token.TokensFilters)
+                {
+                     <div class="form-group row">
+                        <div class="col-4">
+                            <label asp-for="@item.Filter.Name"></label>
+                        </div>
+                        <div class="col-8">
+                            <input asp-for="@item.Value" class="form-control" />
+                            <span asp-validation-for="@item.Value" class="text-danger"></span>
+                        </div>
+                        <div class="col">
+                            <input type="submit" class="btn btn-danger w-50" value="Delete" />
+                        </div>
+
+                    </div>
+                }
+@*///////////////////////////////////////////////////////////////////////////////////////////////////////////*@
                 <div class="form-group row">
                     <div class="col-4">
                         Image
@@ -95,6 +113,8 @@
                         <div class="col">
                             <a asp-action="Index" class="btn btn-success w-100"><i class="fas fa-sign-out-alt"></i> Back</a>
                         </div>
+
+
                     </div>
                 </div>
             </div>

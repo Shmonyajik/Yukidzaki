@@ -76,14 +76,30 @@ app.Run();
 //public class DefaultUserRole : IDefaultUserRole
 //{
 //    private readonly RoleManager<IdentityRole> _roleManager;
-    
+
 //    public DefaultUserRole(RoleManager<IdentityRole> roleManager)
 //    {
 //        _roleManager = roleManager;
 //    }
 //    public void SetDefaultUserRole()
 //    {
-       
+
 //    }
 //}
 
+//TODO:!Разобраться с ветками на гите
+//TODO:!Оргпнизовать общую маршрутизацию(не MVC)
+//TODO:!TokenManagementController один контроллер для менеджемента(администрации) токенов пользователей и фильтров
+//TODO:!Перенести WebConstants в json
+//TODO:!Удалить не используемое в том числе библиотеки и в целом почистить код
+//TODO:!Темы для углубленного изучения: EF Core(ленивая, жадная итд;
+//возможно отделить взаимодействие с бд и контроллер на еще один слой[хз]), Dependency Injection;
+//Maping, Routing;
+//Взаимодействие с клиентом(ContentType etc..);
+//Загрузка изображений на клиенте(вместе с темой)
+//https://www.youtube.com/@PlatinumTechTalks
+//https://metanit.com/sharp/entityframeworkcore/3.3.php
+//TODO:!Настроить общее логирование
+//TODO:!Сделать unit тесты
+//TODO:!Затестить Фабричный метод для отправки email рассылки
+//TODO:!

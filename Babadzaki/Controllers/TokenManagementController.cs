@@ -55,8 +55,8 @@ namespace Babadzaki.Controllers
             {
                 return NotFound();
             }
-            var token = _context.Tokens.Include(u => u.SeasonCollection).FirstOrDefault(u => u.Id == id);//TOO : узнать почему сначала include
-            
+            var token = _context.Tokens.Include(u => u.SeasonCollection).Include(f => f.TokensFilters).ThenInclude(tf => tf.Filter).FirstOrDefault(t => t.Id == id);//TOO : узнать почему сначала include
+
             if (token == null)
             {
                 return NotFound();
@@ -102,6 +102,10 @@ namespace Babadzaki.Controllers
                 {
                     Text = item.Name,
                     Value = item.Id.ToString()
+                }),
+                filtersDropDown = _context.Filters.Select(item=>new SelectListItem
+                { Text = item.Name,
+                  Value = item.Id.ToString()
                 })
             };
 
@@ -112,7 +116,7 @@ namespace Babadzaki.Controllers
             }
             try
             {
-                tokenVM.token = _context.Tokens.First(t=>t.Id==id);
+                tokenVM.token = _context.Tokens.Include(t=>t.TokensFilters).ThenInclude(tf=>tf.Filter).First(t=>t.Id==id);
             }
             catch//Добавить конкретное исключение
             {
