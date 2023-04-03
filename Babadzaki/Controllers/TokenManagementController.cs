@@ -8,6 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using NuGet.Packaging.Signing;
 using Babadzaki_Utility;
 using System.Text;
+using System.IO;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using NuGet.Protocol;
+using Microsoft.Extensions.ObjectPool;
 
 namespace Babadzaki.Controllers
 {
@@ -15,9 +19,11 @@ namespace Babadzaki.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly ILogger<TokenManagementController> _logger;
 
-        public TokenManagementController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+        public TokenManagementController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment, ILogger<TokenManagementController> logger)
         {
+            _logger = logger;
             _context = context;
             _webHostEnvironment = webHostEnvironment;
         }
@@ -49,9 +55,9 @@ namespace Babadzaki.Controllers
 
 
        
-        public IActionResult Delete(int? id)
+        public IActionResult Delete(int id)
         {
-            if (id == null || id == 0)
+            if ( id == 0)
             {
                 return NotFound();
             }
@@ -69,13 +75,10 @@ namespace Babadzaki.Controllers
         //POST - DELETE
         [HttpPost,ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeletePost(int? id)
+        public IActionResult DeletePost(int id)
         {
             var token = _context.Tokens.Find(id);
-            if (token == null)
-            {
-                return NotFound();
-            }
+            
 
             string filePath =_webHostEnvironment.WebRootPath+ WebConstants.ImagePath + token.Image;
 
@@ -131,13 +134,6 @@ namespace Babadzaki.Controllers
         public IActionResult Upsert(TokenVM tokenVM)//TODO: сделать кнопку для удаления картинки в обновлении
         {
 
-            //using (StreamWriter w = new StreamWriter("C:\\Users\\shmon\\source\\repos\\Shmonyajik\\Babadzaki\\Babadzaki\\imageValidateLog.txt", false, Encoding.GetEncoding(1251)))
-            //{
-            //    string imageState = ModelState.FirstOrDefault(x => x.Key == "Item").Value.ToString();
-            //    w.WriteLine(DateTime.Now.ToString());
-            //    w.Write(imageState);
-                
-            //}
             if (ModelState.IsValid)
             {
                 var files = HttpContext.Request.Form.Files;// загруженые файлы
@@ -259,7 +255,59 @@ namespace Babadzaki.Controllers
         //}
         #endregion
 
-      
+        [HttpGet]
+        public IActionResult LoadJsonToken()
+        {
+            
+             return PartialView ("_LoadJsonToken");
+        }
+        [HttpPost]
+        public async Task<JsonResult> LoadJsonTokenPost()
+        {
+            var files = HttpContext.Request.Form.Files;
+            if (files.Count > 0)
+            {
+                var jsonTokens = new List<JsonToken>();
+                foreach (var file in files)
+                {
+                    if (file == null || file.Length == 0)
+                    {
+                        _logger.LogError("Один или более файлов пусты!");
+                    }
+                    
+                    using (var reader = new StreamReader(file.OpenReadStream()))
+                    {
+                        var fileString = await reader.ReadToEndAsync();
+                        jsonTokens.Add(Newtonsoft.Json.JsonConvert.DeserializeObject<JsonToken>(fileString));//проверка??
+                        
+                    }
+                    
+                }
+
+            }
+            return new JsonResult(Ok());
+        }
+
+        //[HttpPost]
+        //public IActionResult LoadJsonTokenPost()
+        //{
+        //    var files = HttpContext.Request.Form.Files;
+
+        //    foreach(var file in files)
+        //    {
+        //        try
+        //        {
+        //            var token = Newtonsoft.Json.JsonConvert.DeserializeObject<Token>(file);
+        //        }
+        //        catch (Exception)
+        //        {
+
+        //            throw;
+        //        }
+        //    }
+        //    return RedirectToAction(nameof(Index));
+        //}
+
     }
 }
 
