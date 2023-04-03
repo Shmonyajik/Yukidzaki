@@ -12,6 +12,7 @@ using System.IO;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using NuGet.Protocol;
 using Microsoft.Extensions.ObjectPool;
+using AutoMapper;
 
 namespace Babadzaki.Controllers
 {
@@ -20,9 +21,11 @@ namespace Babadzaki.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ILogger<TokenManagementController> _logger;
+        private readonly IMapper _mapper;
 
-        public TokenManagementController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment, ILogger<TokenManagementController> logger)
+        public TokenManagementController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment, ILogger<TokenManagementController> logger, IMapper mapper)
         {
+            _mapper = mapper;
             _logger = logger;
             _context = context;
             _webHostEnvironment = webHostEnvironment;
@@ -267,7 +270,8 @@ namespace Babadzaki.Controllers
             var files = HttpContext.Request.Form.Files;
             if (files.Count > 0)
             {
-                var jsonTokens = new List<JsonToken>();
+                var tokens = new List<Token>();
+                var tokensAttributes = new List<TokensFilters>();
                 foreach (var file in files)
                 {
                     if (file == null || file.Length == 0)
@@ -278,12 +282,19 @@ namespace Babadzaki.Controllers
                     using (var reader = new StreamReader(file.OpenReadStream()))
                     {
                         var fileString = await reader.ReadToEndAsync();
-                        jsonTokens.Add(Newtonsoft.Json.JsonConvert.DeserializeObject<JsonToken>(fileString));//проверка??
-                        
+                        var jsonToken = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonToken>(fileString);
+                        var tokenFilters = _mapper.Map<TokensFilters>(jsonToken.attributes);
+                        var token = _mapper.Map<Token>(jsonToken);
+                        token.TokensFilters = (ICollection<TokensFilters>)tokenFilters;
+                        tokens.Add(token);
+                        //проверка??
+
                     }
                     
                 }
-
+                _context.Tokens.AddRange(tokens);
+                _context.SaveChanges();
+                
             }
             return new JsonResult(Ok());
         }

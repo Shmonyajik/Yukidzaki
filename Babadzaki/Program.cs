@@ -35,8 +35,8 @@ options.UseSqlServer(
 //    .AddDefaultTokenProviders()//предоставляет токены по умолчанию(например если пароль будет утерян)
 //    .AddDefaultUI()
 //    .AddEntityFrameworkStores<ApplicationDbContext>();
-    
-    
+
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
     
 
 var app = builder.Build();
@@ -102,4 +102,6 @@ app.Run();
 //TODO:!Настроить общее логирование
 //TODO:!Сделать unit тесты
 //TODO:!Затестить Фабричный метод для отправки email рассылки
-//TODO:!
+//TODO:!Удалить AutoMapper mb
+//TODO:!Подумать над чтением json файлов без сохранения на сервере
+//https://stackoverflow.com/questions/40045147/how-to-read-into-memory-the-lines-of-a-text-file-from-an-iformfile-in-asp-net-co?rq=1
