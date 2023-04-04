@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 
 namespace Babadzaki.Models
 {
-    public class Token
+    public class Token : IEquatable<Token?>
     {
         [Key]
         public int Id { get; set; }
@@ -49,7 +49,22 @@ namespace Babadzaki.Models
             TokensFilters = new List<TokensFilters>();
         }
 
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as Token);
+        }
 
+        public bool Equals(Token? other)
+        {
+            return other is not null &&
+                   other.GetHashCode()==this.GetHashCode();
+        }
 
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(TokensFilters);
+        }
+
+       
     }
 }

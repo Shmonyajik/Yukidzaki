@@ -271,7 +271,7 @@ namespace Babadzaki.Controllers
             if (files.Count > 0)
             {
                 var tokens = new List<Token>();
-                var tokensAttributes = new List<TokensFilters>();
+
                 foreach (var file in files)
                 {
                     if (file == null || file.Length == 0)
@@ -282,12 +282,27 @@ namespace Babadzaki.Controllers
                     using (var reader = new StreamReader(file.OpenReadStream()))
                     {
                         var fileString = await reader.ReadToEndAsync();
-                        var jsonToken = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonToken>(fileString);
-                        var tokenFilters = _mapper.Map<TokensFilters>(jsonToken.attributes);
-                        var token = _mapper.Map<Token>(jsonToken);
-                        token.TokensFilters = (ICollection<TokensFilters>)tokenFilters;
-                        tokens.Add(token);
-                        //проверка??
+                        JsonToken jsonToken = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonToken>(fileString);
+
+                        Token token = _mapper.Map<Token>(jsonToken);
+                       
+                        foreach (var attr in jsonToken.attributes)
+                        {
+                            //&&tf.Filter.Name==attr.trait_type нужно ли?
+                            token.TokensFilters.Add(_context.TokensFilters.FirstOrDefault(tf => tf.Value == attr.value&&tf.Filter.Name==attr.trait_type) ?? new TokensFilters 
+                            {
+                                Value = attr.value,
+                                Filter = _context.Filters.FirstOrDefault(f => f.Name == attr.trait_type) ?? new Filter
+                                {
+                                    Name = attr.trait_type
+                                }
+                            }); //че-то сложновато выглядит))
+                            
+
+                        }
+                        if(tokens.FirstOrDefault(t=>t.Equals(token))==null&&_context.Tokens.FirstOrDefault(t=>t.Equals(token)) == null)
+                            tokens.Add(token);
+
 
                     }
                     
@@ -298,6 +313,7 @@ namespace Babadzaki.Controllers
             }
             return new JsonResult(Ok());
         }
+        
 
         //[HttpPost]
         //public IActionResult LoadJsonTokenPost()
