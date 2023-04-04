@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Babadzaki.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230321051204_AddFiltersAndAttributes")]
-    partial class AddFiltersAndAttributes
+    [Migration("20230404181734_initMigration")]
+    partial class initMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,31 +24,6 @@ namespace Babadzaki.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Babadzaki.Models.Attribute", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("FilterId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsChecked")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FilterId");
-
-                    b.ToTable("Attributes");
-                });
 
             modelBuilder.Entity("Babadzaki.Models.Email", b =>
                 {
@@ -74,9 +49,6 @@ namespace Babadzaki.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("IsChecked")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -123,10 +95,9 @@ namespace Babadzaki.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
+                    b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("SeasonCollectionId")
@@ -142,7 +113,7 @@ namespace Babadzaki.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Babadzaki.Models.TokensAttributes", b =>
+            modelBuilder.Entity("Babadzaki.Models.TokensFilters", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -150,28 +121,27 @@ namespace Babadzaki.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AttributeId")
+                    b.Property<int>("FilterId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsChecked")
+                        .HasColumnType("bit");
 
                     b.Property<int>("TokenId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("AttributeId");
+                    b.HasIndex("FilterId");
 
                     b.HasIndex("TokenId");
 
-                    b.ToTable("TokensAttributes");
-                });
-
-            modelBuilder.Entity("Babadzaki.Models.Attribute", b =>
-                {
-                    b.HasOne("Babadzaki.Models.Filter", "Filter")
-                        .WithMany("Attributes")
-                        .HasForeignKey("FilterId");
-
-                    b.Navigation("Filter");
+                    b.ToTable("TokensFilters");
                 });
 
             modelBuilder.Entity("Babadzaki.Models.Token", b =>
@@ -183,33 +153,28 @@ namespace Babadzaki.Migrations
                     b.Navigation("SeasonCollection");
                 });
 
-            modelBuilder.Entity("Babadzaki.Models.TokensAttributes", b =>
+            modelBuilder.Entity("Babadzaki.Models.TokensFilters", b =>
                 {
-                    b.HasOne("Babadzaki.Models.Attribute", "Attribute")
-                        .WithMany("TokensAttributes")
-                        .HasForeignKey("AttributeId")
+                    b.HasOne("Babadzaki.Models.Filter", "Filter")
+                        .WithMany("TokensFilters")
+                        .HasForeignKey("FilterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Babadzaki.Models.Token", "Token")
-                        .WithMany("TokensAttributes")
+                        .WithMany("TokensFilters")
                         .HasForeignKey("TokenId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Attribute");
+                    b.Navigation("Filter");
 
                     b.Navigation("Token");
                 });
 
-            modelBuilder.Entity("Babadzaki.Models.Attribute", b =>
-                {
-                    b.Navigation("TokensAttributes");
-                });
-
             modelBuilder.Entity("Babadzaki.Models.Filter", b =>
                 {
-                    b.Navigation("Attributes");
+                    b.Navigation("TokensFilters");
                 });
 
             modelBuilder.Entity("Babadzaki.Models.SeasonCollection", b =>
@@ -219,7 +184,7 @@ namespace Babadzaki.Migrations
 
             modelBuilder.Entity("Babadzaki.Models.Token", b =>
                 {
-                    b.Navigation("TokensAttributes");
+                    b.Navigation("TokensFilters");
                 });
 #pragma warning restore 612, 618
         }

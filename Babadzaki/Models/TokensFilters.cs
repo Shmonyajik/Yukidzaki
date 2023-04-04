@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Babadzaki.Models
 {
-    public class TokensFilters
+    public class TokensFilters : IEquatable<TokensFilters?>
     {
         [Key]
         public int Id { get; set; }
@@ -24,7 +24,20 @@ namespace Babadzaki.Models
 
         public bool IsChecked { get; set; }//Сделать мапинг(убрать из бд => добавить в контроллер)
 
+        public override bool Equals(object? obj)
+        {
+            return Equals(obj as TokensFilters);
+        }
 
+        public bool Equals(TokensFilters? other)
+        {
+            return other is not null &&
+                   other.Value.Equals(this.Value) && other.Filter.Name.Equals(this.Filter.Name);
+        }
 
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Filter.Name, Value);
+        }
     }
 }

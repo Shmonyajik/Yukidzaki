@@ -300,7 +300,8 @@ namespace Babadzaki.Controllers
                             
 
                         }
-                        if(tokens.FirstOrDefault(t=>t.Equals(token))==null&&_context.Tokens.FirstOrDefault(t=>t.Equals(token)) == null)
+                        _logger.LogInformation($"{token.GetHashCode()}\n");
+                        if (tokens.FirstOrDefault(t=>t.Equals(token))==null&&_context.Tokens.FirstOrDefault(t=>t.Equals(token)) == null)
                             tokens.Add(token);
 
 
