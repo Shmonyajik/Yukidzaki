@@ -15,10 +15,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
+                @Html.DisplayNameFor(model => model.dna)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.SeasonCollection)
@@ -36,11 +33,9 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.dna)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
+
             <td>
                 <a asp-controller="SeasonCollection" asp-action="Index" asp-route-id="@item.SeasonCollectionId">
                 @Html.DisplayFor(modelItem => item.SeasonCollection.Name)

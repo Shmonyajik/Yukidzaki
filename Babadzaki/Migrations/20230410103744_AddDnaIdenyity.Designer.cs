@@ -4,6 +4,7 @@ using Babadzaki.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Babadzaki.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230410103744_AddDnaIdenyity")]
+    partial class AddDnaIdenyity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,6 +71,9 @@ namespace Babadzaki.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<short?>("TotalTokensNum")
+                        .HasColumnType("smallint");
+
                     b.HasKey("Id");
 
                     b.ToTable("SeasonCollections");
@@ -91,8 +97,8 @@ namespace Babadzaki.Migrations
                     b.Property<int?>("SeasonCollectionId")
                         .HasColumnType("int");
 
-                    b.Property<long>("dna")
-                        .HasColumnType("bigint");
+                    b.Property<int>("dna")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -114,6 +120,9 @@ namespace Babadzaki.Migrations
 
                     b.Property<int>("FilterId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsChecked")
+                        .HasColumnType("bit");
 
                     b.Property<int>("TokenId")
                         .HasColumnType("int");

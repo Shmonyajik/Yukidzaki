@@ -6,9 +6,8 @@ namespace Babadzaki.Models.Mapping
     {
         public JsonTokenProfile()
         {
-            this.CreateMap<JsonToken, Token>()
-                .ForMember(dst => dst.Description, opt => opt.MapFrom(src => src.description))
-                .ForMember(dst => dst.Image, opt => opt.MapFrom(src => src.image)).ReverseMap()
+            this.CreateMap<JsonToken, Token>().ForMember(dst => dst.dna, opt => opt.MapFrom(src => long.Parse(src.dna)));
+                
                 
 
 

@@ -12,10 +12,8 @@ namespace Babadzaki.Models
         [Key]
         public int Id { get; set; }
         //[Required]
-        public string? Name { get; set; }
-        //[Required]
-        [Range(typeof(decimal), "0,0","99999,99999" , ErrorMessage = "The lowest value is 0.00 ETH, as a decimal and partially used comma separator")]
-        public decimal? Price { get; set; }
+        [Required]
+        public long dna { get; set; }
         
         
         #region
@@ -56,24 +54,13 @@ namespace Babadzaki.Models
 
         public bool Equals(Token? other)
         {
-            if (other is null)
-            {
-                return false;
-            }
-            bool IsEqual = true;
-            foreach(var tokenFilter in other.TokensFilters)
-            {
-                if (tokenFilter != null && !this.TokensFilters.Contains(tokenFilter))
-                    IsEqual = false;                    
-            }
-            return IsEqual;
+            return other is not null &&
+                   dna == other.dna;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(TokensFilters);
+            return HashCode.Combine(dna);
         }
-
-       
     }
 }

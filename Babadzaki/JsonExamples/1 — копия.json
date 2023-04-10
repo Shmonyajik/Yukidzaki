@@ -1,0 +1,54 @@
+{
+  "dna": "108025377212",
+  "season_collection": "Original Season",
+  "description": "This is an NFT made by the coolest generative code.",
+  "image": "https://hashlips/nft/1.png",
+  "edition": 1,
+  "date": 1646663356705,
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Orange"
+    },
+    {
+      "trait_type": "Suit",
+      "value": "Regular"
+    },
+    {
+      "trait_type": "Pin",
+      "value": "Smiley"
+    },
+    {
+      "trait_type": "Race",
+      "value": "Skull"
+    },
+    {
+      "trait_type": "Facial hair",
+      "value": "No facial hair"
+    },
+    {
+      "trait_type": "Ushi",
+      "value": "5"
+    },
+    {
+      "trait_type": "Mask",
+      "value": "1"
+    },
+    {
+      "trait_type": "Hair",
+      "value": "Malboro Cowboy"
+    },
+    {
+      "trait_type": "Shoulder",
+      "value": "USA"
+    },
+    {
+      "trait_type": "Accessories",
+      "value": "No accessories"
+    },
+    {
+      "trait_type": "Headwear",
+      "value": "Glass dome"
+    }
+  ]
+}

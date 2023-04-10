@@ -24,9 +24,19 @@ namespace Babadzaki.Controllers
         private readonly IMapper _mapper;
 
         public TokenManagementController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment, ILogger<TokenManagementController> logger, IMapper mapper)
-        {
-            _mapper = mapper;
+        { 
+
             _logger = logger;
+            _mapper = mapper;
+            try
+            {
+                _mapper.ConfigurationProvider.AssertConfigurationIsValid();
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex.ToString());
+            }
             _context = context;
             _webHostEnvironment = webHostEnvironment;
         }
@@ -285,11 +295,17 @@ namespace Babadzaki.Controllers
                         JsonToken jsonToken = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonToken>(fileString);
 
                         Token token = _mapper.Map<Token>(jsonToken);
+                        if (_context.Tokens.FirstOrDefault(t => t.dna == token.dna)!=null)
+                        {
+                            reader.Close();
+                            break;
+                        }
+                        token.SeasonCollection = _context.SeasonCollections.FirstOrDefault(s=>s.Name==jsonToken.season_collection)?? new SeasonCollection { Name = jsonToken.season_collection };
                        
                         foreach (var attr in jsonToken.attributes)
                         {
                             //&&tf.Filter.Name==attr.trait_type нужно ли?
-                            token.TokensFilters.Add(_context.TokensFilters.FirstOrDefault(tf => tf.Value == attr.value&&tf.Filter.Name==attr.trait_type) ?? new TokensFilters 
+                            token.TokensFilters.Add( /*_context.TokensFilters.FirstOrDefault(tf=>tf.Token.dna==jsonToken.dna&&tf.Value==attr.value &&tf.Filter.Name==attr.trait_type)??*/ new TokensFilters 
                             {
                                 Value = attr.value,
                                 Filter = _context.Filters.FirstOrDefault(f => f.Name == attr.trait_type) ?? new Filter
@@ -300,8 +316,8 @@ namespace Babadzaki.Controllers
                             
 
                         }
-                        _logger.LogInformation($"{token.GetHashCode()}\n");
-                        if (tokens.FirstOrDefault(t=>t.Equals(token))==null&&_context.Tokens.FirstOrDefault(t=>t.Equals(token)) == null)
+                        _logger.LogInformation($"{token.Image}: {token.GetHashCode()}\n");
+                        if (tokens.FirstOrDefault(t => t.dna == token.dna) == null)
                             tokens.Add(token);
 
 
