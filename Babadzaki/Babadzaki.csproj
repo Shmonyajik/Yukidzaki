@@ -38,7 +38,7 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="wwwroot\img\token\" />
+    <Folder Include="wwwroot\img\token\PNG\" />
     <Folder Include="wwwroot\load-json-tokens\" />
   </ItemGroup>
 

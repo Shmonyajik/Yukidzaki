@@ -68,9 +68,6 @@ namespace Babadzaki.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<short?>("TotalTokensNum")
-                        .HasColumnType("smallint");
-
                     b.HasKey("Id");
 
                     b.ToTable("SeasonCollections");
@@ -91,14 +88,11 @@ namespace Babadzaki.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("Price")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int?>("SeasonCollectionId")
                         .HasColumnType("int");
+
+                    b.Property<long>("dna")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -120,9 +114,6 @@ namespace Babadzaki.Migrations
 
                     b.Property<int>("FilterId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("IsChecked")
-                        .HasColumnType("bit");
 
                     b.Property<int>("TokenId")
                         .HasColumnType("int");

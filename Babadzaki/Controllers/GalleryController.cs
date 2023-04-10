@@ -30,7 +30,7 @@ namespace Babadzaki.Controllers
             {
                 Tokens = _context.Tokens.Include(u => u.SeasonCollection).ToList(),
                 SeasonCollections = _context.SeasonCollections.ToList(),
-                Filters = _context.Filters.ToList(),
+                Filters = _context.Filters.ToList().Distinct(),
                 TokensFilters = _context.TokensFilters.Include(f => f.Filter).ToList()
             };
             return View(galleryVM);

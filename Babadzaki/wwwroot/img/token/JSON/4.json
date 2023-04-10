@@ -1,0 +1,46 @@
+{
+  "dna": "38030223215220490",
+  "name": "Yukidzaki #4",
+  "description": "",
+  "image": "ipfs/QmeKyA8YaUuhWBYzKqGY9eYeE9FJgXrmZ5GEdumNKWimQr/4.png",
+  "edition": 4,
+  "date": 1681493041156,
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Blue"
+    },
+    {
+      "trait_type": "Hands",
+      "value": "Nichirin black in a sheath"
+    },
+    {
+      "trait_type": "Race",
+      "value": "Frieza"
+    },
+    {
+      "trait_type": "Season",
+      "value": "Season 1"
+    },
+    {
+      "trait_type": "Cloth",
+      "value": "Tomidzaki"
+    },
+    {
+      "trait_type": "Eyes",
+      "value": "Closed"
+    },
+    {
+      "trait_type": "Mouths",
+      "value": "Medical mask"
+    },
+    {
+      "trait_type": "Hair",
+      "value": "Tahanma"
+    },
+    {
+      "trait_type": "Hats",
+      "value": "Cap"
+    }
+  ]
+}

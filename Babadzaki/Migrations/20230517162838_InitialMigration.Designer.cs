@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Babadzaki.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230404181734_initMigration")]
-    partial class initMigration
+    [Migration("20230517162838_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,9 +71,6 @@ namespace Babadzaki.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<short?>("TotalTokensNum")
-                        .HasColumnType("smallint");
-
                     b.HasKey("Id");
 
                     b.ToTable("SeasonCollections");
@@ -94,14 +91,11 @@ namespace Babadzaki.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("Price")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int?>("SeasonCollectionId")
                         .HasColumnType("int");
+
+                    b.Property<long>("dna")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -123,9 +117,6 @@ namespace Babadzaki.Migrations
 
                     b.Property<int>("FilterId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("IsChecked")
-                        .HasColumnType("bit");
 
                     b.Property<int>("TokenId")
                         .HasColumnType("int");

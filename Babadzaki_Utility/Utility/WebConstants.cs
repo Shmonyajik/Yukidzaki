@@ -4,7 +4,7 @@
     {
         public static string CompanyName = "Babadzaki";
 
-        public static string ImagePath = @"\img\token\";
+        public static string ImagePath = @"https://gateway.pinata.cloud/";
 
 
 

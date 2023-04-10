@@ -2,7 +2,7 @@
 
 namespace Babadzaki.Models
 {
-    public class Filter
+    public class Filter  
     {
         [Key]
         public int Id { get; set; }

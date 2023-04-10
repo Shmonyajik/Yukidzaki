@@ -5,6 +5,7 @@ using Babadzaki.Data;
 using Microsoft.AspNetCore.Identity;
 using Babadzaki_Utility;
 using Newtonsoft.Json.Serialization;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +36,8 @@ options.UseSqlServer(
 //    .AddDefaultTokenProviders()//предоставляет токены по умолчанию(например если пароль будет утерян)
 //    .AddDefaultUI()
 //    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
     
