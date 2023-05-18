@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Babadzaki.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230410105549_AddClear")]
-    partial class AddClear
+    [Migration("20230518065729_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -94,8 +94,8 @@ namespace Babadzaki.Migrations
                     b.Property<int?>("SeasonCollectionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("dna")
-                        .HasColumnType("int");
+                    b.Property<long>("dna")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 

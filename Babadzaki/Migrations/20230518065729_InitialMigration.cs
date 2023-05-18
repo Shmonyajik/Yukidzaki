@@ -5,7 +5,7 @@
 namespace Babadzaki.Migrations
 {
     /// <inheritdoc />
-    public partial class AddDnaIdenyity : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -42,8 +42,7 @@ namespace Babadzaki.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TotalTokensNum = table.Column<short>(type: "smallint", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -56,7 +55,7 @@ namespace Babadzaki.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    dna = table.Column<int>(type: "int", nullable: false),
+                    dna = table.Column<long>(type: "bigint", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SeasonCollectionId = table.Column<int>(type: "int", nullable: true)
@@ -79,8 +78,7 @@ namespace Babadzaki.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TokenId = table.Column<int>(type: "int", nullable: false),
                     FilterId = table.Column<int>(type: "int", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    IsChecked = table.Column<bool>(type: "bit", nullable: false)
+                    Value = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
                 },
                 constraints: table =>
                 {

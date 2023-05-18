@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using NuGet.Protocol;
 using Microsoft.Extensions.ObjectPool;
 using AutoMapper;
+using NuGet.Common;
 
 namespace Babadzaki.Controllers
 {
@@ -113,7 +114,7 @@ namespace Babadzaki.Controllers
             
             TokenVM tokenVM = new TokenVM
             {
-                token = new Token(),
+                token = new Models.Token(),
                 seasonCollectionDropDown = _context.SeasonCollections.Select(item => new SelectListItem
                 {
                     Text = item.Name,
@@ -280,77 +281,69 @@ namespace Babadzaki.Controllers
             var files = HttpContext.Request.Form.Files;
             if (files.Count > 0)
             {
-                var tokens = new List<Token>();
-
                 foreach (var file in files)
                 {
                     if (file == null || file.Length == 0)
                     {
                         _logger.LogError("Один или более файлов пусты!");
                     }
-                    
+
                     using (var reader = new StreamReader(file.OpenReadStream()))
                     {
                         var fileString = await reader.ReadToEndAsync();
                         JsonToken jsonToken = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonToken>(fileString);
-
-                        Token token = _mapper.Map<Token>(jsonToken);
-                        if (_context.Tokens.FirstOrDefault(t => t.dna == token.dna)!=null)
+                        SeasonCollection seasonCollection = null;
+                        Models.Token token = _mapper.Map<Models.Token>(jsonToken);
+                        if (_context.Tokens.FirstOrDefault(t => t.dna == token.dna) != null)
                         {
                             reader.Close();
-                            break;
+                            continue;
                         }
-                        token.SeasonCollection = _context.SeasonCollections.FirstOrDefault(s=>s.Name==jsonToken.season_collection)?? new SeasonCollection { Name = jsonToken.season_collection };
-                       
+
                         foreach (var attr in jsonToken.attributes)
                         {
-                            //&&tf.Filter.Name==attr.trait_type нужно ли?
-                            token.TokensFilters.Add( /*_context.TokensFilters.FirstOrDefault(tf=>tf.Token.dna==jsonToken.dna&&tf.Value==attr.value &&tf.Filter.Name==attr.trait_type)??*/ new TokensFilters 
+                            if(attr.trait_type=="Season")
                             {
-                                Value = attr.value,
-                                Filter = _context.Filters.FirstOrDefault(f => f.Name == attr.trait_type) ?? new Filter
+                                try
                                 {
-                                    Name = attr.trait_type
+                                    token.SeasonCollection = _context.SeasonCollections.First(sc => sc.Name == attr.value);
                                 }
-                            }); //че-то сложновато выглядит))
-                            
+                                catch (Exception)
+                                {
+                                    token.SeasonCollection = new SeasonCollection { Name = attr.value };
+                                }
+                                continue;
+                            }
+                            try
+                            {
+                                token.TokensFilters.Add(_context.TokensFilters.First(tf => tf.Value == attr.value && tf.Filter.Name == attr.trait_type));
+                            }
+                            catch (Exception)
+                            {
+                                token.TokensFilters.Add(new TokensFilters{
+                                    Value = attr.value,
+                                    Filter = _context.Filters.FirstOrDefault(f => f.Name == attr.trait_type) ?? new Filter
+                                    {
+                                        Name = attr.trait_type
+                                    }
+                                });
+                                
+
+                            }
 
                         }
                         _logger.LogInformation($"{token.Image}: {token.GetHashCode()}\n");
-                        if (tokens.FirstOrDefault(t => t.dna == token.dna) == null)
-                            tokens.Add(token);
 
-
+                        _context.Tokens.Add(token);
+                        _context.SaveChanges();
                     }
                     
                 }
-                _context.Tokens.AddRange(tokens);
-                _context.SaveChanges();
                 
+
             }
             return new JsonResult(Ok());
         }
-        
-
-        //[HttpPost]
-        //public IActionResult LoadJsonTokenPost()
-        //{
-        //    var files = HttpContext.Request.Form.Files;
-
-        //    foreach(var file in files)
-        //    {
-        //        try
-        //        {
-        //            var token = Newtonsoft.Json.JsonConvert.DeserializeObject<Token>(file);
-        //        }
-        //        catch (Exception)
-        //        {
-
-        //            throw;
-        //        }
-        //    }
-        //    return RedirectToAction(nameof(Index));
-        //}
 
     }
 }
