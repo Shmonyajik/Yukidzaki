@@ -4,7 +4,7 @@
     {
         public static string CompanyName = "Babadzaki";
 
-        public static string ImagePath = @"https://gateway.pinata.cloud/";
+        public static string ImagePath = @"https://gateway.pinata.cloud/";//https://gateway.pinata.cloud/ipfs/QmeKyA8YaUuhWBYzKqGY9eYeE9FJgXrmZ5GEdumNKWimQr/1.png
 
 
 
