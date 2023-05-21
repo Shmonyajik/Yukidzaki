@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Babadzaki_Utility;
 using Newtonsoft.Json.Serialization;
 using AutoMapper;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,7 @@ builder.Services.AddControllersWithViews()
      .AddNewtonsoftJson(options =>//ћЅ удалить
     {
         options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
     });
 
 
@@ -36,7 +38,6 @@ options.UseSqlServer(
 //    .AddDefaultTokenProviders()//предоставл€ет токены по умолчанию(например если пароль будет утер€н)
 //    .AddDefaultUI()
 //    .AddEntityFrameworkStores<ApplicationDbContext>();
-
 
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);

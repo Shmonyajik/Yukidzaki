@@ -115,7 +115,7 @@
     themesflatTheme.init();
 
     var ajaxContactForm = function () {
-        $('#contactform,#commentform').each(function () {
+        $().each(function () {
             $(this).validate({
                 submitHandler: function (form) {
                     var $form = $(form),
@@ -160,14 +160,136 @@
     };
 
 
-    // Header Fixed
+    
+    
+
+    
+
+    var ajaxSubscribe = {
+        obj: {
+            subscribeEmail: $('#subscribe-email'),
+            subscribeButton: $('#subscribe-butto'),
+            subscribeMsg: $('#subscribe-msg'),
+            subscribeContent: $("#subscribe-content"),
+            dataMailchimp: $('#subscribe-form').attr('data-mailchimp'),
+            success_message: '<div class="notification_ok">Thank you for joining our mailing list! Please check your email for a confirmation link.</div>',
+            failure_message: '<div class="notification_error">Error! <strong>There was a problem processing your submission.</strong></div>',
+            noticeError: '<div class="notification_error">{msg}</div>',
+            noticeInfo: '<div class="notification_error">{msg}</div>',
+            basicAction: 'mail/subscribe.php',
+            mailChimpAction: 'mail/subscribe-mailchimp.php'
+        },
+
+        eventLoad: function () {
+            var objUse = ajaxSubscribe.obj;
+
+            $(objUse.subscribeButton).on('click', function () {
+                if (window.ajaxCalling) return;
+
+                var isMailchimp = objUse.dataMailchimp === 'true';
+
+                if (isMailchimp) {
+                    ajaxSubscribe.ajaxCall(objUse.mailChimpAction);
+                } else {
+                    ajaxSubscribe.ajaxCall(objUse.basicAction);
+                }
+            });
+        },
+
+        ajaxCall: function (action) {
+            window.ajaxCalling = true;
+            var objUse = ajaxSubscribe.obj;
+            var messageDiv = objUse.subscribeMsg.html('').hide();
+            $.ajax({
+                url: action,
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    subscribeEmail: objUse.subscribeEmail.val()
+                },
+                success: function (responseData, textStatus, jqXHR) {
+                    if (responseData.status) {
+                        objUse.subscribeContent.fadeOut(500, function () {
+                            messageDiv.html(objUse.success_message).fadeIn(500);
+                        });
+                    }
+                    else {
+                        switch (responseData.msg) {
+                            case "email-required":
+                                messageDiv.html(objUse.noticeError.replace('{msg}', 'Error! <strong>Email is required.</strong>'));
+                                break;
+                            case "email-err":
+                                messageDiv.html(objUse.noticeError.replace('{msg}', 'Error! <strong>Email invalid.</strong>'));
+                                break;
+                            case "duplicate":
+                                messageDiv.html(objUse.noticeError.replace('{msg}', 'Error! <strong>Email is duplicate.</strong>'));
+                                break;
+                            case "filewrite":
+                                messageDiv.html(objUse.noticeInfo.replace('{msg}', 'Error! <strong>Mail list file is open.</strong>'));
+                                break;
+                            case "undefined":
+                                messageDiv.html(objUse.noticeInfo.replace('{msg}', 'Error! <strong>undefined error.</strong>'));
+                                break;
+                            case "api-error":
+                                objUse.subscribeContent.fadeOut(500, function () {
+                                    messageDiv.html(objUse.failure_message);
+                                });
+                        }
+                        messageDiv.fadeIn(500);
+                    }
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert('Connection error');
+                },
+                complete: function (data) {
+                    window.ajaxCalling = false;
+                    alert('Thank you for joining our mailing list!');
+                } 
+            });
+        }
+    };
+    
+    var alertBox = function () {
+        $(document).on('click', '.close', function (e) {
+            $(this).closest('.flat-alert').remove();
+            e.preventDefault();
+        })
+
+    };
+
+    var flatAccordion = function() {
+        var args = {duration: 600};
+        $('.flat-toggle .toggle-title.active').siblings('.toggle-content').show();
+      
+        $('.flat-toggle.enable .toggle-title').on('click', function() {
+            $(this).closest('.flat-toggle').find('.toggle-content').slideToggle(args);
+            $(this).toggleClass('active');
+        }); // toggle 
+      
+        $('.flat-accordion .toggle-title').on('click', function () {
+            $('.flat-accordion .flat-toggle').removeClass('active');
+            $(this).closest('.flat-toggle').toggleClass('active');
+
+            if( !$(this).is('.active') ) {
+                $(this).closest('.flat-accordion').find('.toggle-title.active').toggleClass('active').next().slideToggle(args);
+                $(this).toggleClass('active');
+                $(this).next().slideToggle(args);
+            } else {
+                $(this).toggleClass('active');
+                $(this).next().slideToggle(args);
+                $('.flat-accordion .flat-toggle').removeClass('active');
+            }     
+        }); // accordion
+    }; 
+
     var headerFixed = function () {
         if ($('body').hasClass('header-fixed')) {
             var nav = $('#header_main');
             if (nav.length) {
                 var offsetTop = nav.offset().top,
-                injectSpace = $('<div />', {
-                }).insertAfter(nav);
+                    injectSpace = $('<div />', {
+                    }).insertAfter(nav);
                 $(window).on('load scroll', function () {
                     if ($(window).scrollTop() > 200) {
                         nav.addClass('is-fixed');
@@ -237,127 +359,6 @@
           $(this).toggleClass("active").next().slideToggle();
         });
       };
-
-    var ajaxSubscribe = {
-        obj: {
-            subscribeEmail: $('#subscribe-email'),
-            subscribeEmailID: $('#subscribe-email-id'),
-            
-            subscribeButton: $('#subscribe-button'),
-            subscribeMsg: $('#subscribe-msg'),
-            subscribeContent: $("#subscribe-content"),
-            dataMailchimp: $('#subscribe-form').attr('data-mailchimp'),
-            success_message: '<div class="notification_ok">Thank you for joining our mailing list! Please check your email for a confirmation link.</div>',
-            failure_message: '<div class="notification_error">Error! <strong>There was a problem processing your submission.</strong></div>',
-            noticeError: '<div class="notification_error">{msg}</div>',
-            noticeInfo: '<div class="notification_error">{msg}</div>',
-            basicAction: 'mail/subscribe.php',
-            mailChimpAction: 'mail/subscribe-mailchimp.php'
-        },
-
-        eventLoad: function () {
-            var objUse = ajaxSubscribe.obj;
-
-            $(objUse.subscribeButton).on('click', function () {
-                if (window.ajaxCalling) return;
-                var isMailchimp = objUse.dataMailchimp === 'true';
-
-                if (isMailchimp) {
-                    ajaxSubscribe.ajaxCall(objUse.mailChimpAction);
-                } else {
-                    ajaxSubscribe.ajaxCall(objUse.basicAction);
-                }
-            });
-        },
-
-        ajaxCall: function (action) {
-            window.ajaxCalling = true;
-            var objUse = ajaxSubscribe.obj;
-            var messageDiv = objUse.subscribeMsg.html('').hide();
-            var data = {
-                Name: objUse.subscribeEmail.val()
-            },
-            var dataType = 'application/json; charset=utf-8';
-            $.ajax({
-                url: action,
-                type: 'POST',
-                dataType: 'json',
-                contentType: dataType,
-                data: data,
-                success: function (responseData, textStatus, jqXHR) {//выполняется если все нормально
-                    if (responseData.status) {
-                        objUse.subscribeContent.fadeOut(500, function () {
-                            messageDiv.html(objUse.success_message).fadeIn(500);
-                        });
-                    } else {
-                        switch (responseData.msg) {
-                            case "email-required":
-                                messageDiv.html(objUse.noticeError.replace('{msg}', 'Error! <strong>Email is required.</strong>'));
-                                break;
-                            case "email-err":
-                                messageDiv.html(objUse.noticeError.replace('{msg}', 'Error! <strong>Email invalid.</strong>'));
-                                break;
-                            case "duplicate":
-                                messageDiv.html(objUse.noticeError.replace('{msg}', 'Error! <strong>Email is duplicate.</strong>'));
-                                break;
-                            case "filewrite":
-                                messageDiv.html(objUse.noticeInfo.replace('{msg}', 'Error! <strong>Mail list file is open.</strong>'));
-                                break;
-                            case "undefined":
-                                messageDiv.html(objUse.noticeInfo.replace('{msg}', 'Error! <strong>undefined error.</strong>'));
-                                break;
-                            case "api-error":
-                                objUse.subscribeContent.fadeOut(500, function () {
-                                    messageDiv.html(objUse.failure_message);
-                                });
-                        }
-                        messageDiv.fadeIn(500);
-                    }
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    alert("Connection !error//" + jqXHR + "//" + textStatus + "//" + errorThrown);
-                },
-                complete: function (data) {
-                    window.ajaxCalling = false;
-                    alert('Thank you for joining our mailing list!');
-
-                }
-            });
-        }
-    };
-    
-    var alertBox = function () {
-        $(document).on('click', '.close', function (e) {
-            $(this).closest('.flat-alert').remove();
-            e.preventDefault();
-        })
-
-    };
-
-    var flatAccordion = function() {
-        var args = {duration: 600};
-        $('.flat-toggle .toggle-title.active').siblings('.toggle-content').show();
-      
-        $('.flat-toggle.enable .toggle-title').on('click', function() {
-            $(this).closest('.flat-toggle').find('.toggle-content').slideToggle(args);
-            $(this).toggleClass('active');
-        }); // toggle 
-      
-        $('.flat-accordion .toggle-title').on('click', function () {
-            $('.flat-accordion .flat-toggle').removeClass('active');
-            $(this).closest('.flat-toggle').toggleClass('active');
-
-            if( !$(this).is('.active') ) {
-                $(this).closest('.flat-accordion').find('.toggle-title.active').toggleClass('active').next().slideToggle(args);
-                $(this).toggleClass('active');
-                $(this).next().slideToggle(args);
-            } else {
-                $(this).toggleClass('active');
-                $(this).next().slideToggle(args);
-                $('.flat-accordion .flat-toggle').removeClass('active');
-            }     
-        }); // accordion
-    }; 
 
     var tabs = function(){
         $('.flat-tabs').each(function(){
@@ -539,7 +540,43 @@
         loadmore();
         Preloader();
     });
-    //////////////////////////////
+
+
+    $('.form-contact,.form-contact').submit(function (e) {
+        e.preventDefault();
+        let th = $(this);
+        let mess = $('.mess');
+        let btn = th.find('.btn');
+
+        $.ajax({
+            url: '',
+            type: 'POST',
+            dataType: 'json',
+            data: th.serialize(),
+            success: function (data) {
+                if (data == 1) {
+                    mess.html('<div class="alert alert-danger mt-3">Incorrect email</div>');
+                    return false;
+                } else {
+                    mess.html('<div class="alert alert-success mt-3 ">Message sent successfully</div>');
+                    th.trigger('reset');
+                    setTimeout(function () {                        
+                        mess.html('<div"></div>');
+                    }, 3000)
+
+                }
+            }, error: function () {
+                mess.html('<div class="alert alert-danger mt-3">Message not sent.</div>');
+                th.trigger('reset');
+                setTimeout(function () {                    
+                    mess.html('<div></div>');
+                }, 3000)
+            }
+        })       
+    })
+
+
+
     $('#subscribe-form').submit(function (q) {
         q.preventDefault();
         let th = $(this);
@@ -547,10 +584,9 @@
         /*let btn = th.find('.btn');*/
 
         $.ajax({
-            url: 'home/JsonPostEmailSend',
+            url: '',
             type: 'POST',
             dataType: 'json',
-            contentType: 'application/json; charset=utf-8',
             data: th.serialize(),
             success: function (data) {
                 if (data == 1) {
@@ -570,8 +606,63 @@
                     messi.html('<div></div>');
                 }, 3000)
             }
-
-
         })
     })
+
+
+    
+
+    /*Elastic*/
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var lazyloadImages;
+
+        if ("IntersectionObserver" in window) {
+            lazyloadImages = document.querySelectorAll(".lazy");
+            var imageObserver = new IntersectionObserver(function (entries, observer) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        var image = entry.target;
+                        image.src = image.dataset.src;
+                        image.classList.remove("lazy");
+                        imageObserver.unobserve(image);
+                    }
+                });
+            });
+
+            lazyloadImages.forEach(function (image) {
+                imageObserver.observe(image);
+            });
+        } else {
+            var lazyloadThrottleTimeout;
+            lazyloadImages = document.querySelectorAll(".lazy");
+
+            function lazyload() {
+                if (lazyloadThrottleTimeout) {
+                    clearTimeout(lazyloadThrottleTimeout);
+                }
+
+                lazyloadThrottleTimeout = setTimeout(function () {
+                    var scrollTop = window.pageYOffset;
+                    lazyloadImages.forEach(function (img) {
+                        if (img.offsetTop < (window.innerHeight + scrollTop)) {
+                            img.src = img.dataset.src;
+                            img.classList.remove('lazy');
+                        }
+                    });
+                    if (lazyloadImages.length == 0) {
+                        document.removeEventListener("scroll", lazyload);
+                        window.removeEventListener("resize", lazyload);
+                        window.removeEventListener("orientationChange", lazyload);
+                    }
+                }, 20);
+            }
+
+            document.addEventListener("scroll", lazyload);
+            window.addEventListener("resize", lazyload);
+            window.addEventListener("orientationChange", lazyload);
+        }
+    })
+
+
 })(jQuery);

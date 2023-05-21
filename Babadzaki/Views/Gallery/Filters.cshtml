@@ -1,0 +1,264 @@
+﻿@*@model Babadzaki.ViewModel.GalleryVM
+@{
+    ViewData["Title"] = "| Gallery";
+}
+
+
+
+@if (Model.SeasonCollections.Count() > 0)
+{
+
+
+    @foreach (var obj in Model.SeasonCollections)
+    {
+        <div class="filter-b">
+            <!-- End Collection Details -->
+            <div class="cs-height_100 cs-height_lg_70"></div>
+            <div class="container_filter">
+                <div class="cs-sidebar_frame cs-style1">
+                    <div class="cs-sidebar_frame_left">
+
+                        <div class="cs-sidebar_frame_right">
+                            <div class="cs-filter_head">
+                                <div class="cs-filter_head_left">
+                                    <form action="#" class="cs-search">
+                                        <input type="text" id="elastic_clothig" class="cs-search_input" placeholder="Search By Id">
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="cs-height_30 cs-height_lg_30"></div>
+
+                            <div class="cs-filter_sidebar">
+
+                                <div class="cs-filter_widget">
+                                    <h2 class="cs-filter_toggle_btn">
+                                        Collection
+                                        <span class="cs-arrow_icon">
+                                            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M0.679688 0.96582L4.67969 4.96582L8.67969 0.96582" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
+                                        </span>
+                                    </h2>
+                                    <div class="cs-filter_toggle_body">
+                                        <ul>
+                                            <li>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="collection" id="Audioglyphs" checked>
+                                                    <label class="form-check-label" for="Audioglyphs">@obj.Name</label>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div> <!-- .cs-filter_widget -->
+    }
+
+}
+else
+{
+    <p> No category exists.</p>
+}
+
+@if (Model.Filters.Count() > 0)
+{
+    @foreach (var filter in Model.Filters)
+    {
+                        <div class="cs-filter_widget">
+                        <!-- .cs-filter_widget -->
+                        <h2 class="cs-filter_toggle_btn">
+                            Background
+                            <span class="cs-arrow_icon">
+                                <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0.679688 0.96582L4.67969 4.96582L8.67969 0.96582" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </span>
+                        </h2>
+                        <div class="cs-filter_toggle_body" style="display: none;">
+
+                            <div class="cs-search_widget">
+                                <form action="#" class="cs-search">
+                                    <input type="text" id="elastic_backgrounds" class="cs-search_input" placeholder="Search">
+                                </form>
+                            </div>
+
+                            <ul class="elastic_backgrounds">
+                                <li>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="flexCheckChecked">
+                                        <label class="form-check-label" for="flexCheckChecked">@filter.Name</label>
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </div>
+                        </div>
+
+         @if (filter.TokensFilters.Count() > 0)
+         {
+             @foreach (var attr in filter.TokensFilters)
+             {
+                 <div class="text-info pl-3">@Html.DisplayFor(modelItem => attr.Value)</div>
+             }
+         }
+         else
+         {
+             <p> No attributes exists.</p>
+         }
+    }
+}
+else
+{
+    <p> No filters exists.</p>
+}
+
+
+                            <div class="cs-filter_widget">
+                                <!-- .cs-filter_widget -->
+                                <h2 class="cs-filter_toggle_btn">
+                                    Background
+                                    <span class="cs-arrow_icon">
+                                        <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M0.679688 0.96582L4.67969 4.96582L8.67969 0.96582" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </span>
+                                </h2>
+                                <div class="cs-filter_toggle_body" style="display: none;">
+
+                                    <div class="cs-search_widget">
+                                        <form action="#" class="cs-search">
+                                            <input type="text" id="elastic_backgrounds" class="cs-search_input" placeholder="Search">
+                                        </form>
+                                    </div>
+
+                                    <ul class="elastic_backgrounds">
+                                        <li>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="flexCheckChecked">
+                                                <label class="form-check-label" for="flexCheckChecked">Blue</label>
+                                            </div>
+                                        </li>
+                                        
+                                    </ul>
+                                </div>
+                            </div> <!-- .cs-filter_widget -->
+
+
+
+                            <div class="cs-filter_widget">
+                                <h2 class="cs-filter_toggle_btn">
+                                    Filter By Color
+                                    <span class="cs-arrow_icon">
+                                        <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M0.679688 0.96582L4.67969 4.96582L8.67969 0.96582" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </span>
+                                </h2>
+                                <div class="cs-filter_toggle_body" style="display: none;">
+
+                                    <div class="cs-search_widget">
+                                        <form action="#" class="cs-search">
+                                            <input type="text" class="cs-search_input" placeholder="Search">
+                                            <button class="cs-search_btn">
+                                                <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M9.16667 16.3333C12.8486 16.3333 15.8333 13.3486 15.8333 9.66667C15.8333 5.98477 12.8486 3 9.16667 3C5.48477 3 2.5 5.98477 2.5 9.66667C2.5 13.3486 5.48477 16.3333 9.16667 16.3333Z" stroke="currentColor" stroke-opacity="0.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M17.5 18L13.875 14.375" stroke="currentColor" stroke-opacity="0.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </div>
+
+                                    <div class="cs-filter_by_color">
+                                        <div class="cs-color_item cs-color1"></div>
+                                        <div class="cs-color_item cs-color2"></div>
+                                        <div class="cs-color_item cs-color3"></div>
+                                        <div class="cs-color_item cs-color4"></div>
+                                        <div class="cs-color_item cs-color5"></div>
+                                        <div class="cs-color_item cs-color6"></div>
+                                        <div class="cs-color_item cs-color7"></div>
+                                        <div class="cs-color_item cs-color8"></div>
+                                    </div>
+                                </div>
+                            </div> <!-- .cs-filter_widget -->
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="cs-sidebar_frame_right">
+                    <div class="cs-filter_head">
+                        <div class="cs-filter_head_left">
+                            <span class="cs-search_result cs-medium cs-ternary_color">@q Results</span>
+
+                            <a href="#" class="cs-clear_btn">Clear All</a>
+                        </div>
+                        <div class="cs-filter_head_right">
+                        </div>
+                    </div>
+
+                    <div class="cs-height_30 cs-height_lg_30"></div>
+
+                    //
+
+
+                    <div class="row">
+                        
+                            
+                                
+
+                                <div class="col-xl-3 col-lg-4 col-sm-6">
+                                    <div class="cs-card cs-style4 cs-box_shadow cs-white_bg">
+
+                                        <a href="#" class="cs-card_thumb cs-zoom_effect" data-toggle="modal" data-target="#nftTOKEN">
+
+
+                                            <script type="text/javascript">
+                                                var myLogos = new Array
+                                                    ('/assets/images/common/img1.jpg',
+                                                        '/assets/images/common/img2.jpg',
+                                                        '/assets/images/common/img3.jpg',
+                                                        '/assets/images/common/img4.jpg',
+                                                        '/assets/images/common/img5.jpg',
+                                                        '/assets/images/common/img6.jpg',
+                                                        '/assets/images/common/img7.jpg',
+                                                        '/assets/images/common/img8.jpg',
+                                                        '/assets/images/common/img9.jpg',
+                                                        '/assets/images/common/img10.jpg',
+                                                        '/assets/images/common/img11.jpg');
+                                                var ind = Math.floor(Math.random() * myLogos.length);
+                                                document.write('<img class="lazy" data-src= "' + myLogos[ind] + '" alt="Image" class="cs-zoom_item" >');
+                                            </script>
+
+
+                                        </a>
+                                        <div class="cs-card_info">
+                                            <hr>
+                                            <div class="cs-card_footer">
+                                                <span class="cs-card_btn_1" data-modal="#history_1">
+                                                    Yukidzaki #@counter
+                                                </span>
+                                                <span class="cs-card_btn_2" data-modal="#bid_1"><span>Place Bid</span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cs-height_30 cs-height_lg_30"></div>
+                                </div>
+
+                                <!-- .col -->
+                            
+                        
+                    </div>
+
+
+                    <div class="cs-height_10 cs-height_lg_10"></div>
+                    <div class="text-center">
+                        <a href="#" class="cs-btn cs-style1 cs-btn_lg"><span>Load More</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+*@

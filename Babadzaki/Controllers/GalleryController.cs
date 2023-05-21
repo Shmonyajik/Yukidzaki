@@ -84,6 +84,12 @@ namespace Babadzaki.Controllers
             return new JsonResult(NotFound());
 
         }
+        [HttpGet]
+        public IActionResult PartialViewAction([FromBody] Token _token)
+        {
+            var token = _token;
+            return PartialView("_ModalTokenDetails", token);
+        }
 
 
     }

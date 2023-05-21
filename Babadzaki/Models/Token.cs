@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Newtonsoft.Json;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,8 +15,8 @@ namespace Babadzaki.Models
         //[Required]
         [Required]
         public long dna { get; set; }
-        
-        
+        [StringLength(maximumLength: 15, MinimumLength = 3, ErrorMessage = "Maximum number of characters 15")]
+        public string name { get; set; }
         #region
         //TODO: No store type was specified for the decimal property 'Price' on entity type 'Token'.
         //This will cause values to be silently truncated if they do not fit in the default precision and scale.
@@ -34,6 +35,7 @@ namespace Babadzaki.Models
         [Range(0, Int32.MaxValue, ErrorMessage = "This Collection is not exist")]
         public int? SeasonCollectionId { get; set; }
 
+        [JsonIgnore]
         [ValidateNever]//костыль?
         [ForeignKey("SeasonCollectionId")]
         public virtual SeasonCollection? SeasonCollection { get; set; }//virtual для ленивой загрузки(навигационное свойство)
