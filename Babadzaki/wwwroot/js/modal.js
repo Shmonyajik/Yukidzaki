@@ -7,7 +7,7 @@ function openModal(parameters) {
         alert('Ошибка')
         return;
     }
-    $.ajax({
+        $.ajax({
         url: url,
         type: 'GET',
         data: { "id": id },
@@ -23,6 +23,8 @@ function openModal(parameters) {
         error: function (response) {
             console.log("error")
             alert(response.responseText)
-        }
+            }
+        });
+        return false;
     });
 }
