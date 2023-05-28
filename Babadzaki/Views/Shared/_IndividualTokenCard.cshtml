@@ -8,7 +8,8 @@
         <div class="cs-card cs-style4 cs-box_shadow cs-white_bg">
         @*JsonConvert.SerializeObject(Model, Formatting.Indented))*@
             
-        <img href="#" style="cursor: pointer" class="cs-card_thumb cs-zoom_effect lazy" onclick="openModal()" data-toggle="modal" data-target="#nftTOKEN"   data-src=" @WebConstants.ImagePath@Model.Image" alt="Image">
+        <img href="#" style="cursor: pointer" class="cs-card_thumb cs-zoom_effect lazy" onclick="openModal({url: '/Gallery/PartialViewAction', data: '@Model.Id'})" 
+        data-toggle="modal" data-target="#nftTOKEN" data-src=" @WebConstants.ImagePath@Model.Image" alt="Image">
             <div class="cs-card_info">
                 <hr>
                 <div class="cs-card_footer">
@@ -22,27 +23,14 @@
         <div class="cs-height_30 cs-height_lg_30"></div>
     </div>
 
-<div id="myModalContainer"></div>
-    <!-- .col -->
+@*////////////////////////////////////////////////*@
+
 
 
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" />
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 @section Scripts{
-    <script>
-        function openModal(model) {
-            $.ajax({
-                url: '/Controller/PartialViewAction',
-                type: 'POST',
-                data: JSON.stringify({ modelData: model }),
-                contentType: 'application/json',
-                success: function (result) {
-                    $('#myModalContainer').html(result);
-                    $('#myModal').modal('show'); // Assuming you are using Bootstrap modal
-                }
-            });
-        }
-    </script>
+    <script src="~\js\modal.js"></script>
 }
 
 

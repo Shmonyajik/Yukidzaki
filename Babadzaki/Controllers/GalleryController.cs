@@ -85,10 +85,12 @@ namespace Babadzaki.Controllers
 
         }
         [HttpGet]
-        public IActionResult PartialViewAction([FromBody] Token _token)
+        public async Task<IActionResult> PartialViewAction(int id, bool isJson)
         {
-            var token = _token;
-            return PartialView("_ModalTokenDetails", token);
+            var response = await _context.Tokens.Include(u => u.SeasonCollection).Include(f => f.TokensFilters).ThenInclude(tf => tf.Filter).FirstOrDefaultAsync(t => t.Id == id);
+
+
+            return PartialView("_ModalTokenDetails", response);
         }
 
 
