@@ -46,7 +46,6 @@
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\img\token\JSON\" />
     <Folder Include="wwwroot\img\assets\" />
-    <Folder Include="wwwroot\js\" />
     <Folder Include="wwwroot\load-json-tokens\" />
   </ItemGroup>
 

@@ -26,5 +26,4 @@ function openModal(parameters) {
             }
         });
         return false;
-    });
-}
+    }

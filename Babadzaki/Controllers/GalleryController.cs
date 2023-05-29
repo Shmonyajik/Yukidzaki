@@ -43,7 +43,7 @@ namespace Babadzaki.Controllers
             
         }
         
-        [HttpGet]
+        [HttpPost]
         public JsonResult Filter([FromBody] IEnumerable<TokensFilters> tokensFilters)
         {
             _logger.LogWarning("Filter");
@@ -65,6 +65,7 @@ namespace Babadzaki.Controllers
 
             if (tokensFilters == null)
                 _logger.LogCritical("NE NASHEL!!!!");
+
             if (ModelState.IsValid)
                 {
                     var tokens = new List<Token>();
@@ -77,8 +78,8 @@ namespace Babadzaki.Controllers
 
                     if (tokens.Count > 0)
                     {
-                        //tokens =  tokens.Union(tokens).ToList();//TODO подумать как удалять дубликаты
-                        return new JsonResult(tokens);
+                        tokens =  tokens.Distinct().ToList();//TODO подумать как удалять дубликаты(убрать лишние Distinct)
+                    return new JsonResult(tokens);
                     }
                 }
             return new JsonResult(NotFound());
