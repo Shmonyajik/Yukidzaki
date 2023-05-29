@@ -44,7 +44,7 @@ namespace Babadzaki.Controllers
         }
         
         [HttpPost]
-        public JsonResult Filter([FromBody] IEnumerable<TokensFilters> tokensFilters)
+        public async Task<IActionResult> Filter([FromBody] IEnumerable<TokensFilters> tokensFilters)
         {
             _logger.LogWarning("Filter");
             //GalleryVM galleryVM = new GalleryVM();
@@ -63,23 +63,46 @@ namespace Babadzaki.Controllers
             //    _logger.LogError("Vse Huinya");
             //}
 
-            if (tokensFilters == null)
-                _logger.LogCritical("NE NASHEL!!!!");
+            if (tokensFilters is null || tokensFilters.Count() == 0)
+                return PartialView("_TokenCardGallery", _context.Tokens.ToList());
 
             if (ModelState.IsValid)
                 {
-                    var tokens = new List<Token>();
-
+                    List<Token> tokens = null;
+                    
                     foreach (var filter in tokensFilters)
                     {
-                        tokens.AddRange(_context.Tokens.Where(t=>t.TokensFilters.FirstOrDefault(tf=>tf.Value==filter.Value)!=null).Distinct());
-                    
+                    if (tokens == null)
+                    {
+                        try
+                        {
+                            tokens = _context.Tokens.Where(t => t.TokensFilters.First(tf => tf.Value == filter.Value && tf.Filter.Id == filter.FilterId)!=null).Include(tf => tf.TokensFilters).ThenInclude(f => f.Filter).ToList();
+                        }
+                        catch (Exception ex)
+                        {
+
+                            _logger.LogError(ex.ToString());
+                        }
+                       
                     }
+                    else
+                        try
+                        {
+                            tokens = tokens.Where(t => t.TokensFilters.First(tf => tf.Value == filter.Value && tf.Filter.Id == filter.FilterId) != null).ToList();
+                        }
+                        catch (Exception ex)
+                        {
+
+                            _logger.LogError(ex.ToString());
+                        }
+
+
+                }
 
                     if (tokens.Count > 0)
                     {
-                        tokens =  tokens.Distinct().ToList();//TODO подумать как удалять дубликаты(убрать лишние Distinct)
-                    return new JsonResult(tokens);
+                        tokens =  tokens.ToList();//TODO подумать как удалять дубликаты(убрать лишние Distinct)
+                        return PartialView("_TokenCardGallery", tokens);
                     }
                 }
             return new JsonResult(NotFound());
