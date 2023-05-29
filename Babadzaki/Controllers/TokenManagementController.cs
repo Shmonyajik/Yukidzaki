@@ -17,6 +17,7 @@ using NuGet.Common;
 
 namespace Babadzaki.Controllers
 {
+    
     public class TokenManagementController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -344,6 +345,15 @@ namespace Babadzaki.Controllers
             }
             return new JsonResult(Ok());
         }
+
+        //[HttpPost]
+        //public IActionResult PartialTokenDetails([FromBody] Models.Token _token)
+        //{
+        //    var token = _token;
+        //    // Additional processing logic
+
+        //    return PartialView("_ModalTokenDetails", token);
+        //}
 
     }
 }

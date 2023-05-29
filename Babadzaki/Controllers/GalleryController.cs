@@ -85,10 +85,10 @@ namespace Babadzaki.Controllers
 
         }
         [HttpGet]
-        public IActionResult PartialViewAction([FromBody] Token _token)
+        public IActionResult PartialViewAction()
         {
-            var token = _token;
-            return PartialView("_ModalTokenDetails", token);
+            //var deserializedModel = JsonConvert.DeserializeObject<ModalTokenDetatilsVM>(_token);
+            return PartialView("_ModalTokenDetails");
         }
 
 

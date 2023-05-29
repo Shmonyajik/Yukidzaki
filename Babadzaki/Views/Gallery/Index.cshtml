@@ -195,6 +195,11 @@ else
 
 @section Scripts{
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Include Bootstrap CSS and JS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     @{
         <partial name-"_ValidationScriptsPartial"/>
         /*Валидация на стороне клиента*/
@@ -219,4 +224,25 @@ else
 
             });
         </script>
+
+    <script>
+    $(document).ready(function () {
+          $('#myImage').click(function () {
+              console.log("Click")
+              // Make an AJAX request to load the partial view
+              $.get('/Gallery/PartialViewAction', function (data) {
+                  // Load the partial view content into the modal
+                  $('.modal-content').html(data);
+
+                  // Show the modal window
+                  $('#myModal').modal('show');
+              });
+          });
+    });
+
+    </script>
+
 }
+
+
+
