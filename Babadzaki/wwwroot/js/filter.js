@@ -6,7 +6,8 @@ const tokenCardGalleryContainer = $('#tokenCardGalleryContainer')
 function applyFilter() {
     console.log("Filter!!!")
     var filters = [];
-
+    var search = document.getElementById("elastic_clothig");
+    var tokensCount = document.getElementById("tokensCount");
     // Get all the checkboxes
     var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
 
@@ -20,6 +21,10 @@ function applyFilter() {
         };
         filters.push(filter);
     });
+    if (search.value !== null && typeof search.value !== "undefined" && search.value !== "") {
+        filters.push({ FilterId: 0, Value: search.value })
+    }
+    
     if (checkboxes) {
         GetData(filters)
     }
@@ -37,9 +42,11 @@ function GetData(filters) {
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(filters),
-        success: function (response) {
+        success: function (response, responseData, data) {
             console.log("success")
+            tokensCount.value = 10;
             tokenCardGalleryContainer.find(".tokenCardGallery").html(response);
+            
         },
         //failure: function () {
         //    console.log("failure");

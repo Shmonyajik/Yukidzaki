@@ -12,7 +12,7 @@
                     <div class="cs-filter_head">
                         <div class="cs-filter_head_left">
                             <form action="#" class="cs-search">
-                                <input type="text" id="elastic_clothig" class="cs-search_input" placeholder="Search By Id">
+                                <input type="number" id="elastic_clothig" class="cs-search_input" placeholder="Search By Id" oninput="applyFilter()">
                             </form>
                         </div>
                     </div>
@@ -135,7 +135,7 @@ else
 <div class="cs-sidebar_frame_right">
     <div class="cs-filter_head">
         <div class="cs-filter_head_left">
-            <span class="cs-search_result cs-medium cs-ternary_color"> Results</span>
+            <input id = "tokensCount"disabled class="cs-search_result cs-medium cs-ternary_color"value="HUI" />
 
             <a href="#" class="cs-clear_btn">Clear All</a>
         </div>

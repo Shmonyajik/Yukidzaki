@@ -73,14 +73,33 @@ namespace Babadzaki.Controllers
             if (ModelState.IsValid)
                 {
                     List<Token> tokens = null;
+                    string searchQuery = null;
                     
                     foreach (var filter in tokensFilters)
                     {
-                    if (tokens == null)
-                        tokens = _context.Tokens.Where(t => t.TokensFilters.FirstOrDefault(tf => tf.Value == filter.Value && tf.Filter.Id == filter.FilterId)!=null).Include(tf => tf.TokensFilters).ThenInclude(f => f.Filter).ToList();
-                    else
-                        tokens = tokens.Where(t => t.TokensFilters.FirstOrDefault(tf => tf.Value == filter.Value && tf.Filter.Id == filter.FilterId) != null).ToList();
+                        if (filter.FilterId == 0)
+                        {
+                            searchQuery = filter.Value;
+                            continue;
+                        }
+                        if (tokens == null)
+                            tokens = _context.Tokens.Where(t => t.TokensFilters.FirstOrDefault(tf => tf.Value == filter.Value && tf.Filter.Id == filter.FilterId)!=null).Include(tf => tf.TokensFilters).ThenInclude(f => f.Filter).ToList();
+                        else
+                            tokens = tokens.Where(t => t.TokensFilters.FirstOrDefault(tf => tf.Value == filter.Value && tf.Filter.Id == filter.FilterId) != null).ToList();
 
+                    }
+                    if (!string.IsNullOrEmpty(searchQuery))
+                    {
+                    if (tokens == null)
+                        tokens = _context.Tokens.Where(t=>t.name == $"Yukidzaki #{searchQuery}").ToList();
+                    //tokens = _context.Tokens.Where(t => t.name.Substring(t.name.IndexOf('#') + 1, t.name.Length) == searchQuery).ToList();
+                    else
+                    {
+                        //int index = tokens[0].name.IndexOf('#') + 1;
+                        //string sub = tokens[0].name.Substring(tokens[0].name.IndexOf('#') + 1);
+                        //bool IsTrue = tokens[0].name.Substring(tokens[0].name.IndexOf('#') + 1) == searchQuery;
+                        tokens = tokens.Where(t => t.name.Substring(t.name.IndexOf('#') + 1) == searchQuery).ToList();
+                    }
                     }
                     
                     return PartialView("_TokenCardGallery", tokens); 

@@ -265,6 +265,11 @@
   }
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
 /*--------------------------------------------------------------
 4. General
 ----------------------------------------------------------------*/
@@ -1495,7 +1500,10 @@ margin-top: 50px;
       flex-wrap: wrap;
   margin: -5px -7px;
 }
-
+    .cs-filter_head_left input:focus{
+        appearance: none;
+        outline: none;
+    }
 .cs-filter_head_left > * {
   margin: 5px 7px;
 }
@@ -5937,6 +5945,16 @@ li.menu-item-has-children
   position: relative;
   padding: 10px;
   border-radius: 15px;
+  animation: showBlock 1s linear forwards;
+}
+@keyframes showBlock {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 .cs-card.cs-style4 .cs-card_thumb {
