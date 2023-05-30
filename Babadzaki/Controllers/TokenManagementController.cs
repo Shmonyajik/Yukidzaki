@@ -315,12 +315,12 @@ namespace Babadzaki.Controllers
                                 }
                                 continue;
                             }
-                            try
-                            {
-                                token.TokensFilters.Add(_context.TokensFilters.First(tf => tf.Value == attr.value && tf.Filter.Name == attr.trait_type));
-                            }
-                            catch (Exception)
-                            {
+                            //try
+                            //{
+                            //    token.TokensFilters.Add(_context.TokensFilters.First(tf => tf.Value == attr.value && tf.Filter.Name == attr.trait_type));
+                            //}
+                            //catch (Exception)
+                            //{
                                 token.TokensFilters.Add(new TokensFilters{
                                     Value = attr.value,
                                     Filter = _context.Filters.FirstOrDefault(f => f.Name == attr.trait_type) ?? new Filter
@@ -330,7 +330,7 @@ namespace Babadzaki.Controllers
                                 });
                                 
 
-                            }
+                            //}
 
                         }
                         _logger.LogInformation($"{token.Image}: {token.GetHashCode()}\n");

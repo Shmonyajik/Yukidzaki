@@ -1,15 +1,50 @@
 ﻿@model Babadzaki.Models.Token
+@using Babadzaki_Utility
 
-                <div class="box-wallet-inner">
+@*                <div class="box-wallet-inner">
                     <div class="sc-box">
                         <div class="img">
-                            <img src="@Model.Image" alt="Image">
+                            <img src="@WebConstants.ImagePath@Model.Image" alt="Image">
                         </div>
-                         <div class="img">
-                             <img src="@Model.name" alt="Image">
-                         </div>
+                         <a>@Model.name</a>
                         <h6 class="heading"><a href="login.html">Meta Mask</a> </h6>
                         <p class="content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt</p>
                     </div>
-                    </div>
+                    </div>*@
+
+     <dl class="row">
+        <dt class = "col-sm-2">
+        @Html.DisplayNameFor(model => model.dna)
+        </dt>
+        <dd class = "col-sm-10">
+        @Html.DisplayFor(model => model.dna)
+        </dd>
+        <dt class = "col-sm-2">
+        @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+        @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+        @Html.DisplayNameFor(model => model.Image)
+        </dt>
+        <dd class = "col-sm-10">
+        <img src="@WebConstants.ImagePath@Model.Image" alt="Image">
+        </dd>
+        <dt class = "col-sm-2">
+        @Html.DisplayNameFor(model => model.SeasonCollection)
+        </dt>
+        <dd class = "col-sm-10">
+        @Html.DisplayFor(model => model.SeasonCollection.Name)
+        </dd>
+    @foreach (var type in Model.TokensFilters)
+    {
+                <dt class = "col-sm-2">
+            @Html.DisplayFor(modelItem => type.Filter.Name)
+                </dt>
+               <dd class = "col-sm-10">
+            @Html.DisplayFor(modelItem => type.Value)
+               </dd>
+    }
+    </dl>
                     

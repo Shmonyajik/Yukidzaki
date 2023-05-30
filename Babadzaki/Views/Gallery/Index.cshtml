@@ -79,7 +79,7 @@ else
 
         @if (filter.TokensFilters.Count() > 0)
         {
-            @foreach (var attr in filter.TokensFilters)
+            @foreach (var attr in Model.TokensFilters.Where(tf=>tf.FilterId==filter.Id))
             {
                 <ul class="elastic_type"> 
                     <li>
@@ -179,7 +179,7 @@ else
                 </button>
             </div>
 
-            <div class="modalbody">
+            <div class="modalbody" >
                 @*Content*@
             </div>
         </div>

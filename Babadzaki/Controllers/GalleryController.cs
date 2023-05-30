@@ -24,17 +24,21 @@ namespace Babadzaki.Controllers
             _context = context;
             _logger = logger;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
+
             GalleryVM galleryVM = new GalleryVM
             {
-                Tokens = _context.Tokens.Include(u => u.SeasonCollection).ToList(),
-                SeasonCollections = _context.SeasonCollections.ToList(),
-                Filters = _context.Filters.ToList().Distinct(),
-                TokensFilters = _context.TokensFilters.Include(f => f.Filter).ToList()
-            };
+                Tokens = _context.Tokens.Include(u => u.SeasonCollection),
+                SeasonCollections = await _context.SeasonCollections.ToListAsync(),
+                TokensFilters = _context.TokensFilters.Include(f => f.Filter).ToList().Distinct(new TokensFiltersComparer()),
+                Filters = await _context.Filters.ToListAsync()
+
+               
+            };                        
             return View(galleryVM);
         }
+        
         [HttpGet]
         public async Task<JsonResult> GetTokensByCollectionAsync(int collectionId)
         {
@@ -73,37 +77,13 @@ namespace Babadzaki.Controllers
                     foreach (var filter in tokensFilters)
                     {
                     if (tokens == null)
-                    {
-                        try
-                        {
-                            tokens = _context.Tokens.Where(t => t.TokensFilters.First(tf => tf.Value == filter.Value && tf.Filter.Id == filter.FilterId)!=null).Include(tf => tf.TokensFilters).ThenInclude(f => f.Filter).ToList();
-                        }
-                        catch (Exception ex)
-                        {
-
-                            _logger.LogError(ex.ToString());
-                        }
-                       
-                    }
+                        tokens = _context.Tokens.Where(t => t.TokensFilters.FirstOrDefault(tf => tf.Value == filter.Value && tf.Filter.Id == filter.FilterId)!=null).Include(tf => tf.TokensFilters).ThenInclude(f => f.Filter).ToList();
                     else
-                        try
-                        {
-                            tokens = tokens.Where(t => t.TokensFilters.First(tf => tf.Value == filter.Value && tf.Filter.Id == filter.FilterId) != null).ToList();
-                        }
-                        catch (Exception ex)
-                        {
+                        tokens = tokens.Where(t => t.TokensFilters.FirstOrDefault(tf => tf.Value == filter.Value && tf.Filter.Id == filter.FilterId) != null).ToList();
 
-                            _logger.LogError(ex.ToString());
-                        }
-
-
-                }
-
-                    if (tokens.Count > 0)
-                    {
-                        tokens =  tokens.ToList();//TODO подумать как удалять дубликаты(убрать лишние Distinct)
-                        return PartialView("_TokenCardGallery", tokens);
                     }
+                    
+                    return PartialView("_TokenCardGallery", tokens); 
                 }
             return new JsonResult(NotFound());
 
