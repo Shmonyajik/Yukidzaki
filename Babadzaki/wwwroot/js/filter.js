@@ -42,12 +42,18 @@ function GetData(filters) {
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(filters),
-        success: function (response, responseData, data) {
+        success: function (response ) {
             console.log("success")
-            tokensCount.value = 10;
+            
             tokenCardGalleryContainer.find(".tokenCardGallery").html(response);
             
         },
+        complete: function () {
+            // AJAX request completed, the partial view has been rendered
+            console.log("complete!")
+            var tokensCount = document.getElementById("tokenCardGalleryAmount").getAttribute('value');
+            $('#tokensCount').val(tokensCount);
+        }
         //failure: function () {
         //    console.log("failure");
         //    modal.modal('hide')

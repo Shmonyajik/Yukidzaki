@@ -35,7 +35,8 @@ namespace Babadzaki.Controllers
                 Filters = await _context.Filters.ToListAsync()
 
                
-            };                        
+            };
+            
             return View(galleryVM);
         }
         
@@ -90,18 +91,15 @@ namespace Babadzaki.Controllers
                     }
                     if (!string.IsNullOrEmpty(searchQuery))
                     {
-                    if (tokens == null)
-                        tokens = _context.Tokens.Where(t=>t.name == $"Yukidzaki #{searchQuery}").ToList();
-                    //tokens = _context.Tokens.Where(t => t.name.Substring(t.name.IndexOf('#') + 1, t.name.Length) == searchQuery).ToList();
-                    else
-                    {
-                        //int index = tokens[0].name.IndexOf('#') + 1;
-                        //string sub = tokens[0].name.Substring(tokens[0].name.IndexOf('#') + 1);
-                        //bool IsTrue = tokens[0].name.Substring(tokens[0].name.IndexOf('#') + 1) == searchQuery;
-                        tokens = tokens.Where(t => t.name.Substring(t.name.IndexOf('#') + 1) == searchQuery).ToList();
-                    }
+                        if (tokens == null)
+                            tokens = _context.Tokens.Where(t=>t.name == $"Yukidzaki #{searchQuery}").ToList();
+                    
+                        else
+                            tokens = tokens.Where(t => t.name.Substring(t.name.IndexOf('#') + 1) == searchQuery).ToList();
                     }
                     
+
+
                     return PartialView("_TokenCardGallery", tokens); 
                 }
             return new JsonResult(NotFound());
