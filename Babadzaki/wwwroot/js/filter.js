@@ -44,10 +44,14 @@ function GetData(filters) {
         data: JSON.stringify(filters),
         success: function (response, responseData, data) {
             console.log("success")
-            tokensCount.value = 10;
             tokenCardGalleryContainer.find(".tokenCardGallery").html(response);
             
         },
+        complete: function () {
+            console.log("complete!");
+            var tokensCount = document.getElementById("tokenCardGalleryCount").getAttribute('value');
+            $('#tokensCount').val(tokensCount);
+        }
         //failure: function () {
         //    console.log("failure");
         //    modal.modal('hide')
