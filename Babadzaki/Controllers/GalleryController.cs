@@ -41,7 +41,7 @@ namespace Babadzaki.Controllers
         }
         
         [HttpGet]
-        public async Task<JsonResult> GetTokensByCollectionAsync(int collectionId)
+        public async Task<ActionResult> GetTokensByCollectionAsync(int collectionId)
         {
             var tokens = await _context.Tokens.Where(t => t.SeasonCollectionId == collectionId).ToListAsync();
             return new JsonResult(tokens);
