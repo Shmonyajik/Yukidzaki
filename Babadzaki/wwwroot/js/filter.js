@@ -42,7 +42,7 @@ function GetData(filters) {
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(filters),
-        success: function (response, responseData, data) {
+        success: function (response ) {
             console.log("success")
             tokenCardGalleryContainer.find(".tokenCardGallery").html(response);
             
