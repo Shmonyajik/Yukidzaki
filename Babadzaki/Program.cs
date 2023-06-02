@@ -7,6 +7,7 @@ using Babadzaki_Utility;
 using Newtonsoft.Json.Serialization;
 using AutoMapper;
 using Newtonsoft.Json;
+using Nethereum.Web3;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,12 @@ builder.Services.AddSession(options => //добавление сессий
     options.IdleTimeout = TimeSpan.FromMinutes(10);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
+});
+builder.Services.AddSingleton<Web3>(provider =>
+{
+    // Configure the Ethereum node URL
+    var ethereumUrl = "https://sepolia.infura.io/v3/96eb1666f8a142ed9c21d5e2fa776874";
+    return new Web3(ethereumUrl);
 });
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

@@ -44,14 +44,12 @@ function GetData(filters) {
         data: JSON.stringify(filters),
         success: function (response ) {
             console.log("success")
-            
             tokenCardGalleryContainer.find(".tokenCardGallery").html(response);
             
         },
         complete: function () {
-            // AJAX request completed, the partial view has been rendered
-            console.log("complete!")
-            var tokensCount = document.getElementById("tokenCardGalleryAmount").getAttribute('value');
+            console.log("complete!");
+            var tokensCount = document.getElementById("tokenCardGalleryCount").getAttribute('value');
             $('#tokensCount').val(tokensCount);
         }
         //failure: function () {
