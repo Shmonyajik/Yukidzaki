@@ -5665,7 +5665,7 @@ dizzy:
     - regular
   unicode: f567
   voted: false
-dna:
+edition:
   changes:
     - 5.0.7
     - 5.0.10

@@ -3,6 +3,13 @@ $(document).ready(function () {
     GetData(null)
 });
 const tokenCardGalleryContainer = $('#tokenCardGalleryContainer')
+
+function ClearAll(){
+    const inputs = document.querySelectorAll('input[type="checkbox"]:checked');
+    const off = () => inputs.forEach(item => item.checked = false);
+    GetData(off());
+}
+
 function applyFilter() {
     console.log("Filter!!!")
     var filters = [];
@@ -11,7 +18,7 @@ function applyFilter() {
     // Get all the checkboxes
     var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
 
-    
+
 
     // Iterate over the checkboxes and create filter objects
     checkboxes.forEach(function (checkbox) {
@@ -24,15 +31,15 @@ function applyFilter() {
     if (search.value !== null && typeof search.value !== "undefined" && search.value !== "") {
         filters.push({ FilterId: 0, Value: search.value })
     }
-    
+
     if (checkboxes) {
         GetData(filters)
     }
     else {
         GetData(null)
     }
-    
-    
+
+
     return false;
 }
 
@@ -42,10 +49,10 @@ function GetData(filters) {
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(filters),
-        success: function (response ) {
+        success: function (response) {
             console.log("success")
             tokenCardGalleryContainer.find(".tokenCardGallery").html(response);
-            
+
         },
         complete: function () {
             console.log("complete!");

@@ -6,8 +6,6 @@
     public class JsonToken
     {
         //[Newtonsoft.Json.JsonProperty("")]
-        public string dna { get; set; }
-        public string name { get; set; }
         public string season_collection { get; set; }
         public string description { get; set; }
         public string image { get; set; }

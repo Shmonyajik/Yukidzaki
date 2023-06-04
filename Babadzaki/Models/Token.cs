@@ -14,9 +14,7 @@ namespace Babadzaki.Models
         public int Id { get; set; }
         //[Required]
         [Required]
-        public long dna { get; set; }
-        [StringLength(maximumLength: 15, MinimumLength = 3, ErrorMessage = "Maximum number of characters 15")]
-        public string name { get; set; }
+        public int edition { get; set; }
         #region
         //TODO: No store type was specified for the decimal property 'Price' on entity type 'Token'.
         //This will cause values to be silently truncated if they do not fit in the default precision and scale.
@@ -57,12 +55,12 @@ namespace Babadzaki.Models
         public bool Equals(Token? other)
         {
             return other is not null &&
-                   dna == other.dna;
+                   edition == other.edition;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(dna);
+            return HashCode.Combine(edition);
         }
     }
 }

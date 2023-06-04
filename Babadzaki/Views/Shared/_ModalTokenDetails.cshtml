@@ -1,50 +1,90 @@
 ﻿@model Babadzaki.Models.Token
 @using Babadzaki_Utility
 
-@*                <div class="box-wallet-inner">
-                    <div class="sc-box">
-                        <div class="img">
-                            <img src="@WebConstants.ImagePath@Model.Image" alt="Image">
-                        </div>
-                         <a>@Model.name</a>
-                        <h6 class="heading"><a href="login.html">Meta Mask</a> </h6>
-                        <p class="content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt</p>
+<div class="modal-content">
+    <div class="header-popup">
+        <h5>@($"Yukidzaki №{Model.edition}")</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="tf-section1 tf-item-details pb-mobie">
+        <div class="container">
+    <div class="row">
+    <div class="col-xl-6 col-lg-6 col-md-12">
+        <div class="image-details" data-tilt data-aos-duration="800">
+            <img src="@WebConstants.ImagePath@Model.Image" alt="Image" >
+        </div>
+        </div>
+    <div class="col-xl-6 col-lg-6 col-md-12">
+        <div class="item-details aos-init aos-animate" data-aos-duration="800">
+            <p class="desc">
+                @Html.DisplayFor(model => model.Description)
+            </p>
+            <a href="#" class="tf-button btn-effect">
+                <span class="boder-fade"></span>
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12.8771 4.39102H13.0567C15.4181 4.39102 17.3346 6.26602 17.3346 8.56602V13.166C17.3346 15.466 15.4181 17.3327 13.0567 17.3327H4.94586C2.58446 17.3327 0.667969 15.466 0.667969 13.166V8.56602C0.667969 6.26602 2.58446 4.39102 4.94586 4.39102H5.12553C5.14264 3.39102 5.54477 2.45768 6.27201 1.75768C7.00781 1.04935 7.94894 0.691016 9.00986 0.666016C11.1317 0.666016 12.8514 2.33268 12.8771 4.39102ZM7.17038 2.64935C6.69125 3.11602 6.42602 3.73268 6.40891 4.39102H11.5937C11.5681 3.02435 10.4216 1.91602 9.00987 1.91602C8.35108 1.91602 7.66661 2.17435 7.17038 2.64935ZM12.2525 7.59935C12.6118 7.59935 12.8942 7.31601 12.8942 6.97435V6.00768C12.8942 5.66601 12.6118 5.38268 12.2525 5.38268C11.9017 5.38268 11.6108 5.66601 11.6108 6.00768V6.97435C11.6108 7.31601 11.9017 7.59935 12.2525 7.59935ZM6.31476 6.97435C6.31476 7.31601 6.03242 7.59935 5.67308 7.59935C5.32229 7.59935 5.0314 7.31601 5.0314 6.97435V6.00768C5.0314 5.66602 5.32229 5.38268 5.67308 5.38268C6.03242 5.38268 6.31476 5.66602 6.31476 6.00768V6.97435Z" fill="white" />
+                </svg>
+                <span class="effect">Buy On Opensea</span>
+            </a>
+            <div class="list-product">
+            @foreach (var type in Model.TokensFilters)
+            {
+               
+                    <div class="box corner-box ">
+                        <p class="col-sm-2">@Html.DisplayFor(modelItem => type.Filter.Name)</p>
+                        <h6 class="h7 col-sm-10">@Html.DisplayFor(modelItem => type.Value)</h6>
                     </div>
-                    </div>*@
+            }
+                    </div>
 
-     <dl class="row">
-        <dt class = "col-sm-2">
-        @Html.DisplayNameFor(model => model.dna)
-        </dt>
-        <dd class = "col-sm-10">
-        @Html.DisplayFor(model => model.dna)
-        </dd>
-        <dt class = "col-sm-2">
+
+@*
+<div class="col-xl-6 col-lg-6 col-md-12">
+     <div class = "col-sm-2">
+        @Html.DisplayNameFor(model => model.edition)
+        </div>
+</div>
+    <div class="col-sm-10">
+        @Html.DisplayFor(model => model.edition)
+        </div>
+    <div class="col-sm-2">
         @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
+        </div>
+    <div class="col-sm-10">
         @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
+        </div>
+    <div class="col-sm-2">
         @Html.DisplayNameFor(model => model.Image)
-        </dt>
-        <dd class = "col-sm-10">
+        </div>
+    <div class="col-sm-10">
         <img src="@WebConstants.ImagePath@Model.Image" alt="Image">
-        </dd>
-        <dt class = "col-sm-2">
+        </div>
+    <div class="col-sm-2">
         @Html.DisplayNameFor(model => model.SeasonCollection)
-        </dt>
-        <dd class = "col-sm-10">
+        </div>
+    <div class="col-sm-10">
         @Html.DisplayFor(model => model.SeasonCollection.Name)
-        </dd>
+        </div>
     @foreach (var type in Model.TokensFilters)
     {
-                <dt class = "col-sm-2">
+        <div class="col-sm-2">
             @Html.DisplayFor(modelItem => type.Filter.Name)
-                </dt>
-               <dd class = "col-sm-10">
+                </div>
+        <div class="col-sm-10">
             @Html.DisplayFor(modelItem => type.Value)
-               </dd>
-    }
-    </dl>
+               </div>
+    }*@
+
+
+        </div>
+    </div>
+</div>
+
+        </div>
+        </div>
+    </div>
+
+
                     

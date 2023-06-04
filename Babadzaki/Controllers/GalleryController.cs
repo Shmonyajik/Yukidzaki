@@ -91,11 +91,16 @@ namespace Babadzaki.Controllers
                     }
                     if (!string.IsNullOrEmpty(searchQuery))
                     {
-                        if (tokens == null)
-                            tokens = _context.Tokens.Where(t=>t.name == $"Yukidzaki #{searchQuery}").ToList();
-                    
-                        else
-                            tokens = tokens.Where(t => t.name.Substring(t.name.IndexOf('#') + 1) == searchQuery).ToList();
+                    if (tokens == null)
+                        tokens = _context.Tokens.Where(t=>t.edition.ToString() == $"Yukidzaki #{searchQuery}").ToList();
+                    //tokens = _context.Tokens.Where(t => t.edition.Substring(t.edition.IndexOf('#') + 1, t.edition.Length) == searchQuery).ToList();
+                    else
+                    {
+                        //int index = tokens[0].edition.IndexOf('#') + 1;
+                        //string sub = tokens[0].edition.Substring(tokens[0].edition.IndexOf('#') + 1);
+                        //bool IsTrue = tokens[0].edition.Substring(tokens[0].edition.IndexOf('#') + 1) == searchQuery;
+
+                        //tokens = tokens.Where(t => t.edition.ToString().Substring(t.edition.IndexOf('#') + 1) == searchQuery).ToList();
                     }
                     
 
@@ -111,7 +116,7 @@ namespace Babadzaki.Controllers
             var response = await _context.Tokens.Include(u => u.SeasonCollection).Include(f => f.TokensFilters).ThenInclude(tf => tf.Filter).FirstOrDefaultAsync(t => t.Id == id);
 
 
-            return PartialView("_ModalTokenDetails", response);
+            return PartialView("_ModalTokenDetails",  response);
         }
 
 

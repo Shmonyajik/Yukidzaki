@@ -5,31 +5,38 @@
 @*@{
     var tokenJson = new 
 }*@
-    <div class="col-xl-3 col-lg-4 col-sm-6">
+
+
+
+<div class="col-xl-3 col-lg-4 col-sm-6">
         <div class="cs-card cs-style4 cs-box_shadow cs-white_bg">
         @*JsonConvert.SerializeObject(Model, Formatting.Indented))*@
             
-        <img href="#" style="cursor: pointer" class="cs-card_thumb cs-zoom_effect lazy" onclick="openModal({url: '/Gallery/PartialViewAction', data: '@Model.Id'})" 
-        data-toggle="modal" data-target="#nftTOKEN" src=" @WebConstants.ImagePath@Model.Image" alt="Image">
+        <a href="#" style="cursor: pointer" class="cs-card_thumb cs-zoom_effect" onclick="openModal({url: '/Gallery/PartialViewAction', data: '@Model.Id'},{url: '/Gallery/PartialViewAction', data: '@Model.Id'})"
+           data-toggle="modal" data-target="#nftTOKEN">
+            <img class="cs-zoom_item " data-tilt src="@WebConstants.ImagePath@Model.Image" @*src="data:image/gif;base64,R0lGODlhCgAIAIABAN3d3f///yH5BAEAAAEALAAAAAAKAAgAAAINjAOnyJv2oJOrVXrzKQA7"*@ alt="Image">
+        </a>
             <div class="cs-card_info">
                 <hr>
                 <div class="cs-card_footer">
-                    <span class="cs-card_btn_1" data-modal="#history_1">
-                        @Model.name
+                <span class="cs-card_btn_1" data-modal="#history_1">
+                    <a>
+                        @($"Yukidzaki №{Model.edition}")
+                    </a>
                     </span>
-                    <span class="cs-card_btn_2" data-modal="#bid_1"><span>Place Bid</span></span>
                 </div>
             </div>
         </div>
         <div class="cs-height_30 cs-height_lg_30"></div>
     </div>
 
+
+  
+
+
 @*////////////////////////////////////////////////*@
 
 
-
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" />
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 
 

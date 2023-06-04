@@ -1567,7 +1567,7 @@ medical:
     - crutch
     - diagnoses
     - disease
-    - dna
+    - edition
     - file-medical
     - file-medical-alt
     - file-prescription
@@ -2031,7 +2031,7 @@ science:
     - capsules
     - clipboard-check
     - disease
-    - dna
+    - edition
     - eye-dropper
     - filter
     - fire

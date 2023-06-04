@@ -6,7 +6,7 @@ namespace Babadzaki.Models.Mapping
     {
         public JsonTokenProfile()
         {
-            this.CreateMap<JsonToken, Token>().ForMember(dst => dst.dna, opt => opt.MapFrom(src => long.Parse(src.dna)));
+            this.CreateMap<JsonToken, Token>();
                 
                 
 

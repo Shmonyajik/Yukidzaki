@@ -295,7 +295,7 @@ namespace Babadzaki.Controllers
                         JsonToken jsonToken = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonToken>(fileString);
                         SeasonCollection seasonCollection = null;
                         Models.Token token = _mapper.Map<Models.Token>(jsonToken);
-                        if (_context.Tokens.FirstOrDefault(t => t.dna == token.dna) != null)
+                        if (_context.Tokens.FirstOrDefault(t => t.edition == token.edition) != null)
                         {
                             reader.Close();
                             continue;

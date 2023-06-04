@@ -11,13 +11,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Mulish&display=swap');
 
 
-input:disabled {
-    cursor: default;
-    background-color: transparent;
-    color: none;
-    border-color: transparent;
-    max-width: 50px;
-}
+
 
 .header.main {
   background: transparent;
@@ -221,7 +215,7 @@ body {
         background: linear-gradient(116.85deg, rgba(252, 70, 107, 0.6) 0%, rgba(63, 94, 251, 0.3) 100%);
         width: 100%;
         height: 100%;
-       /* z-index: -1;*/
+        z-index: -1;
         left: 0;
         top: 0;
     }
@@ -888,8 +882,140 @@ body {
   position: relative;
   padding: 0;
   height: 100vh;
+  width: 100vw;
   overflow: hidden;
 }
+
+
+/*---------------------------------------------*/
+
+.parallax {
+    pointer-events: none;
+    transition: 0.45s cubic-bezier(.2,.49,.32,.99);
+}
+
+.bg-img {
+    position: absolute;
+    width: 2800px;
+    top: calc(50% - 80px);
+    left: calc(50% + 10px);
+    transform: translate(-50%,-50%);
+    z-index: 10;
+}
+
+.fog-7 {
+    position: absolute;
+    z-index: 11;
+    width: 2800px;
+    top: calc(50% - 100px);
+    left: calc(50% + 300px);
+    transform: translate(-50%,-50%);
+}
+
+.fog-6 {
+    position: absolute;
+    z-index: 12;
+    width: 2800px;
+    top: calc(50% - 250px);
+    left: calc(50% + 20px);
+    transform: translate(-50%,-50%);
+}
+
+.fog-5 {
+    position: absolute;
+    z-index: 13;
+    width: 2800px;
+    top: calc(50% - 200px);
+    left: calc(50% + 60px);
+    transform: translate(-50%,-50%);
+}
+
+.mountain-10 {
+    position: absolute;
+    z-index: 14;
+    width: 2800px;
+    top: calc(50% - 300px);
+    left: calc(50% + 93px);
+    transform: translate(-50%,-50%);
+}
+
+.mountain-9 {
+    position: absolute;
+    z-index: 15;
+    width: 2800px;
+    top: calc(50% - 390px);
+    left: calc(50% + 50px);
+    transform: translate(-50%,-50%);
+}
+
+.mountain-8 {
+    position: absolute;
+    z-index: 16;
+    width: 2800px;
+    top: calc(50% - 390px);
+    left: calc(50% + 55px);
+    transform: translate(-50%,-50%);
+}
+
+.mountain-7 {
+    position: absolute;
+    z-index: 17;
+    width: 2800px;
+    top: calc(50% - 265px);
+    left: calc(50% + 96px);
+    transform: translate(-50%,-50%);
+}
+
+.text {
+    position: absolute;
+    z-index: 18;
+    top: calc(50% - 130px);
+    left: 50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+    text-transform: uppercase;
+    pointer-events: auto;
+    color: white;
+}
+
+    .text h1 {
+        font-weight: 800;
+        font-size: 8rem;
+        text-transform: uppercase;
+    }
+
+.mountain-6 {
+    position: absolute;
+    z-index: 19;
+    width: 2800px;
+    top: calc(290px);
+    left: calc(50% + 20px);
+    transform: translate(-50%,-50%);
+}
+
+.fog-4 {
+    position: absolute;
+    z-index: 20;
+    width: 2800px;
+    top: calc(150px);
+    left: calc(50% + 36px);
+    transform: translate(-50%,-50%);
+}
+
+.vignette {
+    position: absolute;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: radial-gradient(ellipse at center, rgba (0,0,0,0) 65%, rgba (0,0,0,0.75));
+}
+
+
+
+    /*---------------------------------------------*/
+
 .main .page-title .container {
   max-width: 1520px;
 }
@@ -1907,7 +2033,7 @@ body {
   height: calc(120% - 3rem);
 }
 .item-details .list-product .box p {
-  font-size: 20px;
+  font-size: 15px;
   line-height: 26px;
   color: #B9B9BF;
   margin-bottom: 4px;
@@ -1981,6 +2107,18 @@ body {
     .form-contact input[type=color]:focus {
         border-color: #3fc3c3;
     }
+
+@keyframes showBlock {
+    0% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+
 .form-contact textarea {
   height: 110px;
   font-size: 15px;
@@ -2019,7 +2157,7 @@ body {
 }
 
 .box-wallet-inner {
- /* display: flex;*/
+  display: flex;
   margin-left: -30px;
   flex-wrap: wrap;
 }
@@ -2244,29 +2382,40 @@ body {
     outline: 0;
 }
 
+
+/*.modal .modal-dialog {
+    position: relative;
+    max-width: 1130px;
+}*/
+
 .modal .modal-dialog {
-  position: relative;
-  max-width: 515px;
+    position: relative;
+    max-width: 515px;
 }
+/*.modal .modal-dialog1 {
+    position: relative;
+    max-width: 1450px;
+}*/
 
 #nftTOKENnow {
     position: relative;
     max-width: 1450px;
 }
-
+/*#popupID {
+    max-width: 1130px;
+    left: 20%;
+}*/
 .modal .modal-content {
-  position: relative;
-  padding: 40px 50px 20px;
+    position: relative;
+    padding: 40px 50px 20px;
 }
 .modal .modal-content .header-popup {
   margin-bottom: 30px;
   position: relative;
-  margin-left: 35px;
 }
 .modal .modal-content .header-popup h5 {
-  color: #fff;
+  color: #0c1226;
   margin-bottom: 0;
-  opacity: 0.9;
 }
 .modal .modal-content .modal-body {
   padding: 0;
@@ -2276,9 +2425,8 @@ body {
   min-height: 60px;
 }
 .modal .modal-content .modal-body .sc-box h6 {
-  color: #fff;
+  color: #0c1226;
   margin-bottom: 10px;
-  opacity: 0.8;
 }
 .modal .modal-content .modal-body .sc-box .content {
   margin-bottom: 0;
@@ -2703,27 +2851,29 @@ body {
 }
 
 #main-nav-mobi {
-  -webkit-transform: translateY(0);
-  -moz-transform: translateY(0);
-  -ms-transform: translateY(0);
-  -o-transform: translateY(0);
-  transform: translateY(0);
-  display: block;
-  margin: 0 auto;
-  width: 100%;
-  left: 0;
-  z-index: 9999;
-  box-shadow: 0 0 50px 10px rgba(0, 0, 0, 0.1);
-  -webkit-box-shadow: 0 0 50px 10px rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 0 0 50px 10px rgba(0, 0, 0, 0.3);
-  padding-left: 0;
-  position: absolute;
-  top: 100%;
-  overflow-y: auto;
-  background: #fff;
-  max-height: 60vh;  
-  border-bottom-left-radius: 4%;
-  border-bottom-right-radius: 4%;
+    -webkit-transform: translateY(0);
+    -moz-transform: translateY(0);
+    -ms-transform: translateY(0);
+    -o-transform: translateY(0);
+    transform: translateY(0);
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+    left: 0;
+    z-index: 9999;
+    box-shadow: 0 0 50px 10px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 0 50px 10px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 0 50px 10px rgba(0, 0, 0, 0.3);
+    padding-left: 0;
+    position: absolute;
+    top: 100%;
+    overflow-y: auto;
+    background: #fff;
+    max-height: 60vh;
+    border-bottom-left-radius: 4%;
+    border-bottom-right-radius: 4%;
+    opacity: 0.96;
+    font-weight: 700;
 }
 #main-nav-mobi ul {
   display: block;
@@ -6191,9 +6341,9 @@ img.mfp-img {
     display: block;
   }
 
-  .box-wallet-inner .sc-box {
+  /*.box-wallet-inner .sc-box {
     width: calc(50% - 30px);
-  }
+  }*/
 
   .home3 .tf-about .box-text {
     margin-bottom: 30px;
@@ -6933,7 +7083,7 @@ body {
 }
 
 img {
-  max-width: 100%;
+ /* max-width: 100%;*/
   height: auto;
   transform: scale(1);
 }
@@ -6999,7 +7149,7 @@ h6,
 }
 
 .h7 {
-  font-size: 19px;
+  font-size: 24px;
   line-height: 1.33;
 }
 .h7.st {

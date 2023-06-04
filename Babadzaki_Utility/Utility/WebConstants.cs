@@ -4,7 +4,9 @@
     {
         public static string CompanyName = "Babadzaki";
 
-        public static string ImagePath = @"https://gateway.pinata.cloud/";//https://gateway.pinata.cloud/ipfs/QmeKyA8YaUuhWBYzKqGY9eYeE9FJgXrmZ5GEdumNKWimQr/1.png
+        public static string ImagePath = @"https://gateway.pinata.cloud/ipfs/";
+        public static string OriginalDirectoryPat = @"Qmd6fAMGCH16qsHnUMKZK2w37kCtwEtkPe732CPctyY4g8/";
+        public static string PreviewDirectoryPath = @"Qmd6fAMGCH16qsHnUMKZK2w37kCtwEtkPe732CPctyY4g8/";
 
 
 
