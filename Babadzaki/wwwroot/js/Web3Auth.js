@@ -1,4 +1,4 @@
-﻿var oneTimeCodeResult;
+﻿
 window.addEventListener('DOMContentLoaded', () => {
     if (typeof window.ethereum !== 'undefined') {
         console.log("-DOMContentLoaded")
@@ -8,7 +8,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const web3 = new Web3(ethereum);
         console.log("web3: " + web3)
         generateCode();
-        const oneTimeCode = oneTimeCodeResult; // Replace with the actual one-time code
+        const oneTimeCode = generateCode(); // Replace with the actual one-time code
         console.log(oneTimeCode);
         signAndSendSignature();
         // Sign the one-time code and send the signature to the server
@@ -19,7 +19,12 @@ window.addEventListener('DOMContentLoaded', () => {
             const walletAddress = accounts[0];
             console.log("Address: "+walletAddress)
             const signature = await web3.eth.personal.sign(oneTimeCode, walletAddress, ''); // Sign the code with MetaMask
-
+            console.log("signature: " + signature)
+            VerifySignatureRequest = {
+                "walletAddress": walletAddress,
+                "oneTimeCode": oneTimeCode,
+                "signature": signature
+                }
             // Send the signature to the server
             fetch('/MetaMaskAuth/VerifySignature', {
                 method: 'POST',
@@ -34,7 +39,7 @@ window.addEventListener('DOMContentLoaded', () => {
             })
                 .then(response => {
                     // Handle the server response
-                    console.log("7"+response);
+                    console.log("7" + response);
                 })
                 .catch(error => {
                     // Handle errors
@@ -55,7 +60,7 @@ async function generateCode() {
         type: 'GET',
         success: function (response) {
             console.log(response.Value);
-            oneTimeCodeResult =  response.Value;
+            return response.Value;
         }
     });
 }

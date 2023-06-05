@@ -52,21 +52,6 @@ namespace Babadzaki.Controllers
         public async Task<IActionResult> Filter([FromBody] IEnumerable<TokensFilters> tokensFilters)
         {
             _logger.LogWarning("Filter");
-            //GalleryVM galleryVM = new GalleryVM();
-            //try
-            //{
-            //    using (FileStream streamReader = new FileStream(@"json.json", FileMode.Open, FileAccess.Read))
-            //    {
-            //        galleryVM = System.Text.Json.JsonSerializer.Deserialize<GalleryVM>(streamReader);
-            //        streamReader.Close();
-            //    }
-            //    _logger.LogInformation("Vnature Chetko");
-            //}
-            //catch (Exception)
-            //{
-
-            //    _logger.LogError("Vse Huinya");
-            //}
 
             if (tokensFilters is null || tokensFilters.Count() == 0)
                 return PartialView("_TokenCardGallery", _context.Tokens.ToList());
@@ -89,10 +74,10 @@ namespace Babadzaki.Controllers
                             tokens = tokens.Where(t => t.TokensFilters.FirstOrDefault(tf => tf.Value == filter.Value && tf.Filter.Id == filter.FilterId) != null).ToList();
 
                     }
-                    if (!string.IsNullOrEmpty(searchQuery))
-                    {
+                if (!string.IsNullOrEmpty(searchQuery))
+                {
                     if (tokens == null)
-                        tokens = _context.Tokens.Where(t=>t.edition.ToString() == $"Yukidzaki #{searchQuery}").ToList();
+                        tokens = _context.Tokens.Where(t => t.edition.ToString() == searchQuery).ToList();
                     //tokens = _context.Tokens.Where(t => t.edition.Substring(t.edition.IndexOf('#') + 1, t.edition.Length) == searchQuery).ToList();
                     else
                     {
@@ -100,12 +85,13 @@ namespace Babadzaki.Controllers
                         //string sub = tokens[0].edition.Substring(tokens[0].edition.IndexOf('#') + 1);
                         //bool IsTrue = tokens[0].edition.Substring(tokens[0].edition.IndexOf('#') + 1) == searchQuery;
 
-                        //tokens = tokens.Where(t => t.edition.ToString().Substring(t.edition.IndexOf('#') + 1) == searchQuery).ToList();
+                        tokens = tokens.Where(t => t.edition.ToString() == searchQuery).ToList();
                     }
+                }
+
+
+                    return PartialView("_TokenCardGallery", tokens);
                     
-
-
-                    return PartialView("_TokenCardGallery", tokens); 
                 }
             return new JsonResult(NotFound());
 

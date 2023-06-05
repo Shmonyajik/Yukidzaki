@@ -5,7 +5,7 @@
 namespace Babadzaki.Migrations
 {
     /// <inheritdoc />
-    public partial class aa : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

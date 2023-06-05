@@ -22,8 +22,7 @@
     },
     "IIS Express": {
       "commandName": "IISExpress",
-      "commandLineArgs": " --profile-directory=\"Default\"",
-      "launchBrowser": true,
+      "launchUrl": "https://localhost:44378/MetaMaskAuth",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

@@ -76,7 +76,7 @@
                         <input type="file" accept=".jpg,.png,.gif,.bmp"  name="files" id="ImagePath"itemid="uploadBox" asp-for="token.Image" class="form-control" />
                         @if(Model.token.Image!="")
                         {
-                            <label for="ImagePath">@Model.token.Image</label>
+                                <label for="ImagePath">"@WebConstants.ImagePath@WebConstants.OriginalDirectoryPath@Model.token.Image"</label>
                         }
                         
                         <span asp-validation-for="token.Image" class="text-danger"></span>
@@ -112,7 +112,7 @@
                 @* Keep this empty *@
                 @if(Model.token.Image!=null)
                 {
-                    <img src ="@WebConstants.ImagePath@Model.token.Image" width="100%" style="border-radius:5px;border:1px; solid #bbb"/>
+                        <img src ="@WebConstants.ImagePath@WebConstants.OriginalDirectoryPath@Model.token.Image" width="100%" style="border-radius:5px;border:1px; solid #bbb"/>
                 }
             </div>
         </div>

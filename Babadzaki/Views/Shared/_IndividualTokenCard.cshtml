@@ -14,7 +14,7 @@
             
         <a href="#" style="cursor: pointer" class="cs-card_thumb cs-zoom_effect" onclick="openModal({url: '/Gallery/PartialViewAction', data: '@Model.Id'},{url: '/Gallery/PartialViewAction', data: '@Model.Id'})"
            data-toggle="modal" data-target="#nftTOKEN">
-            <img class="cs-zoom_item " data-tilt src="@WebConstants.ImagePath@Model.Image" @*src="data:image/gif;base64,R0lGODlhCgAIAIABAN3d3f///yH5BAEAAAEALAAAAAAKAAgAAAINjAOnyJv2oJOrVXrzKQA7"*@ alt="Image">
+            <img class="cs-zoom_item " data-tilt src=@($"{WebConstants.ImagePath}{WebConstants.PreviewDirectoryPath}{Model.Image}") @*src="data:image/gif;base64,R0lGODlhCgAIAIABAN3d3f///yH5BAEAAAEALAAAAAAKAAgAAAINjAOnyJv2oJOrVXrzKQA7"*@ alt="Image">
         </a>
             <div class="cs-card_info">
                 <hr>

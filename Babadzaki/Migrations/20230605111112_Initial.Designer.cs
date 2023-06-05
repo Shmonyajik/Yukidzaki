@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Babadzaki.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230604170954_aa")]
-    partial class aa
+    [Migration("20230605111112_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
