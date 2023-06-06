@@ -44,12 +44,13 @@ namespace Babadzaki.Controllers
             return randomBytes.ToHex();
         }
         [HttpPost]
-        public IActionResult VerifySignature([FromBody] VerifySignatureRequest request)
+        //[ValidateAntiForgeryToken]
+        public JsonResult VerifySignature([FromBody] VerifySignatureRequest request)
         {
             // Get the user's wallet address and one-time code from the request
-            string walletAddress = request.WalletAddress;
-            string oneTimeCode = request.OneTimeCode;
-            string signature = request.Signature;
+            string walletAddress = request.walletAddress;
+            string oneTimeCode = request.oneTimeCode;
+            string signature = request.signature;
 
             // Verify the signature
             var signer = new EthereumMessageSigner();
@@ -60,19 +61,19 @@ namespace Babadzaki.Controllers
             {
                 // Signature is valid
                 // Proceed with further actions
-                return Ok();
+                return new JsonResult(Ok(isSignatureValid));
             }
             else
             {
-                return BadRequest("Invalid signature.");
+                return new JsonResult(BadRequest("Invalid signature!@."));
             }
         }
 
         public class VerifySignatureRequest
         {
-            public string WalletAddress { get; set; }
-            public string OneTimeCode { get; set; }
-            public string Signature { get; set; }
+            public string walletAddress { get; set; }
+            public string oneTimeCode { get; set; }
+            public string signature { get; set; }
         }
     }
 }

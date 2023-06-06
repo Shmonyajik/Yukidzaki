@@ -3,7 +3,8 @@
 *@
 @{
 }
+@Html.AntiForgeryToken()
 <h1>MetaMaskAuth</h1>
-<button onclick="signAndSendSignatureCall()" itemid="connectWalletButton">Connect Wallet</button>
+<button id="connectWalletButton">Connect Wallet</button>
 
-<script src="~/js/Web3Auth.js"></script>
+<script src="~/js/Web3Auth1.1.js"></script>

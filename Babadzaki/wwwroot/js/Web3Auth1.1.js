@@ -1,47 +1,48 @@
-﻿
-window.addEventListener('DOMContentLoaded', () => {
+﻿const button = document.getElementById('connectWalletButton');
+//let responseDataFromAJAXRequest;
+button.addEventListener('click', async () => {
+    
+    console.log('Button clicked');
+
     if (typeof window.ethereum !== 'undefined') {
         console.log("-DOMContentLoaded")
-        // MetaMask extension is installed
-        const ethereum = window.ethereum;
+        const ethereum = window.ethereum
         ethereum.enable(); // Request user permission to access their accounts
-        const web3 = new Web3(ethereum);
+        const web3 = new Web3(ethereum)
         console.log("web3: " + web3)
+        
+        
+        const oneTimeCode = await $.ajax({
+            url: '/MetaMaskAuth/GenerateOneTimeCode',
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                console.log("response:", response)
+                
 
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown) // Reject the promise with the error message
+            }
+        })
 
-        try {
-            const responseData = await generateCode();
-            // Use the response value
-            console.log(responseData);
-
-            // Assign the response value to a variable
-            const oneTimeCode = JSON.stringify(responseData); 
-        } catch (error) {
-            // Handle errors
-            console.error(error);
-        }
-
-
-
-        //const oneTimeCode = generateCode().then(responseData => {
-        //    return JSON.stringify(responseData);
-        //}); // Replace with the actual one-time code
-        console.log(oneTimeCode);
-        signAndSendSignature();
-        // Sign the one-time code and send the signature to the server
+        /*console.log("oneTimeCode: " + oneTimeCode)*/
+        console.log("oneTimeCode: " + oneTimeCode.Value)
+        
+        signAndSendSignature()
         async function signAndSendSignature() {
             console.log("signAndSendSignature");
             const accounts = await web3.eth.getAccounts();
             console.log("accounts: " + accounts)
             const walletAddress = accounts[0];
-            console.log("Address: "+walletAddress)
+            console.log("Address: " + walletAddress)
             const signature = await web3.eth.personal.sign(oneTimeCode, walletAddress, ''); // Sign the code with MetaMask
             console.log("signature: " + signature)
             const antiForgeryToken = $('input[name="__RequestVerificationToken"]').val();
             console.log("antiForgeryToken: " + antiForgeryToken)
             VerifySignatureRequest = {
                 walletAddress: walletAddress,
-                oneTimeCode: oneTimeCode,
+                oneTimeCode: oneTimeCode.Value,
                 signature: signature
             }
             if (antiForgeryToken) {
@@ -51,7 +52,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     xhr.responseType = 'json'
                     xhr.setRequestHeader('Content-Type', 'application/json')
                     xhr.setRequestHeader('RequestVerificationToken', 'antiForgeryToken')
-                   
+
                     xhr.onload = () => {
                         if (xhr.status >= 400) {
                             reject(xhr.response)
@@ -77,32 +78,9 @@ window.addEventListener('DOMContentLoaded', () => {
             else {
                 console.error('Anti-forgery token not found.');
             }
-            
+
         }
-
-        // Call the signAndSendSignature function when needed (e.g., on a button click)
-        // ...
     }
+
+    
 });
-
-
-async function generateCode() {
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url: '/MetaMaskAuth/GenerateOneTimeCode',
-            type: 'GET',
-            dataType: 'json',
-            success: function (response) {
-                console.log("success", response.Value);
-                resolve(response.Value);
-
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                reject(errorThrown); // Reject the promise with the error message
-            }
-        })
-            
-    })
-}
-
-
