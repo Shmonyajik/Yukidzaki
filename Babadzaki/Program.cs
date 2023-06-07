@@ -31,12 +31,13 @@ builder.Services.AddSession(options => //добавление сессий
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
-builder.Services.AddSingleton<Web3>(provider =>
-{
-    // Configure the Ethereum node URL
-    var ethereumUrl = "https://sepolia.infura.io/v3/96eb1666f8a142ed9c21d5e2fa776874";
-    return new Web3(ethereumUrl);
-});
+builder.Services.AddAntiforgery(x => x.HeaderName = "X-ANTI-FORGERY-TOKEN");
+//builder.Services.AddSingleton<Web3>(provider =>
+//{
+//    // Configure the Ethereum node URL
+//    var ethereumUrl = "https://sepolia.infura.io/v3/96eb1666f8a142ed9c21d5e2fa776874";
+//    return new Web3(ethereumUrl);
+//});
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 options.UseSqlServer(
@@ -78,25 +79,6 @@ app.MapControllerRoute(
 
 app.Run();
 
-//interface IDefaultUserRole
-//{
-
-//    public void SetDefaultUserRole();
-//}
-
-//public class DefaultUserRole : IDefaultUserRole
-//{
-//    private readonly RoleManager<IdentityRole> _roleManager;
-
-//    public DefaultUserRole(RoleManager<IdentityRole> roleManager)
-//    {
-//        _roleManager = roleManager;
-//    }
-//    public void SetDefaultUserRole()
-//    {
-
-//    }
-//}
 
 //TODO:!Разобраться с ветками на гите
 //TODO:!Оргпнизовать общую маршрутизацию(не MVC)

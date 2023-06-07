@@ -7,6 +7,8 @@ using Nethereum.Util;
 using Babadzaki.Data;
 using Nethereum.Web3;
 using Nethereum.RLP;
+using Babadzaki.ViewModel;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Babadzaki.Controllers
 {
@@ -15,12 +17,12 @@ namespace Babadzaki.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<FilterManagementController> _logger;
-        private readonly Web3 _web3;
-        public MetaMaskAuthController(ApplicationDbContext context, ILogger<FilterManagementController> logger, Web3 web3)
+        
+        public MetaMaskAuthController(ApplicationDbContext context, ILogger<FilterManagementController> logger)
         {
             _context = context;
             _logger = logger;
-            _web3 = web3;
+            
 
         }
         public IActionResult Index()
@@ -37,48 +39,53 @@ namespace Babadzaki.Controllers
 
         private string GenerateRandomString()
         {
-            var randomBytes = new byte[32];
-            var random = new Random();
-            random.NextBytes(randomBytes);
+            
 
-            return randomBytes.ToHex();
+            var randomBytes = EthECKey.GenerateKey().GetPubKeyNoPrefix();
+            var randomHex = randomBytes.ToHex();
+
+            return randomHex;
         }
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public JsonResult VerifySignature([FromBody] VerifySignatureRequest request)
         {
-            // Get the user's wallet address and one-time code from the request
-            string walletAddress = request.walletAddress;
-            string oneTimeCode = request.oneTimeCode;
-            string signature = request.signature;
-
-            // Verify the signature
-            var signer = new EthereumMessageSigner();
-
-            var signerAddress = signer.EncodeUTF8AndEcRecover(oneTimeCode, signature);
-            var isSignatureValid = signerAddress.Equals(walletAddress, StringComparison.OrdinalIgnoreCase);
-            if (isSignatureValid)
+            if (ModelState.IsValid)
             {
-                // Signature is valid
-                // Proceed with further actions
-                return new JsonResult(Ok(isSignatureValid));
+                // Get the user's wallet address and one-time code from the request
+                string walletAddress = request.walletAddress;
+                string oneTimeCode = request.oneTimeCode;
+                string signature = request.signature;
+
+                // Verify the signature
+                var signer = new EthereumMessageSigner();
+
+                var signerAddress = signer.EncodeUTF8AndEcRecover(oneTimeCode, signature);
+                var isSignatureValid = signerAddress.Equals(walletAddress, StringComparison.OrdinalIgnoreCase);
+                if (isSignatureValid)
+                {
+                    // Signature is valid
+                    // Proceed with further actions
+                    return new JsonResult(Ok(isSignatureValid));
+                }
+                else
+                {
+                    return new JsonResult(BadRequest("Invalid signature!@."));
+                }
+
             }
+            
             else
             {
-                return new JsonResult(BadRequest("Invalid signature!@."));
+                return new JsonResult(BadRequest("Invalid signature/one time code/wallet address."));
             }
-        
-        }
-        //TODO: 1)отслеживание смены сети/аккаунта
-        //2)Какие могут быть проблемы с безопасностью
-        //3)Будет ли это работать с другими узлами(в том числе и с нашим узлом infura)
-        //4)Подключатся ли другие кошельки( не MetaMask)
 
-        public class VerifySignatureRequest
-        {
-            public string walletAddress { get; set; }
-            public string oneTimeCode { get; set; }
-            public string signature { get; set; }
         }
+        
     }
 }
+//TODO: 1)отслеживание смены сети/аккаунта
+//2)Какие могут быть проблемы с безопасностью
+//3)Будет ли это работать с другими узлами(в том числе и с нашим узлом infura)
+//4)Подключатся ли другие кошельки( не MetaMask)
+//5)Добавить сессию и все последующие мероприятия после аутентификации

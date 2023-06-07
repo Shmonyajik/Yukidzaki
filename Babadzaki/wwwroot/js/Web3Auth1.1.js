@@ -51,8 +51,8 @@ button.addEventListener('click', async () => {
                     xhr.open('POST', '/MetaMaskAuth/VerifySignature')
                     xhr.responseType = 'json'
                     xhr.setRequestHeader('Content-Type', 'application/json')
-                    xhr.setRequestHeader('RequestVerificationToken', 'antiForgeryToken')
-
+                    xhr.setRequestHeader('X-ANTI-FORGERY-TOKEN', antiForgeryToken)
+                    
                     xhr.onload = () => {
                         if (xhr.status >= 400) {
                             reject(xhr.response)
