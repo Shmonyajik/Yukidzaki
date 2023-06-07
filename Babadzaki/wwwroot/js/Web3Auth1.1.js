@@ -36,7 +36,7 @@ button.addEventListener('click', async () => {
             console.log("accounts: " + accounts)
             const walletAddress = accounts[0];
             console.log("Address: " + walletAddress)
-            const signature = await web3.eth.personal.sign(oneTimeCode, walletAddress, ''); // Sign the code with MetaMask
+            const signature = await web3.eth.personal.sign(oneTimeCode.Value, walletAddress, ''); // Sign the code with MetaMask
             console.log("signature: " + signature)
             const antiForgeryToken = $('input[name="__RequestVerificationToken"]').val();
             console.log("antiForgeryToken: " + antiForgeryToken)

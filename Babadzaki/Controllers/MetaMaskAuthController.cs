@@ -56,7 +56,7 @@ namespace Babadzaki.Controllers
             var signer = new EthereumMessageSigner();
 
             var signerAddress = signer.EncodeUTF8AndEcRecover(oneTimeCode, signature);
-            var isSignatureValid = signerAddress.Equals(signature, StringComparison.OrdinalIgnoreCase);
+            var isSignatureValid = signerAddress.Equals(walletAddress, StringComparison.OrdinalIgnoreCase);
             if (isSignatureValid)
             {
                 // Signature is valid
@@ -67,7 +67,12 @@ namespace Babadzaki.Controllers
             {
                 return new JsonResult(BadRequest("Invalid signature!@."));
             }
+        
         }
+        //TODO: 1)отслеживание смены сети/аккаунта
+        //2)Какие могут быть проблемы с безопасностью
+        //3)Будет ли это работать с другими узлами(в том числе и с нашим узлом infura)
+        //4)Подключатся ли другие кошельки( не MetaMask)
 
         public class VerifySignatureRequest
         {
