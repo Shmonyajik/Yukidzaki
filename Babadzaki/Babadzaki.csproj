@@ -52,6 +52,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Babadzaki_DAL\Babadzaki_DAL.csproj" />
+    <ProjectReference Include="..\Babadzaki_Domain\Babadzaki_Domain.csproj" />
+    <ProjectReference Include="..\Babadzaki_Serivces\Babadzaki_Serivces.csproj" />
     <ProjectReference Include="..\Babadzaki_Utility\Babadzaki_Utility.csproj" />
   </ItemGroup>
 
