@@ -7,18 +7,20 @@ using System.Threading.Tasks;
 
 namespace Babadzaki_Domain.Responses
 {
-    internal class BaseResponse<T>: IBaseResponse<T>
+    public class BaseResponse<T>: IBaseResponse<T>
     {
         public string Description { get; set; }
 
         public StatusCode StatusCode { get; set; }
 
-        public T Data { get;}
+        public T Data { get; set; }
 
     }
 
-    internal interface IBaseResponse<T>
-    { 
+    public interface IBaseResponse<T>
+    {
+        string Description { get; }
+        StatusCode StatusCode { get; }
         T Data { get;}
     }
 }

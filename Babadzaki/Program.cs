@@ -8,6 +8,12 @@ using Newtonsoft.Json.Serialization;
 using AutoMapper;
 using Newtonsoft.Json;
 using Nethereum.Web3;
+using Babadzaki_Serivces.Implementations;
+using Babadzaki_Serivces.Interfaces;
+using Babadzaki_DAL.Interfaces;
+using Babadzaki_Domain.Models;
+using Babadzaki_DAL.Repositories;
+using Babadzaki;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +21,7 @@ builder.Services.AddRazorPages().AddRazorRuntimeCompilation();//компиляция razor
 
 // Add services to the container.
 
-builder.Services.AddTransient<IMailService,CustomMailService>();
+builder.Services.AddTransient<IMailService,CustomMailService>();//Scoped???
 builder.Services.AddControllersWithViews()
      .AddNewtonsoftJson(options =>//МБ удалить
     {
@@ -25,7 +31,7 @@ builder.Services.AddControllersWithViews()
 
 
 builder.Services.AddHttpContextAccessor(); //добавление сессий
-builder.Services.AddSession(options => //добавление сессий
+builder.Services.AddSession(options => //добавление сесс1ий
 { 
     options.IdleTimeout = TimeSpan.FromMinutes(10);
     options.Cookie.HttpOnly = true;
@@ -39,7 +45,7 @@ builder.Services.AddAntiforgery(x => x.HeaderName = "X-ANTI-FORGERY-TOKEN");
 //    return new Web3(ethereumUrl);
 //});
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContext<Babadzaki_DAL.ApplicationDbContext>(options =>
 options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")));
 //builder.Services.AddIdentity<IdentityUser,IdentityRole>()//Добавление системы идентификации
@@ -47,7 +53,8 @@ options.UseSqlServer(
 //    .AddDefaultUI()
 //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
-
+builder.Services.InitializeRepositories();
+builder.Services.InitializeServices();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
     
 

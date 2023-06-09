@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Babadzaki_DAL.Interfaces
 {
-    internal interface IBaseRepository<T>
+    public interface IBaseRepository<T>
     {
         Task Create(T model);
 
-        IQueryable<T> GetALL();
+        IQueryable<T> GetAll();
 
-        Task<T> Update();
+        Task<T> Update(T model);
         
         Task Delete(T model);
 

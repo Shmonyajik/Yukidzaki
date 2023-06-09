@@ -42,7 +42,7 @@ namespace Babadzaki.Controllers
             _context = context;
             _webHostEnvironment = webHostEnvironment;
         }
-        //ApplicationDbContext _context = new ApplicationDbContext();
+       
         public IActionResult Index()
         {
             
