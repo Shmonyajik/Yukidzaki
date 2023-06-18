@@ -12,10 +12,10 @@ namespace Babadzaki_DAL.Interfaces
 
         IQueryable<T> GetAll();
 
-        Task<T> Update(T model);
-        
         Task Delete(T model);
 
-
+        Task<T> Update(T model);
+        
+        
     }
 }

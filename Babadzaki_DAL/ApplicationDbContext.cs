@@ -28,13 +28,13 @@ namespace Babadzaki_DAL
 
         public DbSet<Token> Tokens { get; set; }
 
-        //public DbSet<SeasonCollection> SeasonCollections { get; set; }
+        public DbSet<SeasonCollection> SeasonCollections { get; set; }
 
 
-        //public DbSet<Email> Emails{ get; set; }
+        public DbSet<Email> Emails { get; set; }
 
-        //public DbSet<Filter> Filters { get; set; }
-        //public DbSet<TokensFilters> TokensFilters { get; set; }
-        
+        public DbSet<Filter> Filters { get; set; }
+        public DbSet<TokensFilters> TokensFilters { get; set; }
+
     }
 }

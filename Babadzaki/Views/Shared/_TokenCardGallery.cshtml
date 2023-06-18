@@ -1,9 +1,9 @@
-﻿@model IEnumerable<Babadzaki.Models.Token>
-<div class="row" id="tokenCardGalleryCount" value="@Model.Count()">
-@if (Model.Count() > 0)
+﻿@model Babadzaki.ViewModel.FilterResultVM
+<div class="row" id="tokenCardGalleryCount" value="@Model.tokensCount">
+@if (Model.Tokens.Count() > 0)
 {
 
-    @foreach (var token in Model)
+    @foreach (var token in Model.Tokens)
     {
         <partial name="_IndividualTokenCard" model="token" />
 
@@ -16,4 +16,4 @@ else
     <p> No tokens exists.</p>
 }
 
-</div>
+</div> 

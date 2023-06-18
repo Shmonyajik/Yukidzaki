@@ -12,6 +12,8 @@ namespace Babadzaki_Serivces.Interfaces
     public interface ITokenService 
     {
         Task<BaseResponse<IEnumerable<Token>>> GetToken();
+        
+
 
         //Task<IBaseResponse<TokenViewModel>> GetTokens(int id);
 

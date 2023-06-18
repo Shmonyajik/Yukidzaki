@@ -42,5 +42,6 @@ namespace Babadzaki_DAL.Repositories
 
             return model;
         }
+        
     }
 }

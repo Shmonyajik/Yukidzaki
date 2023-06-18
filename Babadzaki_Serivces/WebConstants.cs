@@ -1,4 +1,4 @@
-﻿namespace Babadzaki_Utility
+﻿namespace Babadzaki_Services
 {
     public static class WebConstants
     {
@@ -18,7 +18,17 @@
         public static string SmtpHost = "smtp.gmail.com";
         public static int SmtpHostPort = 465;
         public static bool UseSsl = true;
+
+        /// <summary>
+        /// Messages and templates
+        /// </summary>
+        /// 
+        public static string SubscribeSubject = "Notice from Yukidzaki";
+        public static string SubscribeMessage = "Hello, you haven't been in street racing for a long time!";
         
+        
+
+
 
 
 

@@ -1,28 +1,72 @@
-﻿using Babadzaki_Serivces.Implementations;
+﻿using Babadzaki_Domain.Models;
+using Babadzaki_Domain.Responses;
+using Babadzaki_Serivces.Implementations;
 using Babadzaki_Serivces.Interfaces;
+using Babadzaki_Services;
 using Microsoft.AspNetCore.Mvc;
-using Nethereum.ABI.EIP712;
-
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 namespace Babadzaki.Controllers
 {
+    [Consumes("application/x-www-form-urlencoded")]
     public class RefactoringTestController : Controller
     {
-        public readonly ITokenService _tokenService;
+        public readonly IHomeService _homeService;
+        public readonly IMailService _mailService;
 
-        public RefactoringTestController(ITokenService tokenService)
+        
+        public RefactoringTestController(IHomeService homeService, IMailService mailService)
         {
-            _tokenService = tokenService;
+            _mailService = mailService;
+            _homeService = homeService;
         }
 
         [HttpGet]
         public async Task<IActionResult> IndexAsync()
         {
-            var response = await _tokenService.GetToken();
+            var response = await _homeService.GetTokens();
+
             if (response.StatusCode == Babadzaki_Domain.Enums.StatusCode.OK)
             {
                 return View(response.Data);
             }
             return View("Error", $"{response.Description}");
         }
+        [HttpPost]
+
+        public async Task<JsonResult> JsonPostEmailSendAsync([FromForm] string emailName)
+        {
+            var email = new Email { Name = emailName };
+            if (ModelState.IsValid/*&&homeVM.Email.Name!=null*/)
+            {
+                
+                var sendMessageResponse = await _mailService.SendMessage(
+                    email,
+                    WebConstants.EmailFrom,
+                    WebConstants.SubscribeSubject,
+                    WebConstants.SubscribeMessage
+                );
+
+                if (sendMessageResponse.StatusCode == Babadzaki_Domain.Enums.StatusCode.OK)
+                {
+                    var SaveEmailResponse = await _homeService.SaveEmail(email);
+                    return Json(SaveEmailResponse);
+                }
+                else
+                    return Json(sendMessageResponse);
+                
+            }
+            var invalidFields = ModelState.Values
+               .Where(v => v.ValidationState == ModelValidationState.Invalid)
+               .SelectMany(v => v.Errors)
+               .Select(e => e.ErrorMessage)
+               .ToList();
+            return Json(new BaseResponse<List<string>> {
+                Data = invalidFields,
+                Description = $"Model state is invalid",
+                StatusCode = Babadzaki_Domain.Enums.StatusCode.ModelStateIsInvalid
+            });
+        }
+
+
     }
 }

@@ -38,7 +38,7 @@ $(document).ready(function () {
         let th = $(this);
         let messi = $('.mes');
         $.ajax({
-            url: 'home/JsonPostEmailSend',
+            url: th.action,
             type: 'POST',
             dataType: 'json',
             data: th.serialize(),

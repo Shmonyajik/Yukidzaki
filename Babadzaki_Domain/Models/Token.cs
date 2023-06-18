@@ -33,15 +33,15 @@ namespace Babadzaki_Domain.Models
         [Range(0, Int32.MaxValue, ErrorMessage = "This Collection is not exist")]
         public int? SeasonCollectionId { get; set; }
 
-        //[JsonIgnore]
-        //[ValidateNever]//костыль?
-        //[ForeignKey("SeasonCollectionId")]
-        //public virtual SeasonCollection? SeasonCollection { get; set; }//virtual для ленивой загрузки(навигационное свойство)
+        [JsonIgnore]
+        [ValidateNever]//костыль?
+        [ForeignKey("SeasonCollectionId")]
+        public virtual SeasonCollection? SeasonCollection { get; set; }//virtual для ленивой загрузки(навигационное свойство)
 
         ////[StringLength(maximumLength: 255, MinimumLength = 3, ErrorMessage = "Maximum number of characters 255")]
         //[JsonIgnore]
         //public virtual ICollection<TokensFilters> TokensFilters { get; set; }// навигационное свойство
-        
+
         //public Token()
         //{
         //    TokensFilters = new List<TokensFilters>();
