@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 
 namespace Babadzaki_Serivces.Interfaces
 {
-    public interface IFeedbackService
+    public interface IHomeService
     {
+        Task<BaseResponse<HomeVM>> GetTokens();
+
         Task<BaseResponse<Email>> SaveEmail(Email email);
     }
 }

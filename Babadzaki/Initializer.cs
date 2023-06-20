@@ -16,6 +16,9 @@ namespace Babadzaki
         {
             services.AddScoped<IBaseRepository<Token>, TokenRepository>();
             services.AddScoped<IBaseRepository<Email>, EmailRepository>();
+            services.AddScoped<IBaseRepository<SeasonCollection>, SeasonCollectionRepository>();
+            services.AddScoped<IBaseRepository<TokensFilters>, TokensFiltersRepository>();
+            services.AddScoped<IBaseRepository<Filter>, FilterRepository>();
 
         }
 
@@ -23,7 +26,9 @@ namespace Babadzaki
         {
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IHomeService, HomeService>();
+            services.AddScoped<IFeedbackService, FeedbackService>();
             services.AddScoped<IMailService, CustomMailService>();
+            services.AddScoped<IGalleryService, GalleryService>();
 
 
 

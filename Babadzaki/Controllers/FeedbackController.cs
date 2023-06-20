@@ -1,54 +1,78 @@
 ﻿using Babadzaki.Data;
-using Babadzaki.Models;
-using Babadzaki_Utility;
-using Babadzaki.ViewModel;
+
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.CodeAnalysis.Elfie.Extensions;
+using Babadzaki_Serivces.Interfaces;
+using Babadzaki_Domain.ViewModels;
+using Babadzaki_Services;
+using Babadzaki_Domain.Models;
+using Babadzaki_Domain.Responses;
+using Babadzaki_Serivces.Implementations;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Babadzaki.Controllers
 {
     [Consumes("application/x-www-form-urlencoded")]
     public class FeedbackController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly ApplicationDbContext _context;
+        
         private readonly IMailService _mailService;
+        private readonly IFeedbackService  _feedbackService;
 
-        public FeedbackController(ILogger<HomeController> logger, ApplicationDbContext context, IMailService mailService)
+        public FeedbackController( IMailService mailService, IFeedbackService feedbackService )
         {
             _mailService = mailService;
-            _context = context;
-            _logger = logger;
+            _feedbackService = feedbackService;
+            
         }
         public ActionResult Index()
         {
-            
             return View(new FeedbackVM());
         }
         [HttpPost]
         public async Task<JsonResult> JsonPostQuestionSendAsync([FromForm] FeedbackVM questionVM)
         {
 
-            _logger.LogWarning("Hyu");
 
+            var email = new Email { Name = questionVM.Email };
             if (ModelState.IsValid/*&&homeVM.Email.Name!=null*/)
             {
+                
+                var sendMessageResponse = await _mailService.SendMessage(
+                    email,
+                    WebConstants.EmailFrom,
+                    "Question",
+                    "Thanks for your question!"
+                );
 
-                if (questionVM.Email != null)
+                if (sendMessageResponse.StatusCode == Babadzaki_Domain.Enums.StatusCode.OK)
                 {
-                    var _email = await _context.Emails.Where(e => e.Name == questionVM.Email).FirstOrDefaultAsync();
-                    if (_email != null)
-                    {
-                        await _context.Emails.AddAsync(new Email { Name = questionVM.Email });
-                        await _context.SaveChangesAsync();
-                    }
-                    _mailService.SendMessage(WebConstants.EmailFrom,questionVM.Email, "Question", questionVM.Message);
-                    _mailService.SendMessage(questionVM.Email, "Question", "Thanks for your question!");
+                    await _mailService.SendMessage(
+                        new Email { Name = WebConstants.EmailFrom},
+                        WebConstants.EmailFrom,
+                        $"Message from {questionVM.Name}({questionVM.Email})",
+                        questionVM.Message);
+
+                    var SaveEmailResponse = await _feedbackService.SaveEmail(email);
+                    return Json(SaveEmailResponse);
                 }
+                else
+                    return Json(sendMessageResponse);
 
             }
-            return new JsonResult(Ok(questionVM));
+            var invalidFields = ModelState.Values
+               .Where(v => v.ValidationState == ModelValidationState.Invalid)
+               .SelectMany(v => v.Errors)
+               .Select(e => e.ErrorMessage)
+               .ToList();
+            return Json(new BaseResponse<List<string>>
+            {
+                Data = invalidFields,
+                Description = $"Model state is invalid",
+                StatusCode = Babadzaki_Domain.Enums.StatusCode.ModelStateIsInvalid
+            });
         }
     }
 }

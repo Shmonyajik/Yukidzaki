@@ -105,3 +105,4 @@ app.Run();
 //TODO:!Удалить AutoMapper mb
 //TODO:!Подумать над чтением json файлов без сохранения на сервере
 //https://stackoverflow.com/questions/40045147/how-to-read-into-memory-the-lines-of-a-text-file-from-an-iformfile-in-asp-net-co?rq=1
+//AsNoTracking

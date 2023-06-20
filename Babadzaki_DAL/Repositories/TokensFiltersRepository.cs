@@ -1,4 +1,5 @@
-﻿using Babadzaki_Domain.Models;
+﻿using Babadzaki_DAL.Interfaces;
+using Babadzaki_Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Babadzaki_DAL.Repositories
 {
-    public class TokensTokensFilterssRepository
+    public class TokensFiltersRepository : IBaseRepository<TokensFilters>
     {
         private readonly ApplicationDbContext _context;
-        public TokensTokensFilterssRepository(ApplicationDbContext context)
+        public TokensFiltersRepository(ApplicationDbContext context)
         {
             _context = context;
         }

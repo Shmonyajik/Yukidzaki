@@ -1,5 +1,4 @@
-﻿
-@model Babadzaki.ViewModel.HomeVM
+﻿@model Babadzaki_Domain.ViewModels.HomeVM
 
 <section class="tf-section tf-about pb-mobie">
     <div class="container">
@@ -407,37 +406,7 @@
                 <div class="swiper-slide">
                     <div class="swiper mySwiper1 swiper-v">
                         <div class="swiper-wrapper">
-                            @if (Model.SeasonCollections.Count() > 0)
-                            {                              
-                                    @if (Model.Tokens.Count() > 0)
-                                    {
-                                            @foreach (var token in Model.Tokens)
-                                            {
-                                                <partial name="_IndividualTokenCardSlider" model="token" />
-                                            }
-                                    }
-                                    else
-                                    {
-                                        <p> No tokens exists.</p>
-                                    }
-                            }
-                            else
-                            {
-                                <p> No category exists.</p>
-                            }      
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="swiper-container swiper mySwiper swiper-h">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <div class="swiper mySwiper2 swiper-v">
-                        <div class="swiper-wrapper">
-                            @if (Model.SeasonCollections.Count() > 0)
-                            {
+                           
                                 @if (Model.Tokens.Count() > 0)
                                 {
                                     @foreach (var token in Model.Tokens)
@@ -450,10 +419,31 @@
                                     <p> No tokens exists.</p>
                                 }
                             }
-                            else
-                            {
-                                <p> No category exists.</p>
-                            }
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="swiper-container swiper mySwiper swiper-h">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="swiper mySwiper2 swiper-v">
+                        <div class="swiper-wrapper">
+                           
+                                @if (Model.Tokens.Count() > 0)
+                                {
+                                    @foreach (var token in Model.Tokens)
+                                    {
+                                        <partial name="_IndividualTokenCardSlider" model="token" />
+                                    }
+                                }
+                                else
+                                {
+                                    <p> No tokens exists.</p>
+                                }
+                            
                         </div>
                     </div>
                 </div>
@@ -464,17 +454,6 @@
 
 
 
-
-
- 
-<div>
-<form  method="post"id="subscribe-form">
-    <input asp-for="Email.Id" hidden id="subscribe-email-id"/>
-    <input asp-for="Email.Name"type="email" placeholder="Enter your email address" required="" id="subscribe-email"/>
-    <div class="mes"></div>
-    <button class="tf-button-st2 btn-effect" type="submit" id="subscribe-button"> <span class="effect">Subscribe</span></button>
-</form>
-</div>
 
 
 
@@ -536,7 +515,7 @@
                 <p>Maecenas sit pretium, cras in. In quisque sem id eget. In vel gravida ut </p>
 
 
-                <form action="#" id="subscribe-form">
+                <form action="Home/JsonPostEmailSend" id="subscribe-form">
 
                     <input type="email" placeholder="Enter your email address" required="" id="subscribe-email" />
                     <div class="mes"></div>
@@ -584,13 +563,14 @@
 
 @section Scripts{
 
-   
+
 
     @{
-        <partial name-"_ValidationScriptsPartial"/>/*Валидация на стороне клиента*/
+        <partial name-"_ValidationScriptsPartial" />
+        /*Валидация на стороне клиента*/
     }
-        
-            <script src="~/js/common.js"></script>
+
+    
     <script>
         $(document).ready(function () {
 

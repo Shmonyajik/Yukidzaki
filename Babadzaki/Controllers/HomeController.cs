@@ -1,104 +1,72 @@
-﻿using Babadzaki.Data;
-using Babadzaki.Models;
-using Babadzaki_Utility;
-using Babadzaki.ViewModel;
+﻿using Babadzaki_Domain.Models;
+using Babadzaki_Domain.Responses;
+using Babadzaki_Serivces.Implementations;
+using Babadzaki_Serivces.Interfaces;
+using Babadzaki_Services;
 using Microsoft.AspNetCore.Mvc;
-
-using Microsoft.EntityFrameworkCore;
-
-using System.Diagnostics;
-
-//using System.Text.Json;
-
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 namespace Babadzaki.Controllers
 {
     [Consumes("application/x-www-form-urlencoded")]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly ApplicationDbContext _context;
-        private readonly IMailService _mailService;
-
-
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, IMailService mailService)
-        {
-            _mailService = mailService;
-            _context = context;
-            _logger = logger;
-        }
-        [HttpGet]
-        public IActionResult Index()
-        {
-            HomeVM homeVM = new HomeVM
-            {
-                Tokens = _context.Tokens.Include(u => u.SeasonCollection),
-                SeasonCollections = _context.SeasonCollections,
-                Email = new Email()
-
-            };
-            return View(homeVM);
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        //public IActionResult Error()
-        //{
-        //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        //}
-
-        ////[HttpPost]
-        ////[ValidateAntiForgeryToken]//TODO: разобраться как работает
-        ////public IActionResult IndexPost(HomeVM homeVM)//отправка email
-        ////{
-        ////    if (!ModelState.IsValid/*&&homeVM.Email.Name!=null*/)
-        ////    {
-        ////        var email = _context.Emails.Where(e => e.Name == homeVM.Email.Name).FirstOrDefault();
-        ////        if (homeVM.Email != null && email != null)
-        ////        {
-        ////            _context.Emails.Add(homeVM.Email);
-        ////            _mailService.SendMessage(homeVM.Email.Name, "test", "test");
-        ////        }
-        ////    }\
-
-        ////    return RedirectToAction(nameof(Index));
-        ////}
-        ////[Consumes("application/json")]
-        //[HttpPost(Name = "JsonPostEmailSend")]
-        ////[Route("Home/JsonPostEmailSend")]
-        //public void JsonPostEmailSend([FromBody] Email email)
-        //{
-
-        //    _logger.LogError("Hyu");
-
-        //}
-        [HttpPost]
-
-        //[Route("Home/JsonPostEmailSend")]
-        public async Task<JsonResult> JsonPostEmailSendAsync([FromForm]Email  email)
-        {
-
-            _logger.LogWarning("Hyu");
-
-            if (ModelState.IsValid/*&&homeVM.Email.Name!=null*/)
-            {
-                var _email = await _context.Emails.Where(e => e.Name == email.Name).FirstOrDefaultAsync();
-                if (email != null && _email == null)
-                {
-                    await _context.Emails.AddAsync(email);//TODO: поменять местами
-                    await _context.SaveChangesAsync();
-
-                }
-                _mailService.SendMessage(to:email.Name, subject:"test",bodyText: "test");
-
-            }
-            return new JsonResult(Ok(email));
-        }
+        public readonly IHomeService _homeService;
+        public readonly IMailService _mailService;
 
         
-    }
+        public HomeController(IHomeService homeService, IMailService mailService)
+        {
+            _mailService = mailService;
+            _homeService = homeService;
+        }
 
+        [HttpGet]
+        public async Task<IActionResult> IndexAsync()
+        {
+            var response = await _homeService.GetTokens();
+
+            if (response.StatusCode == Babadzaki_Domain.Enums.StatusCode.OK)
+            {
+                return View(response.Data);
+            }
+            return View("Error", $"{response.Description}");
+        }
+        [HttpPost]
+
+        public async Task<JsonResult> JsonPostEmailSendAsync([FromForm] string emailName)
+        {
+            var email = new Email { Name = emailName };
+            if (ModelState.IsValid/*&&homeVM.Email.Name!=null*/)
+            {
+                
+                var sendMessageResponse = await _mailService.SendMessage(
+                    email,
+                    WebConstants.EmailFrom,
+                    WebConstants.SubscribeSubject,
+                    WebConstants.SubscribeMessage
+                );
+
+                if (sendMessageResponse.StatusCode == Babadzaki_Domain.Enums.StatusCode.OK)
+                {
+                    var SaveEmailResponse = await _homeService.SaveEmail(email);
+                    return Json(SaveEmailResponse);
+                }
+                else
+                    return Json(sendMessageResponse);
+                
+            }
+            var invalidFields = ModelState.Values
+               .Where(v => v.ValidationState == ModelValidationState.Invalid)
+               .SelectMany(v => v.Errors)
+               .Select(e => e.ErrorMessage)
+               .ToList();
+            return Json(new BaseResponse<List<string>> {
+                Data = invalidFields,
+                Description = $"Model state is invalid",
+                StatusCode = Babadzaki_Domain.Enums.StatusCode.ModelStateIsInvalid
+            });
+        }
+
+
+    }
 }

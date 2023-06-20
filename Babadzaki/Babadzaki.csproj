@@ -44,6 +44,7 @@
   <ItemGroup>
     <Folder Include="Log\Web3AutentificationLog\" />
     <Folder Include="Migrations\" />
+    <Folder Include="Views\RefactoringTest\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\img\token\JSON\" />
     <Folder Include="wwwroot\img\assets\" />
