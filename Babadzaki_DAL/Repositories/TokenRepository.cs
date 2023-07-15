@@ -23,6 +23,11 @@ namespace Babadzaki_DAL.Repositories
             await _context.Tokens.AddAsync(model);
             await _context.SaveChangesAsync();
         }
+        public async Task CreateMultiple(IEnumerable<Token> model)
+        {
+            await _context.Tokens.AddRangeAsync(model);
+            await _context.SaveChangesAsync();
+        }
 
         public IQueryable<Token> GetAll()
         {

@@ -1,5 +1,5 @@
 ﻿
-@model Babadzaki.ViewModel.GalleryVM
+@model Babadzaki_Domain.ViewModels.GalleryVM
 @{
     var isFirstRender = false;
 }
@@ -77,9 +77,9 @@ else
             <div class="cs-filter_toggle_body" style="display: none;">
                                         
 
-        @if (filter.TokensFilters.Count() > 0)
+        @if (Model.TokensFilters.FirstOrDefault(tf=>tf.Filter.Name==filter.Name)!=null)
         {
-            @foreach (var attr in Model.TokensFilters.Where(tf=>tf.FilterId==filter.Id))
+            @foreach (var attr in Model.TokensFilters.Where(tf=>tf.Filter.Name==filter.Name))
             {
                 <ul class="elastic_type"> 
                     <li>

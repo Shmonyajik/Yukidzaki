@@ -1,10 +1,6 @@
 ﻿using Babadzaki_DAL.Interfaces;
 using Babadzaki_Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Babadzaki_DAL.Repositories
 {

@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using Babadzaki_Domain.Responses;
 using Babadzaki_Domain.Models;
 using System.Runtime.ConstrainedExecution;
+using Microsoft.AspNetCore.Http;
 
 namespace Babadzaki_Serivces.Interfaces
 {
     public interface ITokenService 
     {
         Task<BaseResponse<IEnumerable<Token>>> GetToken();
+        Task<BaseResponse<bool>> LoadTokens(IFormFileCollection files);
         
 
 

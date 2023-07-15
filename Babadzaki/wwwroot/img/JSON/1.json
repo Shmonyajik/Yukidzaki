@@ -1,1 +1,42 @@
-{"dna":"1701100312952017","name":"Yukidzaki #1","description":"","image":"1.png","edition":1,"date":1681492846349,"attributes":[{"trait_type":"Background","value":"White"},{"trait_type":"Hands","value":"AoY sword"},{"trait_type":"Race","value":"Frieza"},{"trait_type":"Season","value":"Season 1"},{"trait_type":"Cloth","value":"Football T-shirt"},{"trait_type":"Eyes","value":"Star"},{"trait_type":"Mouths","value":"Smile"},{"trait_type":"Hair","value":"Sheridzaki"}]}
+{
+  "dna": "1701100312952017",
+  "name": "Yukidzaki #1",
+  "description": "",
+  "image": "1.png",
+  "edition": 1,
+  "date": 1681492846349,
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "White"
+    },
+    {
+      "trait_type": "Hands",
+      "value": "AoY sword"
+    },
+    {
+      "trait_type": "Race",
+      "value": "Frieza"
+    },
+    {
+      "trait_type": "Season",
+      "value": "Season 1"
+    },
+    {
+      "trait_type": "Cloth",
+      "value": "Football T-shirt"
+    },
+    {
+      "trait_type": "Eyes",
+      "value": "Star"
+    },
+    {
+      "trait_type": "Mouths",
+      "value": "Smile"
+    },
+    {
+      "trait_type": "Hair",
+      "value": "Sheridzaki"
+    }
+  ]
+}

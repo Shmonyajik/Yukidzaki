@@ -8,6 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\ApiController.cs" />
+    <Compile Remove="Controllers\FilterManagementController.cs" />
+    <Compile Remove="Controllers\Gallery3Controller.cs" />
+    <Compile Remove="Controllers\OldTokenManagementController.cs" />
+    <Compile Remove="Controllers\SeasonCollectionController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Views\Feedback\NewFile.txt" />
     <None Remove="Views\Shared\NewFile.txt" />
   </ItemGroup>
@@ -47,7 +55,6 @@
     <Folder Include="Views\RefactoringTest\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\img\token\JSON\" />
-    <Folder Include="wwwroot\img\assets\" />
     <Folder Include="wwwroot\load-json-tokens\" />
   </ItemGroup>
 

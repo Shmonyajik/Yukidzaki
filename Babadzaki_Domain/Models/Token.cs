@@ -38,14 +38,14 @@ namespace Babadzaki_Domain.Models
         [ForeignKey("SeasonCollectionId")]
         public virtual SeasonCollection? SeasonCollection { get; set; }//virtual для ленивой загрузки(навигационное свойство)
 
-        ////[StringLength(maximumLength: 255, MinimumLength = 3, ErrorMessage = "Maximum number of characters 255")]
-        //[JsonIgnore]
-        //public virtual ICollection<TokensFilters> TokensFilters { get; set; }// навигационное свойство
+        //[StringLength(maximumLength: 255, MinimumLength = 3, ErrorMessage = "Maximum number of characters 255")]
+        [JsonIgnore]
+        public virtual ICollection<TokensFilters> TokensFilters { get; set; }// навигационное свойство
 
-        //public Token()
-        //{
-        //    TokensFilters = new List<TokensFilters>();
-        //}
+        public Token()
+        {
+            TokensFilters = new List<TokensFilters>();
+        }
 
         public override bool Equals(object? obj)
         {

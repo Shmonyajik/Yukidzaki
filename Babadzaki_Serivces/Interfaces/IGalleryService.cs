@@ -11,6 +11,6 @@ namespace Babadzaki_Serivces.Interfaces
 
         Task<BaseResponse<Token>> GetToken(int id);
 
-        Task<BaseResponse<FilterVM>> GetTokensByFilters(IEnumerable<TokensFilters> tokensFilters);
+        Task<BaseResponse<FilterVM>> GetTokensByFilters(IEnumerable<TokensFilters> tokensFilters, int id);
     }
 }

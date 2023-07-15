@@ -1,22 +1,17 @@
 ﻿using AutoMapper;
-using Babadzaki_DAL;
+
 using Babadzaki_Domain.Models;
 using Babadzaki_Domain.Responses;
 using Babadzaki_Serivces.Interfaces;
-using Microsoft.AspNetCore.Mvc;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using static Microsoft.AspNetCore.Hosting.Internal.HostingApplication;
-using System.Runtime.ConstrainedExecution;
+
 using Babadzaki_DAL.Interfaces;
 using Babadzaki_Domain.Enums;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+
+using Microsoft.AspNetCore.Http;
+using Babadzaki_Domain.Mappings;
 
 namespace Babadzaki_Serivces.Implementations
 {
@@ -26,12 +21,15 @@ namespace Babadzaki_Serivces.Implementations
         private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _webHostEnvironment;
         private readonly IMapper _mapper;
         private readonly IBaseRepository<Token> _tokenRepository;
-        //private readonly IBaseRepository<SeasonCollection> _seasonCollectionRepository;
-
-        public TokenService(IBaseRepository<Token> tokenRepository)//, IBaseRepository<SeasonCollection> seasonCollectionRepository
+        private readonly IBaseRepository<SeasonCollection> _seasonCollectionRepository;
+        private readonly IBaseRepository<Filter> _filterRepository;
+        public TokenService(IBaseRepository<Token> tokenRepository, IMapper mapper, IBaseRepository<SeasonCollection> seasonCollectionRepository, IBaseRepository<Filter> filterRepository)//, IBaseRepository<SeasonCollection> seasonCollectionRepository
         {
             _tokenRepository = tokenRepository;
-            //_seasonCollectionRepository = seasonCollectionRepository;
+            _mapper = mapper;
+            _seasonCollectionRepository = seasonCollectionRepository;
+            _filterRepository = filterRepository;
+                
         }
         public async Task<BaseResponse<IEnumerable<Token>>> GetToken()
         {
@@ -56,7 +54,102 @@ namespace Babadzaki_Serivces.Implementations
             }
         }
 
-        
+        public async Task<BaseResponse<bool>> LoadTokens(IFormFileCollection files)
+        {
+            var baseResponse = new BaseResponse<bool>();
+            try
+            {
+                foreach (var file in files)
+                {
+                    if (file == null || file.Length == 0)
+                    {
+                        baseResponse.Description = "One or more files are empty";
+                        baseResponse.StatusCode = StatusCode.JsonReaderError;
+                        return baseResponse;
+                    }
+                    
+                    using (var reader = new StreamReader(file.OpenReadStream()))
+                    {
+                        var fileString = await reader.ReadToEndAsync();
+                        JsonToken jsonToken = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonToken>(fileString);
+                        SeasonCollection seasonCollection = null;
+                        Token token = _mapper.Map<Token>(jsonToken);
+                        if (await _tokenRepository.GetAll().FirstOrDefaultAsync(t => t.edition == token.edition) != null)
+                        {
+                            reader.Close();
+                            continue;
+                        }
 
+                        foreach (var attr in jsonToken.attributes)
+                        {
+                            if (attr.trait_type == "Season")
+                            {
+                                try
+                                {
+                                    token.SeasonCollection = await _seasonCollectionRepository.GetAll().FirstAsync(sc => sc.Name == attr.value);
+                                }
+                                catch (Exception)
+                                {
+                                    token.SeasonCollection = new SeasonCollection { Name = attr.value };
+                                }
+                                
+                                continue;
+                            }
+                            //List<Filter> filter = null;
+                            //filter = await _filterRepository.GetAll().ToListAsync(); /*(f => f.Name == attr.trait_type);*/
+                            //try
+                            //{
+                            //    filter = await _filterRepository.GetAll().ToListAsync(); /*(f => f.Name == attr.trait_type);*/
+                            //}
+                            //catch (NullReferenceException)
+                            //{
+                            //    filter = new Filter
+                            //    {
+                            //        Name = attr.trait_type
+                            //    };
+                            //}
+                            //token.TokensFilters.Add(new TokensFilters
+                            //{
+                            //    Value = attr.value,
+                            //    Filter = filter
+                            //});
+                            //try
+                            //{
+                            //    token.TokensFilters.Add(new TokensFilters
+                            //    {
+                            //        Value = attr.value,
+                            //        Filter = await _filterRepository.GetAll().FirstOrDefaultAsync(f => f.Name == attr.trait_type) ?? new Filter { Name = attr.trait_type }
+                            //    });
+                            //}
+                            //catch (NullReferenceException)
+                            //{
+
+                            //    throw;
+                            //}
+                            token.TokensFilters.Add(new TokensFilters
+                            {
+                                Value = attr.value,
+                                Filter = await _filterRepository.GetAll().FirstOrDefaultAsync(f => f.Name == attr.trait_type) ?? new Filter { Name = attr.trait_type }
+                            });
+
+
+                        }
+
+                        await _tokenRepository.Create(token);
+                    }
+                }
+                baseResponse.StatusCode = StatusCode.OK;
+                baseResponse.Data = true;
+                return baseResponse;
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse<bool>()
+                {
+                    Description = ex.Message,
+                    StatusCode = StatusCode.InternalServerError
+                };
+            }
+        }
     }
 }

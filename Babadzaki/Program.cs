@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.HttpsPolicy;
-using Babadzaki.Data;
+
 using Microsoft.AspNetCore.Identity;
 using Babadzaki_Utility;
 using Newtonsoft.Json.Serialization;
@@ -55,8 +55,10 @@ options.UseSqlServer(
 
 builder.Services.InitializeRepositories();
 builder.Services.InitializeServices();
+builder.Services.AddMemoryCache();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
-    
+builder.Services.AddAutoMapper(typeof(Babadzaki_Domain.Mappings.JsonTokenProfile).Assembly);
+
 
 var app = builder.Build();
 
@@ -86,7 +88,7 @@ app.MapControllerRoute(
 
 app.Run();
 
-
+//https://github.com/LeoWarp/Automarket
 //TODO:!Разобраться с ветками на гите
 //TODO:!Оргпнизовать общую маршрутизацию(не MVC)
 //TODO:!TokenManagementController один контроллер для менеджемента(администрации) токенов пользователей и фильтров

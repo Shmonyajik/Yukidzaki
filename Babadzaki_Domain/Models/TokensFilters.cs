@@ -19,7 +19,7 @@ namespace Babadzaki_Domain.Models
         public int FilterId { get; set; }
         [ValidateNever]//костыль?
         [ForeignKey("FilterId")]
-        public virtual Filter Filter { get; set; }
+        public virtual Filter? Filter { get; set; }
 
         [StringLength(maximumLength: 255, ErrorMessage = "Maximum number of characters 255")]
         public string Value { get; set; }
