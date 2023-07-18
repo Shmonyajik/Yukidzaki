@@ -5,9 +5,9 @@
         public static string CompanyName = "Babadzaki";
 
         public static string ImagePath = @"https://gateway.pinata.cloud/ipfs/";
-        public static string OriginalDirectoryPath = @"Qmd6fAMGCH16qsHnUMKZK2w37kCtwEtkPe732CPctyY4g8/";
-        public static string PreviewDirectoryPath = @"Qmd6fAMGCH16qsHnUMKZK2w37kCtwEtkPe732CPctyY4g8/";
-        public static string PageOfTokensSize = "30";
+        public static string OriginalDirectoryPath = @"https://nftstorage.link/ipfs/bafybeiatntolaborgudfnegji6w7zqgohyvmnnd64ozz6mnetankwmttnm/";
+        public static string PreviewDirectoryPath = @"https://bafybeideccagd6e7xgmkqkfx4a37zvzai6sfpm5okls6kfvqevjrpgxsvy.ipfs.dweb.link/";//https://bafybeiae2a4skkbqam5qbgoprbzemj5kaotl76bb6zdr6i7eqrbt42wfra.ipfs.nftstorage.link/
+        public static int PageOfTokensSize = 10;
 
 
         /// <summary>

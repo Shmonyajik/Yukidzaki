@@ -5,6 +5,7 @@ using Babadzaki_Domain.Models;
 using Babadzaki_Domain.Responses;
 using Babadzaki_Domain.ViewModels;
 using Babadzaki_Serivces.Interfaces;
+using Babadzaki_Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
@@ -133,7 +134,7 @@ namespace Babadzaki_Serivces.Implementations
                     tokensFinded = await _tokenRepository.GetAll().ToListAsync();
                     _cache.Set(0, tokensFinded, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
                     filterVM.tokensCount = tokensFinded.Count();
-                    filterVM.Tokens = tokensFinded.Take(5);
+                    filterVM.Tokens = tokensFinded.Take(WebConstants.PageOfTokensSize);    
                     baseResponse.StatusCode = StatusCode.OK;
                     baseResponse.Data = filterVM;
                        
@@ -174,7 +175,7 @@ namespace Babadzaki_Serivces.Implementations
                     }
                 }
                 _cache.Set(0, tokensFinded, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
-                filterVM.Tokens = tokensFinded.Take(5).ToList();
+                filterVM.Tokens = tokensFinded.Take(WebConstants.PageOfTokensSize).ToList();
                 filterVM.tokensCount = tokensFinded.Count();
 
 
@@ -195,10 +196,10 @@ namespace Babadzaki_Serivces.Implementations
 
         private List<Token> GetTokensPage(IEnumerable<Token> tokens, int page = 1)
         {
-            var itemsToSkip = page * 5;//Вынести в вебконстанты
+            var itemsToSkip = page * WebConstants.PageOfTokensSize;//Вынести в вебконстанты
 
             return tokens.Skip(itemsToSkip).
-                Take(5).ToList();
+                Take(WebConstants.PageOfTokensSize).ToList();
         }
     }
 }

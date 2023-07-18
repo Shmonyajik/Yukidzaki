@@ -11,7 +11,12 @@ const tokenCardGalleryContainer = $('#tokenCardGalleryContainer')
 function ClearAll(){
     const inputs = document.querySelectorAll('input[type="checkbox"]:checked');
     const off = () => inputs.forEach(item => item.checked = false);
-    GetData(off());
+    console.log(off);
+    var filterPageVM = {
+        tokensFilters :off(),
+        page : 0
+    };
+    GetData(filterPageVM);
 }
 
 function applyFilter() {

@@ -1,6 +1,6 @@
 ﻿@model Babadzaki_Domain.Models.Token
 
-@using Babadzaki_Utility
+@using Babadzaki_Services
 @using Newtonsoft.Json
 @*@{
     var tokenJson = new 
@@ -14,7 +14,7 @@
             
         <a href="#" style="cursor: pointer" class="cs-card_thumb cs-zoom_effect" onclick="openModal({url: '/Gallery/TokenDetails', data: '@Model.edition'},{url: '/Gallery/PartialViewAction', data: '@Model.edition'})"
            data-toggle="modal" data-target="#nftTOKEN">
-            <img class="cs-zoom_item " data-tilt src=@($"{WebConstants.ImagePath}{WebConstants.PreviewDirectoryPath}{Model.Image}") @*src="data:image/gif;base64,R0lGODlhCgAIAIABAN3d3f///yH5BAEAAAEALAAAAAAKAAgAAAINjAOnyJv2oJOrVXrzKQA7"*@ alt="Image">
+            <img class="cs-zoom_item " data-tilt src="@WebConstants.PreviewDirectoryPath@($"{Model.edition}.png")" @*src="data:image/gif;base64,R0lGODlhCgAIAIABAN3d3f///yH5BAEAAAEALAAAAAAKAAgAAAINjAOnyJv2oJOrVXrzKQA7"*@ alt="Image">
         </a>
             <div class="cs-card_info">
                 <hr>

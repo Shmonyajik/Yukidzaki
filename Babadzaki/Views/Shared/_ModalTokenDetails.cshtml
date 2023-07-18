@@ -1,5 +1,5 @@
 ﻿@model Babadzaki_Domain.Models.Token
-@using Babadzaki_Utility
+@using Babadzaki_Services
 
 <div class="modal-content">
     <div class="header-popup">
@@ -13,7 +13,7 @@
     <div class="row">
     <div class="col-xl-6 col-lg-6 col-md-12">
         <div class="image-details" data-tilt data-aos-duration="800">
-            <img src="@WebConstants.ImagePath@WebConstants.OriginalDirectoryPath@Model.Image" alt="Image" >
+            <img src="@WebConstants.OriginalDirectoryPath@($"{Model.edition}.png")" alt="Image" >
         </div>
         </div>
     <div class="col-xl-6 col-lg-6 col-md-12">

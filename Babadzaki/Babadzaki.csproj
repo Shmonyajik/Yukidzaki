@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aa191a6b-70a1-4bb4-9125-704a981edcab</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
@@ -39,6 +40,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.jQuery.Unobtrusive.Ajax" Version="3.1.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.5" />
     <PackageReference Include="Nethereum.Web3" Version="4.14.0" />
   </ItemGroup>
@@ -62,7 +64,6 @@
     <ProjectReference Include="..\Babadzaki_DAL\Babadzaki_DAL.csproj" />
     <ProjectReference Include="..\Babadzaki_Domain\Babadzaki_Domain.csproj" />
     <ProjectReference Include="..\Babadzaki_Serivces\Babadzaki_Serivces.csproj" />
-    <ProjectReference Include="..\Babadzaki_Utility\Babadzaki_Utility.csproj" />
   </ItemGroup>
 
 </Project>
