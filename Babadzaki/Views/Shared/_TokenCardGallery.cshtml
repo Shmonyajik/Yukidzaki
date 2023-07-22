@@ -9,7 +9,7 @@
 
         //display all product
     }
-        <div id="loading"><img src='@Url.Content("~/Content/loading_spinner.gif")'></div>
+        
 }
 else
 {
@@ -18,22 +18,28 @@ else
 
 </div> 
 
-<script type="text/javascript">
+@*<script type="text/javascript">
     $(function () {
 
-        $('div#loading').hide();
+        
         pageLimit = Math.floor(document.getElementById("tokenCardGalleryCount").getAttribute('value')/10);
         console.log(pageLimit);
         var page = 0;
+        
         var _inCallback = false;
         function loadItems() {
+            if (localStorage.getItem("page")) {
+                console.log(localStorage.getItem("page"));
+                page = localStorage.getItem("page");
+                localStorage.removeItem("page");
+            }
             if (page > -1 && !_inCallback) {
                 _inCallback = true;
                 page++;
                 if(page<=pageLimit)
                 {
 
-                $('div#loading').show();
+                
                 console.log(page);
                 var filtersPageVM = {
                     tokensFilters: null,
@@ -68,4 +74,4 @@ else
             }
         });
     })
-</script>
+</script>*@

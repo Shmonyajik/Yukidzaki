@@ -4,6 +4,9 @@ $(document).ready(function () {
         tokensFilters: null,
         page: 0
     };
+    const topScroll = document.getElementById("tokensCount");
+    localStorage.setItem("page", 0);
+
     GetData(filterPageVM);
 });
 const tokenCardGalleryContainer = $('#tokenCardGalleryContainer')
@@ -16,6 +19,9 @@ function ClearAll(){
         tokensFilters :off(),
         page : 0
     };
+    const topScroll = document.getElementById("tokensCount");
+    topScroll.scrollIntoView();
+    localStorage.setItem("page", 0);
     GetData(filterPageVM);
 }
 
@@ -45,6 +51,9 @@ function applyFilter() {
         page : 0
     };
     console.log(filterPageVM);
+    const topScroll = document.getElementById("tokensCount");
+    topScroll.scrollIntoView();
+    localStorage.setItem("page", 0);
 
     //if (checkboxes) {
     //    GetData(filterPageVM)
@@ -69,10 +78,16 @@ function GetData(filtersPageVM) {
             tokenCardGalleryContainer.find(".tokenCardGallery").html(response);
 
         },
-        complete: function () {
+        complete: function (xhr, textStatus) {
             console.log("complete!");
             var tokensCount = document.getElementById("tokenCardGalleryCount").getAttribute('value');
+            console.log(tokensCount);
+            localStorage.setItem("tokensCount", tokensCount);
             $('#tokensCount').val(tokensCount);
+
+           
+
+            
         },
         //failure: function () {
         //    console.log("failure");
@@ -84,3 +99,4 @@ function GetData(filtersPageVM) {
         }
     });
 }
+

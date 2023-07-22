@@ -132,7 +132,7 @@ namespace Babadzaki_Serivces.Implementations
                 if (tokensFilters is null || tokensFilters.Count()==0)
                 {
                     tokensFinded = await _tokenRepository.GetAll().ToListAsync();
-                    _cache.Set(0, tokensFinded, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
+                    _cache.Set(0, tokensFinded, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(25)));
                     filterVM.tokensCount = tokensFinded.Count();
                     filterVM.Tokens = tokensFinded.Take(WebConstants.PageOfTokensSize);    
                     baseResponse.StatusCode = StatusCode.OK;
@@ -140,7 +140,7 @@ namespace Babadzaki_Serivces.Implementations
                        
                     return baseResponse;
                 }
-                
+                //_cache.Remove(0);
                 string searchQuery = null;
 
                 foreach (var filter in tokensFilters)
