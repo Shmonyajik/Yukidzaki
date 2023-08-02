@@ -12,6 +12,8 @@ COPY ["Babadzaki_DAL/Babadzaki_DAL.csproj", "Babadzaki_DAL/"]
 COPY ["Babadzaki_Domain/Babadzaki_Domain.csproj", "Babadzaki_Domain/"]
 COPY ["Babadzaki_Serivces/Babadzaki_Serivces.csproj", "Babadzaki_Serivces/"]
 RUN dotnet restore "Babadzaki/Babadzaki.csproj"
+
+
 COPY . .
 WORKDIR "/src/Babadzaki"
 RUN dotnet build "Babadzaki.csproj" -c Release -o /app/build

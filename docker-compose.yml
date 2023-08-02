@@ -5,6 +5,7 @@ networks:
 services:
   app: 
     container_name: babadzaki_app
+    image: shmonyajik/babadzaki_app:dev
     build:
       context: .
       dockerfile: Dockerfile
@@ -15,19 +16,25 @@ services:
     depends_on:
       - mssqlserver_db
   mssqlserver_db:  
-    env_file:
-    container_name: mssqlserver
+    container_name: BabadzakiDbServer
     image: "mcr.microsoft.com/mssql/server:2022-latest"
     environment:
-    - MSSQL_USER=sa
-    - MSSQL_PASSWORD=sa
+    - MSSQL_SA_PASSWORD=Ghbdtn19735
+    - MSSQL_USER=Denis
+    - MSSQL_PASSWORD=1234
     - MSSQL_DB=BabadzakiDb
-    - ACCEPT_EULA=y
+    - ACCEPT_EULA=Y
+    - MSSQL_PID=Developer
+    - MSSQL_TCP_PORT=1433
+    - MSSQL_COLLATION=SQL_Latin1_General_CP1_CI_AS
+    - MSSQL_AGENT_ENABLED=true
+
     ports:
-      - "5432:5432"
+      - "1433:1433"
     networks:
       - deploy-babadzaki-dev
     volumes:
       - mssql-data:/var/lib/mssql/data
 volumes:
   mssql-data:
+      

@@ -6,7 +6,7 @@
 
         public static string ImagePath = @"https://gateway.pinata.cloud/ipfs/";
         public static string OriginalDirectoryPath = @"https://nftstorage.link/ipfs/bafybeiatntolaborgudfnegji6w7zqgohyvmnnd64ozz6mnetankwmttnm/";
-        public static string PreviewDirectoryPath = @"https://bafybeideccagd6e7xgmkqkfx4a37zvzai6sfpm5okls6kfvqevjrpgxsvy.ipfs.dweb.link/";//https://bafybeiae2a4skkbqam5qbgoprbzemj5kaotl76bb6zdr6i7eqrbt42wfra.ipfs.nftstorage.link/
+        public static string PreviewDirectoryPath = @"https://nftstorage.link/ipfs/bafybeiht4jznnfssr7vqftqkiqic5w7dfkzmhmyswi2bw7zezmaaa7qrry/";//https://bafybeiae2a4skkbqam5qbgoprbzemj5kaotl76bb6zdr6i7eqrbt42wfra.ipfs.nftstorage.link/
         public static int PageOfTokensSize = 50;//есть в скрипте
 
 

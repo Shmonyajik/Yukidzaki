@@ -14,6 +14,9 @@ using Babadzaki_DAL.Interfaces;
 using Babadzaki_Domain.Models;
 using Babadzaki_DAL.Repositories;
 using Babadzaki;
+using Babadzaki_DAL;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,9 +62,14 @@ builder.Services.AddMemoryCache();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddAutoMapper(typeof(Babadzaki_Domain.Mappings.JsonTokenProfile).Assembly);
 
-
+ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 var app = builder.Build();
 
+//using (var scope = app.Services.CreateScope())
+//{
+//    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+//    dbContext.Database.Migrate();
+//}
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {   
