@@ -11,19 +11,23 @@ using Babadzaki.ViewModel;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
+using System.Numerics;
+using Nethereum.ABI;
+using Babadzaki_Domain.ViewModels;
+using NuGet.Protocol;
 
 namespace Babadzaki.Controllers
 {
     [Consumes("application/json")]
     public class MetaMaskAuthController : Controller
     {
-        
-        
+
+
 
         public MetaMaskAuthController()
         {
-            
-            
+
+
 
 
         }
@@ -103,7 +107,7 @@ namespace Babadzaki.Controllers
                 From = senderAddress, // Your wallet address that will send the transaction
                 Value = new HexBigInteger(0),
                 Gas = new HexBigInteger("400000"), // Set the appropriate gas limit
-                GasPrice = new HexBigInteger("1000"), // Set the appropriate gas price
+                GasPrice = new HexBigInteger(await GetGasPriceAsync(ethereumNetworkUrl)), // Set the appropriate gas price
             };
 
             // Send the transaction and wait for the receipt
@@ -112,6 +116,40 @@ namespace Babadzaki.Controllers
             return transactionReceipt.Status.Value == 1;
 
         }//recipientAddress, new HexBigInteger(0), new HexBigInteger(500000), recipientAddress, amountToMint
+
+        private async Task<BigInteger> GetGasPriceAsync(string rpcUrl)
+        {
+            var web3 = new Web3(rpcUrl);
+            var gasPrice = await web3.Eth.GasPrice.SendRequestAsync();
+            BigInteger gweiValue = gasPrice.Value / 1_000_000_000;
+            return gweiValue;
+            
+        }
+
+        public JsonResult GetContractData()
+        {
+            var smartcontract = new Smartcontract { Address = "0x7631CbEF26474677abcF6B063f53B3741907177C" };  // Replace with your smart contract address
+            using (var reader = new System.IO.StreamReader("wwwroot/ContractABI.json"))
+            {
+                smartcontract.ABI = reader.ReadToEnd();
+            }
+            return new JsonResult(smartcontract.ToJson());
+
+        }
+        //public string GeneratePrivateKeyFromMnemonic(string mnemonicPhrase, string passphrase = "")
+        //{
+        //    // Derive the seed from the mnemonic phrase and passphrase
+        //    var seed = new Mnemonic(mnemonicPhrase).DeriveSeed(passphrase);
+
+        //    // Create an HD wallet using the seed
+        //    var wallet = new Wallet(seed);
+
+        //    // Get the private key for the first address index (address at index 0)
+        //    var privateKey = wallet.GetAccount(0).PrivateKey;
+
+        //    return privateKey;
+        //}
+
 
     }
 }
