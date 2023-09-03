@@ -41,12 +41,12 @@ builder.Services.AddSession(options => //добавление сесс1ий
     options.Cookie.IsEssential = true;
 });
 builder.Services.AddAntiforgery(x => x.HeaderName = "X-ANTI-FORGERY-TOKEN");
-//builder.Services.AddSingleton<Web3>(provider =>
-//{
-//    // Configure the Ethereum node URL
-//    var ethereumUrl = "https://sepolia.infura.io/v3/96eb1666f8a142ed9c21d5e2fa776874";
-//    return new Web3(ethereumUrl);
-//});
+builder.Services.AddSingleton<Web3>(provider =>
+{
+    // Configure the Ethereum node URL
+    var ethereumUrl = "https://sepolia.infura.io/v3/96eb1666f8a142ed9c21d5e2fa776874";
+    return new Web3(ethereumUrl);
+});
 
 builder.Services.AddDbContext<Babadzaki_DAL.ApplicationDbContext>(options =>
 options.UseSqlServer(
@@ -65,11 +65,11 @@ builder.Services.AddAutoMapper(typeof(Babadzaki_Domain.Mappings.JsonTokenProfile
 ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 var app = builder.Build();
 
-//using (var scope = app.Services.CreateScope())
-//{
-//    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-//    dbContext.Database.Migrate();
-//}
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
+}
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {   

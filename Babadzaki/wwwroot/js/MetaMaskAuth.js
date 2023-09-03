@@ -52,6 +52,7 @@ async function sendSignatureToServer(walletAddress, oneTimeCode, signature) {
     })
         .then(response => {
             // Handle the server response
+            
             console.log(response);
         })
         .catch(error => {

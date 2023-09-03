@@ -9,6 +9,7 @@ button.addEventListener('click', async () => {
         const ethereum = window.ethereum
         ethereum.enable(); // Request user permission to access their accounts
         const web3 = new Web3(ethereum)
+        
         console.log("web3: " + web3)
         
         
@@ -67,7 +68,7 @@ button.addEventListener('click', async () => {
 
                 })
                     .then(response => {
-                        // Handle the server response
+                        localStorage.setItem("AddressFrom", walletAddress)
                         console.log("7" + response);
                     })
                     .catch(error => {

@@ -5,8 +5,14 @@
 }
 @Html.AntiForgeryToken()
 <h1>MetaMaskAuth</h1>
-<button id="connectWalletButton">Connect Wallet</button>mintButton
-<button id="mintButton">Mint</button>
-
+<button onclick="loginWithEth()">Connect Wallet</button>
+<p id="userAddress" class="text-gray-600"></p>
+<button id="logoutButton" onclick="logout()" class="hidden text-blue-500 underline"> Logout </button>
+<button id="mintButton" 
+        onclick="mint()">
+    Mint
+</button>
+@*
 <script src="~/js/Web3Auth1.1.js"></script>
-<script src="~/js/mint.js"></script>
+<script src="~/js/mint1.1.js"></script>*@
+<script src="~/js/Web3.js"></script>

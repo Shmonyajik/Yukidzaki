@@ -15,6 +15,7 @@ using System.Numerics;
 using Nethereum.ABI;
 using Babadzaki_Domain.ViewModels;
 using NuGet.Protocol;
+using Nethereum.ABI.Model;
 
 namespace Babadzaki.Controllers
 {
@@ -87,35 +88,84 @@ namespace Babadzaki.Controllers
             }
 
         }
-        public async Task<bool> Mint(string senderAddress = "0xEefeED9305B87a571CBA2974D9643c7BA1106547")
+        [HttpPost]
+        public async Task<JsonResult> Mint([FromBody]MintData mintData)
         {
-            string ethereumNetworkUrl = "https://polygon.llamarpc.com";
-            Web3 web3 = new Web3(ethereumNetworkUrl);
-            string contractAddress = "0x7631CbEF26474677abcF6B063f53B3741907177C";  // Replace with your smart contract address
-            string contractABI;
-            using (var reader = new System.IO.StreamReader("wwwroot/ContractABI.json"))
+            try
             {
-                contractABI = reader.ReadToEnd();
+                string ethereumNetworkUrl = "https://sepolia.infura.io/v3/96eb1666f8a142ed9c21d5e2fa776874";
+                Web3 _web3 = new Web3(ethereumNetworkUrl);
+                var contractAddress = "0xF416fAa0185070AE542c795f41EC4580Dd35C584"; // Адрес вашего контракта
+                var userAddress = mintData.user_address; // Адрес пользователя
+                var quantity = mintData.quantity; // Количество монет для монетного двора
+                string contractABI;
+                using (var reader = new System.IO.StreamReader("wwwroot/ContractABI.json"))
+                {
+                    contractABI = reader.ReadToEnd();
+                }
+                var contract = _web3.Eth.GetContract(contractABI, contractAddress);
+                var function = contract.GetFunction("safeMint");
+
+                
+                var gasLimit = new HexBigInteger(2000000);
+                var nonce = await _web3.Eth.Transactions.GetTransactionCount.SendRequestAsync(userAddress);
+                var encodedInput = function.GetData(quantity);
+                var transactionInput = new TransactionInput
+                {
+                    From = userAddress,
+                    To = contractAddress,
+                    GasPrice = new HexBigInteger(await GetGasPriceAsync(ethereumNetworkUrl)),
+                    Gas = gasLimit,
+                    Nonce = new HexBigInteger(nonce),
+                    Value = new HexBigInteger(0),
+                    Data = encodedInput
+                };
+
+                return new JsonResult(Ok(new { TransactionInput = transactionInput }));
+
             }
-            // Replace with your smart contract ABI
-            var contract = web3.Eth.GetContract(contractABI, contractAddress);
-            var mintFunction = contract.GetFunction("publicMint");
-            // Create the transaction input
-            var transactionInput = new TransactionInput
+            catch (Exception ex)
             {
-                To = contractAddress,
-                From = senderAddress, // Your wallet address that will send the transaction
-                Value = new HexBigInteger(0),
-                Gas = new HexBigInteger("400000"), // Set the appropriate gas limit
-                GasPrice = new HexBigInteger(await GetGasPriceAsync(ethereumNetworkUrl)), // Set the appropriate gas price
-            };
+                return new JsonResult(BadRequest(new { Message = ex.Message }));
+            }
+        }
 
-            // Send the transaction and wait for the receipt
-            var transactionReceipt = await mintFunction.SendTransactionAndWaitForReceiptAsync(transactionInput, new CancellationToken());
+        public class MintData
+        {
+            public string user_address { get; set; }
 
-            return transactionReceipt.Status.Value == 1;
+            public int quantity { get; set; }
+            
+        }
+        //public async Task<bool> Mint(string senderAddress = "0xEefeED9305B87a571CBA2974D9643c7BA1106547")
+        //{
+        //    string ethereumNetworkUrl = "https://mainnet.infura.io/v3/96eb1666f8a142ed9c21d5e2fa776874";
+        //    Web3 web3 = new Web3(ethereumNetworkUrl);
+        //    string contractAddress = "0xd075875c6C3718c40e0F0eBbBeA46a6e09ec14D1";  // Replace with your smart contract address
+        //    string contractABI;
+        //    using (var reader = new System.IO.StreamReader("wwwroot/ContractABI.json"))
+        //    {
+        //        contractABI = reader.ReadToEnd();
+        //    }
+        //    // Replace with your smart contract ABI
+        //    var contract = web3.Eth.GetContract(contractABI, contractAddress);
+        //    var mintFunction = contract.GetFunction("safeMint");
+        //    // Create the transaction input
+        //    var transactionInput = new TransactionInput
+        //    {
+        //        To = contractAddress,
+        //        From = senderAddress, // Your wallet address that will send the transaction
+        //        Value = new HexBigInteger(0),
+        //        Gas = new HexBigInteger("400000"), // Set the appropriate gas limit
+        //        GasPrice = new HexBigInteger(await GetGasPriceAsync(ethereumNetworkUrl)), // Set the appropriate gas price
+        //    };
 
-        }//recipientAddress, new HexBigInteger(0), new HexBigInteger(500000), recipientAddress, amountToMint
+        //    // Send the transaction and wait for the receipt
+        //    var transactionReceipt = await mintFunction.SendTransactionAndWaitForReceiptAsync(transactionInput, new CancellationToken());
+
+        //    return transactionReceipt.Status.Value == 1;
+
+        //}//recipientAddress, new HexBigInteger(0), new HexBigInteger(500000), recipientAddress, amountToMint
 
         private async Task<BigInteger> GetGasPriceAsync(string rpcUrl)
         {
@@ -123,7 +173,7 @@ namespace Babadzaki.Controllers
             var gasPrice = await web3.Eth.GasPrice.SendRequestAsync();
             BigInteger gweiValue = gasPrice.Value / 1_000_000_000;
             return gweiValue;
-            
+
         }
 
         public JsonResult GetContractData()
@@ -136,19 +186,7 @@ namespace Babadzaki.Controllers
             return new JsonResult(smartcontract.ToJson());
 
         }
-        //public string GeneratePrivateKeyFromMnemonic(string mnemonicPhrase, string passphrase = "")
-        //{
-        //    // Derive the seed from the mnemonic phrase and passphrase
-        //    var seed = new Mnemonic(mnemonicPhrase).DeriveSeed(passphrase);
 
-        //    // Create an HD wallet using the seed
-        //    var wallet = new Wallet(seed);
-
-        //    // Get the private key for the first address index (address at index 0)
-        //    var privateKey = wallet.GetAccount(0).PrivateKey;
-
-        //    return privateKey;
-        //}
 
 
     }
@@ -158,3 +196,5 @@ namespace Babadzaki.Controllers
 //3)Будет ли это работать с другими узлами(в том числе и с нашим узлом infura)
 //4)Подключатся ли другие кошельки( не MetaMask)
 //5)Добавить сессию и все последующие мероприятия после аутентификации
+
+//inpage.js:1 MetaMask no longer injects web3. For details, see: https://docs.metamask.io/guide/provider-migration.html#replacing-window-web3
