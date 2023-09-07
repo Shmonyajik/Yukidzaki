@@ -1,0 +1,75 @@
+﻿@model Yukidzaki.Models.Token
+@using Babadzaki_Services
+
+@{
+    var title = "Delete Token";
+}
+<form method="Post">
+<div>
+    <h4>Token</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.edition)
+        </dt>
+        <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.edition)
+        </dd>
+        <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Image)
+        </dt>
+        <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Image)
+        </dd>
+        <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.SeasonCollection)
+        </dt>
+        <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.SeasonCollection.Name)
+        </dd>
+            @foreach (var type in Model.TokensFilters)
+            {
+                <dt class = "col-sm-2">
+                    @Html.DisplayFor(modelItem => type.Filter.Name)
+                </dt>
+               <dd class = "col-sm-10">
+                    @Html.DisplayFor(modelItem => type.Value)
+               </dd>
+            }
+    </dl>
+</div>
+<div class="col-4 ">
+        @* Keep this empty *@
+        @if (Model.Image != null)
+        {
+            <img src ="@WebConstants.ImagePath@WebConstants.OriginalDirectoryPath@Model.Image" width="100%" style="border-radius:5px;border:1px; solid #bbb"/>
+        }
+            </div>
+<div> 
+       
+<input asp-for="Id" hidden />
+@*Скрытое поле для согласованности с моделью*@
+    
+                <div class="form-group row">
+                    <div class="col-8 offset-4 row">
+                        <div class="col">
+                                <button type="submit" class="btn btn-danger w-100">Delete</button>
+                        </div>
+
+                        <div class="col">
+                            <a asp-action="Index" class="btn btn-success w-100"><i class="fas fa-sign-out-alt"></i> Back</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+    </div>
+
+</form>

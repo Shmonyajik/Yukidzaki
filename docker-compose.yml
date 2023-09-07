@@ -1,28 +1,36 @@
 version: "3.9"
 networks:
-  deploy-babadzaki-dev:
+  deploy-yukidzaki-dev:
     driver: bridge
 services:
   app: 
-    container_name: babadzaki_app
-    image: shmonyajik/babadzaki_app:dev
+    container_name: yukidzaki_app
+    image: shmonyajik/yukidzaki_app:dev
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "8080:80"
+      - "8081:443"
     networks:
-      - deploy-babadzaki-dev
+      - deploy-yukidzaki-dev
     depends_on:
       - mssqlserver_db
+    environment:
+      ASPNETCORE_URLS: "https://localhost:8081+;http://localhost8080+"
+      ASPNETCORE_HTTPS: "8081"
+      ASPNETCORE_ENVIRONMENT: "Development"
+    volumes:
+      - ${APPDATA}\Microsoft\UserSecrets:/root/.microsoft/usersecrets
+      - ${USERPROFILE}\.aspnet\https:/root/.aspnet/https/
   mssqlserver_db:  
-    container_name: BabadzakiDbServer
+    container_name: YukidzakiDbServer
     image: "mcr.microsoft.com/mssql/server:2022-latest"
     environment:
     - MSSQL_SA_PASSWORD=Ghbdtn19735
     - MSSQL_USER=Denis
     - MSSQL_PASSWORD=1234
-    - MSSQL_DB=BabadzakiDb
+    - MSSQL_DB=YukidzakiDb
     - ACCEPT_EULA=Y
     - MSSQL_PID=Developer
     - MSSQL_TCP_PORT=1433
@@ -32,9 +40,11 @@ services:
     ports:
       - "1433:1433"
     networks:
-      - deploy-babadzaki-dev
+      - deploy-yukidzaki-dev
     volumes:
       - mssql-data:/var/lib/mssql/data
 volumes:
   mssql-data:
+  
+
       

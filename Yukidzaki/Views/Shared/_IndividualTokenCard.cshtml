@@ -1,0 +1,47 @@
+﻿@model Yukidzaki_Domain.Models.Token
+
+@using Babadzaki_Services
+@using Newtonsoft.Json
+@*@{
+    var tokenJson = new 
+}*@
+
+
+
+<div class="col-xl-3 col-lg-4 col-sm-6">
+        <div class="cs-card cs-style4 cs-box_shadow cs-white_bg">
+        @*JsonConvert.SerializeObject(Model, Formatting.Indented))*@
+            
+        <a href="#" style="cursor: pointer" class="cs-card_thumb cs-zoom_effect" onclick="openModal({url: '/Gallery/TokenDetails', data: '@Model.edition'},{url: '/Gallery/PartialViewAction', data: '@Model.edition'})"
+           data-toggle="modal" data-target="#nftTOKEN">
+            <img class="cs-zoom_item " data-tilt src="@WebConstants.PreviewDirectoryPath@($"{Model.edition}.png")" @*src="data:image/gif;base64,R0lGODlhCgAIAIABAN3d3f///yH5BAEAAAEALAAAAAAKAAgAAAINjAOnyJv2oJOrVXrzKQA7"*@ alt="Image">
+        </a>
+            <div class="cs-card_info">
+                <hr>
+                <div class="cs-card_footer">
+                <span class="cs-card_btn_1" data-modal="#history_1">
+                    <a>
+                        @($"Yukidzaki №{Model.edition}")
+                    </a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="cs-height_30 cs-height_lg_30"></div>
+    </div>
+
+
+  
+
+
+@*////////////////////////////////////////////////*@
+
+
+
+
+
+   @* <div class="col-lg-4 col-md-6 pb-4 filter @Model.SeasonCollection.Name.Replace(' ','_')">
+
+        <img class="card-img-top img-fluid d-block mx-auto mb-3" src="@WebConstants.ImagePath@Model.Image" alt="Card image cap">
+        <span class="badge p-2 border w-100" style="background-color:lavenderblush">@Model.SeasonCollection.Name</span>
+<a asp-controller="TokenManagement" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-dark form-control btn-sm p-2" style="height:40px">View Details</a>*@

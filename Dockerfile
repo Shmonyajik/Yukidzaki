@@ -7,21 +7,21 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["Babadzaki/Babadzaki.csproj", "Babadzaki/"]
-COPY ["Babadzaki_DAL/Babadzaki_DAL.csproj", "Babadzaki_DAL/"]
-COPY ["Babadzaki_Domain/Babadzaki_Domain.csproj", "Babadzaki_Domain/"]
-COPY ["Babadzaki_Serivces/Babadzaki_Serivces.csproj", "Babadzaki_Serivces/"]
-RUN dotnet restore "Babadzaki/Babadzaki.csproj"
+COPY ["Yukidzaki/Yukidzaki.csproj", "Yukidzaki/"]
+COPY ["Yukidzaki_DAL/Yukidzaki_DAL.csproj", "Yukidzaki_DAL/"]
+COPY ["Yukidzaki_Domain/Yukidzaki_Domain.csproj", "Yukidzaki_Domain/"]
+COPY ["Yukidzaki_Services/Yukidzaki_Services.csproj", "Yukidzaki_Services/"]
+RUN dotnet restore "Yukidzaki/Yukidzaki.csproj"
 
 
 COPY . .
-WORKDIR "/src/Babadzaki"
-RUN dotnet build "Babadzaki.csproj" -c Release -o /app/build
+WORKDIR "/src/Yukidzaki"
+RUN dotnet build "Yukidzaki.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Babadzaki.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "Yukidzaki.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Babadzaki.dll"]
+ENTRYPOINT ["dotnet", "Yukidzaki.dll"]
