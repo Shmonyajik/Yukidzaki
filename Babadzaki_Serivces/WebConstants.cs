@@ -5,6 +5,7 @@
         public static string CompanyName = "Babadzaki";
 
         public static string ImagePath = @"https://gateway.pinata.cloud/ipfs/";
+        public static string IconsPath = @"/img/Icons/";
         public static string OriginalDirectoryPath = @"https://nftstorage.link/ipfs/bafybeiatntolaborgudfnegji6w7zqgohyvmnnd64ozz6mnetankwmttnm/";
         public static string PreviewDirectoryPath = @"/img/Images/";//https://bafybeiae2a4skkbqam5qbgoprbzemj5kaotl76bb6zdr6i7eqrbt42wfra.ipfs.nftstorage.link/
         public static int PageOfTokensSize = 50;//есть в скрипте

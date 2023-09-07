@@ -59,13 +59,14 @@
     <Folder Include="Views\RefactoringTest\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\img\token\JSON\" />
+    <Folder Include="wwwroot\img\Icons\" />
     <Folder Include="wwwroot\load-json-tokens\" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Babadzaki_DAL\Babadzaki_DAL.csproj" />
-    <ProjectReference Include="..\Babadzaki_Domain\Babadzaki_Domain.csproj" />
-    <ProjectReference Include="..\Babadzaki_Serivces\Babadzaki_Serivces.csproj" />
+    <ProjectReference Include="..\Babadzaki_DAL\Yukidzaki_DAL.csproj" />
+    <ProjectReference Include="..\Babadzaki_Domain\Yukidzaki_Domain.csproj" />
+    <ProjectReference Include="..\Babadzaki_Serivces\Yukidzaki_Serivces.csproj" />
   </ItemGroup>
 
 </Project>

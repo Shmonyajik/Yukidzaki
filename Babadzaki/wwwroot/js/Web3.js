@@ -1,16 +1,22 @@
 ﻿window.userAddress = null;
-//window.onload = async () => {
-//    // Init Web3 connected to ETH network
-//    if (window.ethereum) {
-//        window.web3 = new Web3(window.ethereum);
-//    } else {
-//        alert("No ETH brower extension detected.");
-//    }
+window.onload = async () => {
+    // Init Web3 connected to ETH network
+    if (window.ethereum) {
+        window.web3 = new Web3(window.ethereum);
+        if (chainId === '0x1') {
+            window.userAddress = window.localStorage.getItem("userAddress");
+            showAddress();
+        }
+        else {
 
-//    // Load in Localstore key
-//    window.userAddress = window.localStorage.getItem("userAddress");
-//    showAddress();
-//};
+        }
+
+    } else {
+        alert("No ETH brower extension detected.");
+    }
+}
+    // Load in Localstore key
+   
 
 // Use this function to turn a 42 character ETH address
 // into an address like 0x345...12345

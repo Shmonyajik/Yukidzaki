@@ -15,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Babadzaki_DAL\Babadzaki_DAL.csproj" />
-    <ProjectReference Include="..\Babadzaki_Domain\Babadzaki_Domain.csproj" />
+    <ProjectReference Include="..\Babadzaki_DAL\Yukidzaki_DAL.csproj" />
+    <ProjectReference Include="..\Babadzaki_Domain\Yukidzaki_Domain.csproj" />
   </ItemGroup>
 
 </Project>

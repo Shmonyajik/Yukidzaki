@@ -9,6 +9,8 @@ namespace Babadzaki_Domain.ViewModels
         public IEnumerable<Filter> Filters { get; set; }
         public IEnumerable<TokensFilters> TokensFilters { get; set; }
 
+        public Dictionary<int, int> TokensWithAttributeCount { get; set; }
+
 
 
 

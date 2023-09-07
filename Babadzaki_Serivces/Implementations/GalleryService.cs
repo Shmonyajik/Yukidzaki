@@ -10,12 +10,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using static Microsoft.AspNetCore.Hosting.Internal.HostingApplication;
+using static Org.BouncyCastle.Asn1.Cmp.Challenge;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Babadzaki_Serivces.Implementations
 {
@@ -50,16 +53,36 @@ namespace Babadzaki_Serivces.Implementations
                 {
                     SeasonCollections = await _seasonCollectionRepository.GetAll().ToListAsync(),
 
-                    TokensFilters = await _tokensFiltersRepository.GetAll().///неработает
-                    Include(f => f.Filter).GroupBy(tf => new { tf.Value, tf.Filter.Name}).
-                    Select(x =>new TokensFilters{
-                        Value = x.Key.Value,
-                        Filter = new Filter {Name = x.Key.Name } 
-                    }).
-                    ToListAsync(),
+                    TokensFilters = await _tokensFiltersRepository.GetAll()
+                               .Include(f => f.Filter)
+                               .Select(tf => new
+                               {
+                                   tf.Id, // Добавляем Id записей
+                                   tf.Value,
+                                   tf.Filter.Name
+                               })
+                               .GroupBy(x => new { x.Value, x.Name })
+                               .Select(x => new TokensFilters
+                               {
+                                   Id = x.Select(y => y.Id).First(), // Выбираем Id из первой записи в группе
+                                   Value = x.Key.Value,
+                                   Filter = new Filter { Name = x.Key.Name }
+                               })
+                               .ToListAsync(),
 
-                    Filters = await _filterRepository.GetAll().ToListAsync()
+                    Filters = await _filterRepository.GetAll().ToListAsync(),
+                    TokensWithAttributeCount = new Dictionary<int, int>()
+                    
                 };
+                
+                var tf = await _tokensFiltersRepository.GetAll().ToListAsync();
+
+                
+                foreach (var item in galleryVM.TokensFilters)
+                {
+                    galleryVM.TokensWithAttributeCount
+                        .Add(item.Id, tf.Where(tf => tf.Value == item.Value && tf.Filter.Name == item.Filter.Name).Count());
+                }    
 
                 baseResponse.Data = galleryVM;
                 baseResponse.StatusCode = StatusCode.OK;
@@ -122,6 +145,7 @@ namespace Babadzaki_Serivces.Implementations
                 if (id!=0)
                 {
                     _cache.TryGetValue(0, out IEnumerable<Token> tokens);
+                    tokens = RandomizeTokes(tokens.ToList());
                     filterVM.tokensCount = tokens.Count();
                     filterVM.Tokens = GetTokensPage(tokens, id);
                     baseResponse.Data = filterVM;
@@ -131,10 +155,10 @@ namespace Babadzaki_Serivces.Implementations
                 }
                 if (tokensFilters is null || tokensFilters.Count()==0)
                 {
-                    tokensFinded = await _tokenRepository.GetAll().ToListAsync();
+                    tokensFinded = RandomizeTokes( await _tokenRepository.GetAll().ToListAsync());
                     _cache.Set(0, tokensFinded, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(25)));
                     filterVM.tokensCount = tokensFinded.Count();
-                    filterVM.Tokens = tokensFinded.Take(WebConstants.PageOfTokensSize);    
+                    filterVM.Tokens = tokensFinded.Take(WebConstants.PageOfTokensSize).ToList();    
                     baseResponse.StatusCode = StatusCode.OK;
                     baseResponse.Data = filterVM;
                        
@@ -174,11 +198,15 @@ namespace Babadzaki_Serivces.Implementations
                         tokensFinded = tokensFinded.Where(t => t.edition.ToString() == searchQuery).ToList();
                     }
                 }
+                tokensFinded = RandomizeTokes(tokensFinded.ToList());
                 _cache.Set(0, tokensFinded, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
+
                 filterVM.Tokens = tokensFinded.Take(WebConstants.PageOfTokensSize).ToList();
+                
                 filterVM.tokensCount = tokensFinded.Count();
 
-
+                
+                
                 //return PartialView("_TokenCardGallery", tokens);
                 baseResponse.Data = filterVM;
                 baseResponse.StatusCode = StatusCode.OK;
@@ -201,5 +229,20 @@ namespace Babadzaki_Serivces.Implementations
             return tokens.Skip(itemsToSkip).
                 Take(WebConstants.PageOfTokensSize).ToList();
         }
+
+        private List<Token> RandomizeTokes(List<Token> tokens)
+        {
+            Random random = new Random();
+            for (int i = tokens.Count - 1; i >= 1; i--)
+            {
+                int j = random.Next(i + 1);
+                // обменять значения data[j] и data[i]
+                var temp = tokens[j];
+                tokens[j] = tokens[i];
+                tokens[i] = temp;
+            }
+            return tokens;
+        }
+
     }
 }

@@ -19,10 +19,12 @@ namespace Babadzaki_Serivces.Implementations
     {
         private readonly IBaseRepository<Token> _tokenRepository;
         private readonly IBaseRepository<Email> _emailRepository;
+        
         public HomeService(IBaseRepository<Token> tokenRepository, IBaseRepository<Email> emailRepository)
         {
             _tokenRepository = tokenRepository;
             _emailRepository = emailRepository;
+            
         }
 
         public async Task<BaseResponse<HomeVM>> GetTokens()
@@ -30,7 +32,7 @@ namespace Babadzaki_Serivces.Implementations
             var baseResponse = new BaseResponse<HomeVM>();
             try
             {
-                var tokens = await _tokenRepository.GetAll().ToListAsync();
+                var tokens = RandomizeTokes( await _tokenRepository.GetAll().ToListAsync()).Take(25);
 
                 baseResponse.Data = new HomeVM { Tokens = tokens, Email = new Email() };
 
@@ -81,7 +83,21 @@ namespace Babadzaki_Serivces.Implementations
             }
         }
 
+        private List<Token> RandomizeTokes(List<Token> tokens)
+        {
+            Random random = new Random();
+            for (int i = tokens.Count - 1; i >= 1; i--)
+            {
+                int j = random.Next(i + 1);
+                // обменять значения data[j] и data[i]
+                var temp = tokens[j];
+                tokens[j] = tokens[i];
+                tokens[i] = temp;
+            }
+            return tokens;
+        }
 
-        
+
+
     }
 }

@@ -15,7 +15,7 @@ namespace Babadzaki_DAL.Interfaces
         Task Delete(T model);
 
         Task<T> Update(T model);
-        
+     
         
     }
 }

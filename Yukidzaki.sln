@@ -3,19 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Babadzaki", "Babadzaki\Babadzaki.csproj", "{9A0FF26F-F190-484C-8CCC-E4930B5D1493}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yukidzaki", "Babadzaki\Yukidzaki.csproj", "{9A0FF26F-F190-484C-8CCC-E4930B5D1493}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{8BFCFDF5-27A1-4353-9A87-FB6EED70A289}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Babadzaki_Domain", "Babadzaki_Domain\Babadzaki_Domain.csproj", "{430F362C-77F2-4C0F-A004-C69F429BAFC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yukidzaki_Domain", "Babadzaki_Domain\Yukidzaki_Domain.csproj", "{430F362C-77F2-4C0F-A004-C69F429BAFC3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL", "DAL", "{A19D390D-550C-4EAE-BDB9-C14957BBEF00}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Babadzaki_DAL", "Babadzaki_DAL\Babadzaki_DAL.csproj", "{7D3BD853-3A32-4CDE-8095-D5F3D966B3DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yukidzaki_DAL", "Babadzaki_DAL\Yukidzaki_DAL.csproj", "{7D3BD853-3A32-4CDE-8095-D5F3D966B3DA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{8BA43FF0-A735-4EDC-B77C-5406539D7C27}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Babadzaki_Serivces", "Babadzaki_Serivces\Babadzaki_Serivces.csproj", "{31257BCA-1454-406C-8D80-E3E478529A43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yukidzaki_Serivces", "Babadzaki_Serivces\Yukidzaki_Serivces.csproj", "{31257BCA-1454-406C-8D80-E3E478529A43}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
