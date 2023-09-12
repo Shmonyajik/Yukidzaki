@@ -12,6 +12,7 @@
     <Compile Remove="Controllers\ApiController.cs" />
     <Compile Remove="Controllers\FilterManagementController.cs" />
     <Compile Remove="Controllers\Gallery3Controller.cs" />
+    <Compile Remove="Controllers\MintController.cs" />
     <Compile Remove="Controllers\OldTokenManagementController.cs" />
     <Compile Remove="Controllers\SeasonCollectionController.cs" />
   </ItemGroup>

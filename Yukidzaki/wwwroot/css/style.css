@@ -1,6 +1,8 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Mulish:wght@400;500;600;700&display=swap");
 
+@import url('https://fonts.googleapis.com/css2?family=Imbue:opsz,wght@10..100,100&family=Mulish&family=Poiret+One&display=swap');
+
 @media screen and (min-width: 992px) {
     .cs-height_0 {
         height: 0px;
@@ -1346,18 +1348,23 @@ input::-webkit-inner-spin-button {
     align-items: center;
     -webkit-box-pack: justify;
     -ms-flex-pack: justify;
-    justify-content: space-between;
+    justify-content: flex-start;
     margin-bottom: 0;
     cursor: pointer;
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
 }
 
-    .cs-filter_toggle_btn:hover {
-        color: #3fc3c3;
-    }
+.cs-filter_toggle_btn img{
+    margin-right: 10px;
+}
+
+.cs-filter_toggle_btn:hover {
+    color: #3fc3c3;
+}
 
     .cs-filter_toggle_btn .cs-arrow_icon {
+        margin-left: auto;
         -webkit-transition: inherit;
         transition: inherit;
         -webkit-transform: rotate(180deg);
@@ -1365,6 +1372,7 @@ input::-webkit-inner-spin-button {
     }
 
     .cs-filter_toggle_btn.active .cs-arrow_icon {
+        margin-left: auto;
         -webkit-transform: rotate(0deg);
         transform: rotate(0deg);
     }
@@ -1394,6 +1402,14 @@ input::-webkit-inner-spin-button {
 
 .form-check-label {
     font-size: 20px;
+    margin-left: 3px;
+}
+
+.form-check-counts {
+    font-size: 16px;
+    display: table-cell;
+    text-align: right;
+    font-family: 'Poiret One', cursive;
 }
 
 .form-check-input:checked[type=radio] {
@@ -1410,8 +1426,11 @@ input::-webkit-inner-spin-button {
     width: 290px;
 }
 #cs-search_by_id {
+    max-width: 100%;   
+}
+
+#cs-search_by_name {
     max-width: 100%;
-   
 }
 
 
@@ -1466,7 +1485,7 @@ input::-webkit-inner-spin-button {
     }
 
 .cs-search_widget {
-    padding-top: 15px;
+    padding: 15px 15px;
 }
 
     .cs-search_widget .cs-search {
@@ -1599,11 +1618,12 @@ input::-webkit-inner-spin-button {
     align-items: center;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
-    margin: -5px -7px;
+    /*margin: -5px -7px;*/
+    max-width: 100%
 }
 
     .cs-filter_head_left > * {
-        margin: 5px 7px;
+       /* margin: 5px 7px;*/
     }
 
 .cs-filter_head_right {
@@ -6209,17 +6229,10 @@ input::-webkit-inner-spin-button {
     padding: 10px;
     border-radius: 15px;
     animation: showBlock 1s linear forwards;
+    text-align: center !important;
 }
 
-@keyframes showBlock {
-    from {
-        opacity: 0;
-    }
 
-    to {
-        opacity: 1;
-    }
-}
 
 /*.tokenCardGallery {
     height: 100vh;
@@ -7403,7 +7416,7 @@ input::-webkit-inner-spin-button {
 19. Dark Mode
 ----------------------------------------------------------------*/
 body.cs-dark {
-    background-color: #080326;
+    background-color: #080225;
     color: rgba(255, 255, 255, 0.8);
 }
 
@@ -7602,11 +7615,12 @@ body.cs-dark {
 
 
 .form-check {
-    display: block;
+    display: table;
     min-height: 1.5rem;
     padding-left: 1.5em;
     margin-bottom: 0.125rem;
     margin-top: 15px;
+    width: 100%
 }
 
 }

@@ -28,9 +28,6 @@ namespace Yukidzaki.Controllers
         public MetaMaskAuthController()
         {
 
-
-
-
         }
         public IActionResult Index()
         {
@@ -186,6 +183,13 @@ namespace Yukidzaki.Controllers
             return new JsonResult(smartcontract.ToJson());
 
         }
+        [HttpGet]
+        public ActionResult ConnectWallet()
+        {
+            return PartialView("_ModalWallets");
+        }
+
+
 
 
 

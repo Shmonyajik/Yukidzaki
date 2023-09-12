@@ -1,14 +1,17 @@
 ﻿window.userAddress = null;
 window.onload = async () => {
     // Init Web3 connected to ETH network
+    console.log("onload!")
     if (window.ethereum) {
+        debugger
         window.web3 = new Web3(window.ethereum);
+        chainId = await ethereum.request({ method: 'eth_chainId' });
         if (chainId === '0x1') {
             window.userAddress = window.localStorage.getItem("userAddress");
-            showAddress();
+            //showAddress();
         }
         else {
-
+            console.log("ElseOnload")
         }
 
     } else {
@@ -30,26 +33,7 @@ function truncateAddress(address) {
     )}`;
 }
 
-// Display or remove the users know address on the frontend
-function showAddress() {
-    if (!window.userAddress) {
-        document.getElementById("userAddress").innerText = "";
-        document.getElementById("logoutButton").classList.add("hidden");
-        return false;
-    }
 
-    document.getElementById(
-        "userAddress"
-    ).innerText = `ETH Address: ${truncateAddress(window.userAddress)}`;
-    document.getElementById("logoutButton").classList.remove("hidden");
-}
-
-// remove stored user address and reset frontend
-function logout() {
-    window.userAddress = null;
-    window.localStorage.removeItem("userAddress");
-    showAddress();
-}
 
 // Login with Web3 via Metamasks window.ethereum library
 async function loginWithEth() {
@@ -57,11 +41,12 @@ async function loginWithEth() {
         window.web3 = new Web3(window.ethereum);
         
         // Load in Localstore key
-        switchToEthereumMainnet()
+        checkChainId()
     
             try {
                 // We use this since ethereum.enable() is deprecated. This method is not
                 // available in Web3JS - so we call it directly from metamasks' library
+                debugger
                 const selectedAccount = await window.ethereum
                     .request({
                         method: "eth_requestAccounts",
@@ -96,7 +81,7 @@ async function loginWithEth() {
                     const antiForgeryToken = $('input[name="__RequestVerificationToken"]').val();
                     console.log("antiForgeryToken: " + antiForgeryToken)
                     VerifySignatureRequest = {
-                        walletAddress: window.userAddress,
+                        walletAddress: selectedAccount,
                         oneTimeCode: oneTimeCode.Value,
                         signature: signature
                     }
@@ -107,7 +92,7 @@ async function loginWithEth() {
                             xhr.responseType = 'json'
                             xhr.setRequestHeader('Content-Type', 'application/json')
                             xhr.setRequestHeader('X-ANTI-FORGERY-TOKEN', antiForgeryToken)
-
+                            debugger
                             xhr.onload = () => {
                                 if (xhr.status >= 400) {
                                     reject(xhr.response)
@@ -122,9 +107,10 @@ async function loginWithEth() {
 
                         })
                             .then(response => {
+                                debugger
                                 window.userAddress = selectedAccount;
                                 window.localStorage.setItem("userAddress", selectedAccount);
-                                showAddress();
+                                //showAddress();
                                 console.log("7" + response);
                             })
                             .catch(error => {
@@ -184,18 +170,18 @@ function checkChainId(chainId) {
     }
 }
 
-// Функция для изменения сети на Ethereum Mainnet
-// function switchToEthereumMainnet() {
-//    try {
-//        ethereum.request({
-//            method: 'wallet_switchEthereumChain',
-//            params: [{ chainId: '0x1' }], // Идентификатор Ethereum Mainnet
-//        });
-//        console.log('Переключено на Ethereum Mainnet');
-//    } catch (error) {
-//        console.error('Ошибка при переключении на Ethereum Mainnet:', error);
-//    }
-//}
+ //Функция для изменения сети на Ethereum Mainnet
+ function switchToEthereumMainnet() {
+    try {
+        ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: '0x1' }], // Идентификатор Ethereum Mainnet
+        });
+        console.log('Переключено на Ethereum Mainnet');
+    } catch (error) {
+        console.error('Ошибка при переключении на Ethereum Mainnet:', error);
+    }
+}
 function switchToEthereumMainnet() {
     
     

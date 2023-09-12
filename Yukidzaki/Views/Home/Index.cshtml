@@ -1,5 +1,31 @@
 ﻿@model Yukidzaki_Domain.ViewModels.HomeVM
 
+<section class="page-title">
+    <div class="swiper-cont slider-main">
+        <div class="swiper-wrapper">
+
+
+
+
+            <div class="swiper-slide">
+                <div class="slider-st3">
+
+                    @*<div class="overlay"></div>*@
+
+                    <div class="overlay">
+                        <div class="video">
+                            <video class="video__media" id="desktop-image" src="~/img/assets/desktop-video.mp4" autoplay muted loop></video>
+                            <img class="video__media" id="mobile-image" src="~/img/assets/mobile-image.jpg" alt="Mobile Image">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+</section>
+
 <section class="tf-section tf-about pb-mobie">
     <div class="container">
         <div class="row">
@@ -7,12 +33,14 @@
                 <div class="content-about mobie-40" data-aos="fade-up" data-aos-duration="800">
                     <div class="tf-title st2">
                         <p class="h8 sub-title">About us</p>
-                        <h4 class="title">What is cybox?</h4>
+                        <h4 class="title">What is Yukidzaki?</h4>
                     </div>
                     <p>
-                        Maecenas sit pretium, cras in. In quisque sem id eget. In vel gravida ut adipiscing integer felis.
-                        Id ac non arcu facilisi proin ultrices sed. Id accumsan quam viverra ante in id integer ut.
-                        Volutpat lobortis dolor etiam dis interdum tincidunt senectus.
+                        Step into a world where anime and blockchain technology merge to create an innovative and captivating NFT project - "AnimeVerse Chronicles: NFT Adventures." Immerse yourself in a universe where iconic anime characters, breathtaking landscapes, and captivating stories come to life through the power of non-fungible tokens (NFTs).
+                    </p>
+                    <p>
+                        Concept:
+                        "AnimeVerse Chronicles" is a unique NFT project that brings together the creativity of anime storytelling and the collectible nature of NFTs. Each NFT represents a specific character, scene, or item from a diverse range of anime genres. From futuristic sci-fi settings to fantasy realms and slice-of-life moments, every NFT holds a piece of the AnimeVerse universe.
                     </p>
                     <a class="tf-button st2 btn-effect" href="item.html">
                         <span class="boder-fade"></span>
@@ -23,24 +51,21 @@
             <div class="col-md-7">
                 <div class="wrap-about p-l70" data-aos="fade-up" data-aos-duration="800">
                     <div class="box-text corner-box">
-                        <div class="h7">Unique, 1/1 generated</div>
+                        <div class="h7">Yukidzaki NFT</div>
                         <p>
-                            Gravida viverra dui aliquet eu tortor lorem et gravida. Sed amet phasellus tellus mauris auctor rhoncus.
-                            Malesuada nisl at mauris cursus lorem mattis arcu.
+                            Each NFT is a visual masterpiece created by digital artists who are passionate about both blockchain technology and anime culture.
                         </p>
                     </div>
                     <div class="box-text corner-box">
-                        <div class="h7">140+ traits in 16 categories</div>
+                        <div class="h7">Creating a story</div>
                         <p>
-                            Ornare faucibus urna, netus ut. Ac vulputate ornare donec orci sed gravida senectus.
-                            Felis quis morbi vivamus est eget sapien magnis quis.
+                            Owners of Yukidzaki NFTs can influence the storyline and development of future artworks through token-based voting systems.
                         </p>
                     </div>
                     <div class="box-text corner-box mb-0">
-                        <div class="h7">Usage rights included</div>
+                        <div class="h7">Virtual Galleries</div>
                         <p>
-                            Ac, bibendum duis gravida nullam. At amet nibh platea nibh interdum non, egestas bibendum iaculis.
-                            Etiam tristique ultricies tristique ullamcorper donec eget odio ut.
+                            Invite friends and fellow collectors to explore your gallery, making the experience of displaying and sharing your NFTs just as enjoyable as owning them.
                         </p>
                     </div>
                 </div>
@@ -50,6 +75,46 @@
 </section>
 
 
+
+
+<section class="tf-section tf-project pb-mobie">
+    <div class="container-fluid">
+        <div class="swiper-container swiper mySwiper swiper-h">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="swiper mySwiper1 swiper-v">
+                        <div class="swiper-wrapper">
+                            @if (Model.Tokens.Count() > 0)
+                                @foreach (var token in Model.Tokens)
+                                    {
+                                        <partial name="_IndividualTokenCardSlider" model="token" />
+                                    }                                                 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="swiper-container swiper mySwiper swiper-h">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="swiper mySwiper2 swiper-v">
+                        <div class="swiper-wrapper">                       
+                                @if (Model.Tokens.Count() > 0)
+                                    @foreach (var token in Model.Tokens)
+                                    {
+                                        <partial name="_IndividualTokenCardSlider" model="token" />
+                                    }                    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
 <section class="tf-section how-we-work tablet-mb50">
     <div class="container">
         <div class="row">
@@ -57,7 +122,8 @@
                 <div class="tf-title st2 m-b60" data-aos="fade-up" data-aos-duration="800">
                     <p class="h8 sub-title">How we work</p>
                     <h4 class="title m-b17">BECOME OUR MEMBER</h4>
-                    <p class="p-r60">Maecenas sit pretium, cras in. In quisque sem id eget. In vel gravida ut adipiscing integer felis. </p>
+                    <p class="p-r60">Our NFT collection comprises limited edition artworks, ensuring that each piece is a rare and sought-after gem.</p>
+                    <p class="p-r60">Whether it's a breathtaking illustration of a legendary battle or a serene portrayal of a beloved character, owning an Yukidzaki NFT means holding a piece of anime history.</p>
                 </div>
 
             </div>
@@ -105,6 +171,10 @@
     </div>
 </section>
 
+
+
+
+
 <section class="tf-section tf-team">
     <div class="container">
         <div class="row">
@@ -118,9 +188,10 @@
                         Who we are
                     </div>
                     <p>
-                        Purus, laoreet dui augue ut euismod. Elementum ante sociis volutpat tellus enim, nisl consectetur mauris.
-                        Venenatis congue id quis eget viverra.
-                        Vestibulum, justo, euismod congue feugiat eget fames gravida posuere.
+                        Welcome to the captivating world of Yukidzaki, where creativity and blockchain technology converge to redefine the anime experience. Our diverse and passionate team is dedicated to crafting a revolutionary NFT project that bridges the gap between anime enthusiasts and the limitless possibilities of the metaverse.
+                    </p>
+                    <p>
+                        With a shared love for anime and a commitment to innovation, we're on a mission to bring beloved characters to life in a whole new dimension.
                     </p>
                 </div>
                 <div class="button-fx m-t60" data-aos="fade-in" data-aos-duration="800">
@@ -140,10 +211,10 @@
                             <div class="swiper-slide">
                                 <div class="team-box">
                                     <div class="image">
-                                        <img src="~/assets/images/common/team6.png" alt="">
+                                        <img src="~/img/assets/img6.jpg" alt="">
                                     </div>
                                     <div class="content">
-                                        <div class="h8"><a href="team-details.html">Esther Howard</a></div>
+                                        <div class="h8"><a href="team-details.html">David Rodriguez</a></div>
                                         <p>Co-founder & COO</p>
                                         <ul class="social">
                                             <li>
@@ -181,10 +252,10 @@
                             <div class="swiper-slide">
                                 <div class="team-box">
                                     <div class="image">
-                                        <img src="~/assets/images/common/team7.png" alt="">
+                                        <img src="~/img/assets/img7.jpg" alt="">
                                     </div>
                                     <div class="content">
-                                        <div class="h8"><a href="team-details.html">Devon Lane</a></div>
+                                        <div class="h8"><a href="team-details.html">Arnold Adamson</a></div>
                                         <p>Blockchain Developer</p>
                                         <ul class="social">
                                             <li>
@@ -222,10 +293,10 @@
                             <div class="swiper-slide">
                                 <div class="team-box">
                                     <div class="image">
-                                        <img src="~/assets/images/common/team8.png" alt="">
+                                        <img src="~/img/assets/img8.jpg" alt="">
                                     </div>
                                     <div class="content">
-                                        <div class="h8"><a href="team-details.html">Ralph Edwards</a></div>
+                                        <div class="h8"><a href="team-details.html">Ryan Adrian</a></div>
                                         <p>Backend Engineer</p>
                                         <ul class="social">
                                             <li>
@@ -263,11 +334,11 @@
                             <div class="swiper-slide">
                                 <div class="team-box">
                                     <div class="image">
-                                        <img src="~/assets/images/common/team9.png" alt="">
+                                        <img src="~/img/assets/img9.jpg" alt="">
                                     </div>
                                     <div class="content">
-                                        <div class="h8"><a href="team-details.html">Esther Howard</a></div>
-                                        <p>Co-founder & COO</p>
+                                        <div class="h8"><a href="team-details.html">Adeline Fane</a></div>
+                                        <p>Digital Artist</p>
                                         <ul class="social">
                                             <li>
                                                 <a href="#">
@@ -304,11 +375,11 @@
                             <div class="swiper-slide">
                                 <div class="team-box">
                                     <div class="image">
-                                        <img src="~/assets/images/common/team10.png" alt="">
+                                        <img src="~/img/assets/img10.jpg" alt="">
                                     </div>
                                     <div class="content">
-                                        <div class="h8"><a href="team-details.html">Devon Lane</a></div>
-                                        <p>Blockchain Developer</p>
+                                        <div class="h8"><a href="team-details.html">Lucas Ayrton</a></div>
+                                        <p>Mangaka</p>
                                         <ul class="social">
                                             <li>
                                                 <a href="#">
@@ -341,52 +412,12 @@
                                         </ul>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="team-box">
-                                    <div class="image">
-                                        <img src="~/assets/images/common/team11.png" alt="">
-                                    </div>
-                                    <div class="content">
-                                        <div class="h8"><a href="team-details.html">Ralph Edwards</a></div>
-                                        <p>Backend Engineer</p>
-                                        <ul class="social">
-                                            <li>
-                                                <a href="#">
-                                                    <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M12.3509 1.92618C12.9509 1.55086 13.3998 0.959866 13.6138 0.263552C13.0501 0.613589 12.4332 0.860164 11.79 0.992617C10.8983 0.00549142 9.48538 -0.23473 8.34084 0.406182C7.19629 1.04709 6.60345 2.41047 6.89359 3.73449C4.58431 3.61317 2.43281 2.4717 0.974472 0.594117C0.213393 1.9678 0.60232 3.72383 1.86328 4.60713C1.4073 4.59179 0.961439 4.4626 0.562865 4.23034C0.562865 4.24295 0.562865 4.25555 0.562865 4.26816C0.563128 5.69908 1.52688 6.93165 2.8672 7.21523C2.44425 7.33564 2.00062 7.35337 1.57013 7.26706C1.94707 8.49076 3.02485 9.3291 4.25328 9.35411C3.23586 10.1897 1.97938 10.6429 0.686012 10.6407C0.456764 10.641 0.227696 10.6272 0 10.5993C1.31339 11.4825 2.84201 11.9513 4.40319 11.9496C6.57518 11.9652 8.66251 11.0692 10.1983 9.46197C11.7341 7.85475 12.5902 5.67043 12.5751 3.39762C12.5751 3.26736 12.5722 3.13779 12.5664 3.00893C13.1289 2.58354 13.6144 2.05655 14 1.45275C13.476 1.69581 12.9201 1.8554 12.3509 1.92618Z" fill="white" />
-                                                    </svg>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M0 7.04213C0.000814479 10.5069 2.50488 13.457 5.9059 14V9.07758H4.13V7.04213H5.908V5.49265C5.82852 4.75843 6.07776 4.02669 6.58815 3.49588C7.09853 2.96507 7.81715 2.69021 8.5491 2.74584C9.07447 2.75438 9.59853 2.80146 10.1171 2.8867V4.6186H9.2323C8.92769 4.57846 8.62145 4.67968 8.39984 4.89375C8.17823 5.10782 8.06524 5.41157 8.0927 5.71943V7.04213H10.0324L9.7223 9.07829H8.0927V14C11.7708 13.4151 14.3501 10.0353 13.9619 6.30899C13.5736 2.5827 10.3539 -0.185546 6.63518 0.00972283C2.91645 0.204992 0.000591134 3.29542 0 7.04213Z" fill="white" />
-                                                    </svg>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M17.0824 0.50766C16.7958 0.267252 16.3457 0.232854 15.8803 0.417696H15.8795C15.3901 0.611989 2.02437 6.28352 1.48027 6.51523C1.3813 6.54925 0.517004 6.86829 0.606032 7.57893C0.685508 8.21964 1.38016 8.485 1.46498 8.51561L4.86296 9.66663C5.08839 10.409 5.91945 13.148 6.10324 13.7332C6.21787 14.0979 6.40471 14.5772 6.73217 14.6759C7.0195 14.7855 7.30531 14.6853 7.49024 14.5417L9.5677 12.6354L12.9213 15.2229L13.0012 15.2701C13.2289 15.3699 13.4471 15.4198 13.6554 15.4198C13.8162 15.4198 13.9706 15.3899 14.1181 15.3302C14.6205 15.1261 14.8215 14.6525 14.8425 14.5988L17.3475 1.71764C17.5004 1.02968 17.2879 0.679651 17.0824 0.50766ZM7.85973 10.127L6.71344 13.151L5.56716 9.37103L14.3554 2.94501L7.85973 10.127Z" fill="white" />
-                                                    </svg>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#">
-                                                    <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M15.0713 2.07726C13.6176 0.907426 11.3179 0.709125 11.2194 0.701991C11.0668 0.689152 10.9213 0.77475 10.8585 0.915986C10.8528 0.924546 10.8029 1.0401 10.7472 1.21986C11.7088 1.38249 12.89 1.70919 13.9586 2.37258C14.1298 2.47815 14.1826 2.70355 14.077 2.87475C14.0071 2.98745 13.8887 3.0488 13.766 3.0488C13.7004 3.0488 13.6333 3.03025 13.5734 2.99316C11.7359 1.85328 9.44187 1.79622 8.99961 1.79622C8.55735 1.79622 6.26191 1.85328 4.42583 2.99316C4.25464 3.10016 4.02923 3.04737 3.92366 2.87618C3.81666 2.70355 3.86945 2.47957 4.04064 2.37258C5.10919 1.71062 6.29044 1.38249 7.25199 1.22128C7.19635 1.0401 7.14642 0.925973 7.14214 0.915986C7.07794 0.77475 6.93385 0.686299 6.77977 0.701991C6.68134 0.709125 4.38161 0.907426 2.9079 2.09296C2.13894 2.80484 0.599609 6.9649 0.599609 10.5614C0.599609 10.6256 0.616729 10.687 0.648115 10.7426C1.70953 12.6086 4.60701 13.0966 5.26754 13.118C5.2704 13.118 5.27468 13.118 5.27896 13.118C5.39594 13.118 5.50579 13.0623 5.57427 12.9682L6.24193 12.0494C4.4401 11.5843 3.51992 10.794 3.46714 10.7469C3.31591 10.6142 3.30165 10.3831 3.43575 10.2319C3.56843 10.0807 3.79954 10.0664 3.95076 10.1991C3.97216 10.219 5.667 11.6571 8.99961 11.6571C12.3379 11.6571 14.0328 10.2133 14.0499 10.1991C14.2011 10.0678 14.4308 10.0807 14.5649 10.2333C14.6976 10.3845 14.6833 10.6142 14.5321 10.7469C14.4793 10.794 13.5591 11.5843 11.7573 12.0494L12.4249 12.9682C12.4934 13.0623 12.6033 13.118 12.7203 13.118C12.7245 13.118 12.7288 13.118 12.7317 13.118C13.3922 13.0966 16.2897 12.6086 17.3511 10.7426C17.3825 10.687 17.3996 10.6256 17.3996 10.5614C17.3996 6.9649 15.8603 2.80485 15.0713 2.07726ZM6.6257 9.10056C5.91951 9.10056 5.34744 8.44717 5.34744 7.6397C5.34744 6.83222 5.91951 6.17883 6.6257 6.17883C7.33188 6.17883 7.90396 6.83222 7.90396 7.6397C7.90396 8.44717 7.33188 9.10056 6.6257 9.10056ZM11.3735 9.10056C10.6673 9.10056 10.0953 8.44717 10.0953 7.6397C10.0953 6.83222 10.6673 6.17883 11.3735 6.17883C12.0797 6.17883 12.6518 6.83222 12.6518 7.6397C12.6518 8.44717 12.0797 9.10056 11.3735 9.10056Z" fill="white" />
-                                                    </svg>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+                            </div>                          
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-md-12">
                 <div class="swiper-button-next btn-slide-next"></div>
                 <div class="swiper-button-prev btn-slide-prev"></div>
@@ -394,71 +425,6 @@
         </div>
     </div>
 </section>
-
-
-
-
-
-<section class="tf-section tf-project pb-mobie">
-    <div class="container-fluid">
-        <div class="swiper-container swiper mySwiper swiper-h">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <div class="swiper mySwiper1 swiper-v">
-                        <div class="swiper-wrapper">
-                           
-                                @if (Model.Tokens.Count() > 0)
-                                {
-                                    @foreach (var token in Model.Tokens)
-                                    {
-                                        <partial name="_IndividualTokenCardSlider" model="token" />
-                                    }
-                                }
-                                else
-                                {
-                                    <p> No tokens exists.</p>
-                                }
-                            }
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="swiper-container swiper mySwiper swiper-h">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <div class="swiper mySwiper2 swiper-v">
-                        <div class="swiper-wrapper">
-                           
-                                @if (Model.Tokens.Count() > 0)
-                                {
-                                    @foreach (var token in Model.Tokens)
-                                    {
-                                        <partial name="_IndividualTokenCardSlider" model="token" />
-                                    }
-                                }
-                                else
-                                {
-                                    <p> No tokens exists.</p>
-                                }
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-
-
-
-
-
-
 
 
 

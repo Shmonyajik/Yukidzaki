@@ -22,7 +22,7 @@
                     <div class="cs-filter_sidebar">
 
                           <div class="cs-search_widget">
-                            <form action="#" class="cs-search">
+                            <form action="#" class="cs-search" id="cs-search_by_name">
                                 <input type="text" id="elastic_type" class="cs-search_input" placeholder="Search">
                             </form>
                         </div>
@@ -88,12 +88,10 @@ else
             {
                 <ul class="elastic_type"> 
                     <li>
-                        <div class="form-check">
-                            
-                            
-                            <input class="form-check-input" type="checkbox" id="flexCheckChecked" value = "@attr.Value" data-filter-id=@filter.Id  onclick="applyFilter()"/>
-                            <label class="form-check-label" for="flexCheckChecked">@attr.Value</label>
-                            <label class="form-check-label" for="flexCheckChecked">@Model.TokensWithAttributeCount[attr.Id]</label>
+                        <div class="form-check">                                                       
+                            <input class="form-check-input" type="checkbox" id="@attr.Value" value = "@attr.Value" data-filter-id=@filter.Id  onclick="applyFilter()"/>
+                            <label class="form-check-label" for="@attr.Value">@attr.Value</label>
+                            <label class="form-check-counts" for="attr.Value">@Model.TokensWithAttributeCount[attr.Id]</label>
                         </div>
                     </li>
 

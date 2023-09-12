@@ -14,7 +14,7 @@
     @* <link rel="stylesheet" href="~/css/mobile.1aadaa1d.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/swiper-7.4.1.0fdc8654.css" asp-append-version="true" /> *@
 
-    <link rel="stylesheet" href="~/assets/font/font-awesome.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/font/font-awesome.css" asp-append-version="true">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" asp-append-version="true">
     <link rel="shortcut icon" href="~/assets/images/favicon.png" asp-append-version="true">
 
@@ -39,7 +39,7 @@
 
     </div>
     <div id="wrapper">
-
+        
         @*<header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container-fluid">
@@ -66,7 +66,7 @@
             <div class="container">
                 <div id="site-header-inner">
                     <div class="header__logo">
-                        <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/assets/logo.png" alt=""></a>
+                        <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/img/assets/logoForSIET1.png" alt=""></a>
                     </div>
                     <nav id="main-nav" class="main-nav">
                         <ul id="menu-primary-menu" class="menu">
@@ -78,20 +78,18 @@
                                 <ul class="sub-menu">
                                     <li class="menu-item"><a asp-area="" asp-controller="Home" asp-action="About">About us</a></li>
                                     <li class="menu-item"><a asp-area="" asp-controller="Home" asp-action="ComingSoon">Coming Soon</a></li>
-                                    <li class="menu-item"><a asp-area="" asp-controller="Home" asp-action="FAQ">FAQ</a></li>
-                                    <li class="menu-item"><a asp-area="" asp-controller="Home" asp-action="Error1">404</a></li>
-                                    <li class="menu-item"><a asp-area="" asp-controller="Gallery" asp-action="Index">Gallery</a></li>
+                                    <li class="menu-item"><a asp-area="" asp-controller="FAQ" asp-action="Index">FAQ</a></li>
+                                    <li class="menu-item"><a asp-area="" asp-controller="NotFound" asp-action="Index">404</a></li>
                                 </ul>
                             </li>
                             <li class="menu-item menu-item-has-children">
-                                <a asp-area="" asp-controller="Home" asp-action="RoadMap">Road Map </a>
+                                <a asp-area="" asp-controller="Roadmap" asp-action="Index">Road Map </a>
                             </li>
                             <li class="menu-item menu-item-has-children">
                                 <a>NFT</a>
                                 <ul class="sub-menu">
                                     <li class="menu-item"><a asp-area="" asp-controller="Home" asp-action="Filter">Gallery(old)</a></li>
-                                    <li class="menu-item"><a asp-area="" asp-controller="Home" asp-action="FilterN">Gallery</a></li>
-                                    <li class="menu-item"><a asp-area="" asp-controller="Home" asp-action="ItemDetails">NFT Item Details</a></li>
+                                    <li class="menu-item"><a asp-area="" asp-controller="Gallery" asp-action="Index">Gallery</a></li>
                                 </ul>
                             </li>
                             <li class="menu-item menu-item-has-children">
@@ -108,8 +106,11 @@
                     </nav><!-- /#main-nav -->
                     <a class="tf-button btn-effect" data-toggle="modal" data-target="#popupID">
                         <span class="boder-fade"></span>
-                        <span class="effect">Connect wallet</span>
+                        <span class="effect" onclick="OpenModalWallets({url: '/MetaMaskAuth/ConnectWallet'})">Connect wallet</span>
                     </a>
+
+ 
+
                     <div class="mobile-button"><span></span></div><!-- /.mobile-button -->
                 </div>
             </div>
@@ -117,6 +118,18 @@
 
         <main role="main">
             @RenderBody()
+            <div class="modal fade popup" id="ModalWallets" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" id="nftTOKENnow" role="document">
+
+
+                    <div class="modalbody">
+                        @*Content*@
+                    </div>
+                </div>
+
+
+
+            </div>
         </main>
 
 
@@ -129,33 +142,13 @@
 
         @RenderSection("Footer", false)     
 
-
-        <div class="modal fade popup" id="popupID" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog1 modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="header-popup">
-                        <h5>Connect to a wallet</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                    <div class="modal-body center">
-                        <div class="box-wallet-inner">
-                            <div class="sc-box">
-                                <div class="img">
-                                    <img src="~/img/assets/icon-1.png" alt="Image">
-                                </div>
-                                <h6 class="heading"><a onclick="loginWithEth()">Meta Mask</a> </h6>
-                                @*<p class="content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt</p>*@
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
+        
+        
     </div>
         
+
+  
 
         
 
@@ -164,7 +157,6 @@
         @*<script src="~/lib/jquery/dist/jquery.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>*@
-    </div>
     <a id="scroll-top"></a>
 
    
@@ -186,6 +178,7 @@
     @*<script src="~/js/jquery-3.6.0.min.js"></script>*@ @*не запускается с ним(перестает работать easing(который выше))*@
     <script src="~/js/isotope.pkg.min.js"></script>
     <script src="~/js/jquery.slick.min.js"></script>
+    <script src="~/js/open-modal-wallets.js"></script>
     <script src="~/js/main.js"></script>
     <script src="~/js/elastic.js"></script>
     <script src="~/js/count-down.js"></script>
@@ -196,6 +189,7 @@
     <script src="~/js/jquery.lazyload-any.js"></script>
     <script src="~/js/vanilia-tilt.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script>
 
     <script>
         VanillaTilt.init(document.querySelector(".testqweqw"), {
