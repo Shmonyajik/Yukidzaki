@@ -6,7 +6,6 @@ $(document).ready(function () {
     };
     const topScroll = document.getElementById("tokensCount");
     localStorage.setItem("page", 0);
-
     GetData(filterPageVM);
 });
 const tokenCardGalleryContainer = $('#tokenCardGalleryContainer')
