@@ -263,7 +263,9 @@ function checkChainId(chainId) {
 
  //Функция для изменения сети на Ethereum Mainnet
 function switchToEthereumMainnet() {
-    blockUserScreen();
+    
+    
+   
     ethereum.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: '0x1' }], // Идентификатор Ethereum Mainnet
