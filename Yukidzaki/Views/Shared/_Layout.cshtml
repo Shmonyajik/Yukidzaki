@@ -106,7 +106,7 @@
                     </nav><!-- /#main-nav -->
                     <a class="tf-button btn-effect" data-toggle="modal" data-target="#popupID">
                         <span class="boder-fade"></span>
-                        <span class="effect" onclick="OpenModalWallets({url: '/MetaMaskAuth/ConnectWallet'})">Connect wallet</span>
+                        <input class="effect" id="ConnectWalletBtn" onclick="OpenModalWallets({url: '/MetaMaskAuth/ConnectWallet'})" value="Connect wallet" />
                     </a>
 
  
@@ -118,8 +118,8 @@
 
         <main role="main">
             @RenderBody()
-            <div class="modal fade popup" id="ModalWallets" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" id="nftTOKENnow" role="document">
+            <div class="modal fade popup" id="popupID" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog1 modal-dialog modal-dialog-centered" role="document">
 
 
                     <div class="modalbody">
@@ -179,12 +179,13 @@
     <script src="~/js/isotope.pkg.min.js"></script>
     <script src="~/js/jquery.slick.min.js"></script>
     <script src="~/js/open-modal-wallets.js"></script>
+    <script src="~/js/Web3.js?<?=filemtime( '~/js/Web3.js' )?>"></script>
     <script src="~/js/main.js"></script>
-    <script src="~/js/elastic.js"></script>
+    
     <script src="~/js/count-down.js"></script>
     <script src="~/js/Email.js"></script>
     <script src="~/js/modal.js"></script>
-    <script src="~/js/filter.js"></script>
+    
     <script src="~/js/FIltersDraw.js"></script>
     <script src="~/js/jquery.lazyload-any.js"></script>
     <script src="~/js/vanilia-tilt.js"></script>

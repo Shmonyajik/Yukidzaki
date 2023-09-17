@@ -36,7 +36,7 @@ namespace Yukidzaki_Services.Implementations
             var baseResponse = new BaseResponse<IEnumerable<Token>>();
             try
             {
-                var tokens =  _tokenRepository.GetAll().ToListAsync();//Include(t=>t.SeasonCollection).
+                var tokens =  await _tokenRepository.GetAll().ToListAsync();//Include(t=>t.SeasonCollection).
 
                 baseResponse.Data = (IEnumerable<Token>)tokens;
 

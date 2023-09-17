@@ -1,7 +1,7 @@
 function OpenModalWallets(parameters) {
     console.log("Click");
     
-    const modal = $('#ModalWallets')
+    const modal = $('#popupID')
    
         $.ajax({
         url: parameters.url,

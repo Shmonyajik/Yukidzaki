@@ -1,25 +1,39 @@
 ﻿window.userAddress = null;
+//window.onload = async () => {
+//    // Init Web3 connected to ETH network
+//    console.log("onload!")
+//    if (window.ethereum) {
+//        debugger
+//        window.web3 = new Web3(window.ethereum);
+//        chainId = await ethereum.request({ method: 'eth_chainId' });
+//        if (chainId === '0x1') {
+//            window.userAddress = window.localStorage.getItem("userAddress");
+//            //showAddress();
+//        }
+//        else {
+//            console.log("ElseOnload")
+//        }
+
+//    } else {
+//        alert("No ETH brower extension detected.");
+//    }
+//}
+    // Load in Localstore key
 window.onload = async () => {
     // Init Web3 connected to ETH network
-    console.log("onload!")
+    console.log("onload")
     if (window.ethereum) {
-        debugger
         window.web3 = new Web3(window.ethereum);
-        chainId = await ethereum.request({ method: 'eth_chainId' });
-        if (chainId === '0x1') {
-            window.userAddress = window.localStorage.getItem("userAddress");
-            //showAddress();
-        }
-        else {
-            console.log("ElseOnload")
-        }
-
+        checkChainId();
+        // Load in Localstore key
+        window.userAddress = window.localStorage.getItem("userAddress");
+        //showAddress();
     } else {
         alert("No ETH brower extension detected.");
     }
-}
-    // Load in Localstore key
-   
+
+    
+};   
 
 // Use this function to turn a 42 character ETH address
 // into an address like 0x345...12345
@@ -40,8 +54,7 @@ async function loginWithEth() {
     if (window.ethereum) {
         window.web3 = new Web3(window.ethereum);
         
-        // Load in Localstore key
-        checkChainId()
+        
     
             try {
                 // We use this since ethereum.enable() is deprecated. This method is not
@@ -149,39 +162,48 @@ async function mint() {
     alert(`Transaction hash: ${hash}`);
 }
 
-//ethereum.on('chainChanged', (chainId) => {
-//    checkChainId(chainId);
-//});
 
+////////////////////////////////////////
+function handleAccountChange(accounts) {
+    console.log("account changed!")
+    if (accounts.length > 0) {
+        const selectedAccount = accounts[0];
+        console.log('Selected account:', selectedAccount);
+        // You can perform actions or updates here when the account changes
+    } else {
+        console.log('No account is currently connected');
+        // Handle the case where no account is connected (user locked MetaMask)
+    }
+}
+ethereum.on('chainChanged', (chainId) => {
+    console.log("ChainChanged!")
+    checkChainId(chainId);
+});
+// Listen for account changes
+window.ethereum.on('accountsChanged', handleAccountChange);
+window.addEventListener('ethereum#initialized', checkWalletAvailability);
+///////////////////////////////////////
 function checkChainId(chainId) {
     // chainId содержит идентификатор текущей сети
     if (chainId === '0x1') {
         // Ethereum Mainnet
+        //TODO: разблокируем экран
         console.log('Подключено к Ethereum Mainnet');
 
     } else if (chainId === '0x90') {
         // Sepolia
+        //TODO: блокируем экран
         console.log('Подключено к Sepolia');
         switchToEthereumMainnet()
     } else {
         // Другая сеть
+        //TODO: блокируем экран
         console.log('Подключено к другой сети');
         switchToEthereumMainnet()
     }
 }
 
  //Функция для изменения сети на Ethereum Mainnet
- function switchToEthereumMainnet() {
-    try {
-        ethereum.request({
-            method: 'wallet_switchEthereumChain',
-            params: [{ chainId: '0x1' }], // Идентификатор Ethereum Mainnet
-        });
-        console.log('Переключено на Ethereum Mainnet');
-    } catch (error) {
-        console.error('Ошибка при переключении на Ethereum Mainnet:', error);
-    }
-}
 function switchToEthereumMainnet() {
     
     
@@ -193,6 +215,7 @@ function switchToEthereumMainnet() {
         debugger
         //console.error('Ошибка при переключении на Arbitrum One:', error);
         if (err.code === 4902) {
+            console.log("Сеть не добавлена!")
             window.ethereum.request({
                 method: "wallet_addEthereumChain",
                 params: [
@@ -205,11 +228,42 @@ function switchToEthereumMainnet() {
                 ],
             });
         }
+        if (err.code === 4001) {
+            console.log("Пользователь отказался менять сеть!")
+            
+        }
     });
     
     //console.log('Переключено на Arbitrum One');
     
 }
+function checkWalletAvailability() {
+    if (typeof window.ethereum === 'undefined') {
+        console.log('Wallet is disabled or not available.');
+        // Handle the case where the wallet is disabled or not available
+        logout();
+    } else {
+        console.log('Wallet is enabled and available.');
+        // Handle the case where the wallet is enabled and available
+    }
+}
+function showAddress() {
+    if (!window.userAddress) {
+        document.getElementById("userAddress").innerText = "";
+        document.getElementById("logoutButton").classList.add("hidden");
+        return false;
+    }
+    else {
+        //TODO: выводить снова Connect Wallet
+    }
+
+}
+
+function logout() {
+        window.userAddress = null;
+        window.localStorage.removeItem("userAddress");
+        showAddress();
+    }
 
 // Функция для изменения сети на Sepolia
 // function switchToSepolia() {

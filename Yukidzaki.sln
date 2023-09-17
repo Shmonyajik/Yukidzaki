@@ -17,6 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{8B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yukidzaki_Services", "Yukidzaki_Services\Yukidzaki_Services.csproj", "{31257BCA-1454-406C-8D80-E3E478529A43}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2DC3D5D5-D4EF-4699-950F-2FD2420A5982}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yukidzaki.DAL.Tests", "Tokens.Tests\Yukidzaki.DAL.Tests.csproj", "{4AFDD641-00FC-46DE-BA18-F0D5CB8426D6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,10 @@ Global
 		{31257BCA-1454-406C-8D80-E3E478529A43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31257BCA-1454-406C-8D80-E3E478529A43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31257BCA-1454-406C-8D80-E3E478529A43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AFDD641-00FC-46DE-BA18-F0D5CB8426D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AFDD641-00FC-46DE-BA18-F0D5CB8426D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AFDD641-00FC-46DE-BA18-F0D5CB8426D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AFDD641-00FC-46DE-BA18-F0D5CB8426D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,6 +55,7 @@ Global
 		{430F362C-77F2-4C0F-A004-C69F429BAFC3} = {8BFCFDF5-27A1-4353-9A87-FB6EED70A289}
 		{7D3BD853-3A32-4CDE-8095-D5F3D966B3DA} = {A19D390D-550C-4EAE-BDB9-C14957BBEF00}
 		{31257BCA-1454-406C-8D80-E3E478529A43} = {8BA43FF0-A735-4EDC-B77C-5406539D7C27}
+		{4AFDD641-00FC-46DE-BA18-F0D5CB8426D6} = {2DC3D5D5-D4EF-4699-950F-2FD2420A5982}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B6F2A574-4234-4890-A952-8512F915BDD6}

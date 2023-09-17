@@ -4,7 +4,6 @@ using System.Security.Cryptography;
 using Nethereum.Signer;
 using Nethereum.Hex.HexConvertors.Extensions;
 using Nethereum.Util;
-using Yukidzaki.Data;
 using Nethereum.Web3;
 using Nethereum.RLP;
 using Yukidzaki.ViewModel;
