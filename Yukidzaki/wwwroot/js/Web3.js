@@ -188,6 +188,12 @@ async function changeBtn(userAddress) {
         error: function (response) {
             console.log("error")
             alert(response.responseText)
+        },
+        complete: function () {
+            if (userAddress) {
+                document.getElementById("ConnectWalletBtn").textContent = userAddress;
+            }
+            
         }
     });
         
@@ -272,11 +278,11 @@ function switchToEthereumMainnet() {
         
             if (err.code === 4001) {
                 console.log("Пользователь отказался менять сеть!")
-                blockUserScreen();
+                //blockUserScreen();
 
             }
             else {
-                blockUserScreen();
+                //blockUserScreen();
                 console.log(err);
             }      
     });
