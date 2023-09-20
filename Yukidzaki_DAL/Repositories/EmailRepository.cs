@@ -21,10 +21,12 @@ namespace Yukidzaki_DAL.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task Delete(Email model)
+        public async Task CreateMultiple(IEnumerable<Email> model)
         {
-            throw new NotImplementedException();
+            await _context.AddRangeAsync(model);
+            await _context.SaveChangesAsync();
         }
+
 
         public IQueryable<Email> GetAll()
         {

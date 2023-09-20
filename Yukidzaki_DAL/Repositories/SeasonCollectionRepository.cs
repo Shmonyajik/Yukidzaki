@@ -21,6 +21,11 @@ namespace Yukidzaki_DAL.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task CreateMultiple(IEnumerable<SeasonCollection> model)
+        {
+            await _context.AddRangeAsync(model);
+        }
+
         public async Task Delete(SeasonCollection model)
         {
             _context.SeasonCollections.Remove(model);

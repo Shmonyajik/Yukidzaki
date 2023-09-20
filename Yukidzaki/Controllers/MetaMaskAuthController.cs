@@ -15,6 +15,7 @@ using Nethereum.ABI;
 using Yukidzaki_Domain.ViewModels;
 using NuGet.Protocol;
 using Nethereum.ABI.Model;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Yukidzaki.Controllers
 {
@@ -22,11 +23,11 @@ namespace Yukidzaki.Controllers
     public class MetaMaskAuthController : Controller
     {
 
+        private IMemoryCache _cache;
 
-
-        public MetaMaskAuthController()
+        public MetaMaskAuthController(IMemoryCache cache)
         {
-
+            _cache = cache;
         }
         public IActionResult Index()
         {
@@ -69,6 +70,7 @@ namespace Yukidzaki.Controllers
                 {
                     // Signature is valid
                     // Proceed with further actions
+                    _cache.Set("VerifyedUserAddress", walletAddress, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
                     return new JsonResult(Ok(isSignatureValid));
                 }
                 else
@@ -84,55 +86,42 @@ namespace Yukidzaki.Controllers
             }
 
         }
-        [HttpPost]
-        public async Task<JsonResult> Mint([FromBody]MintData mintData)
-        {
-            try
-            {
-                string ethereumNetworkUrl = "https://sepolia.infura.io/v3/96eb1666f8a142ed9c21d5e2fa776874";
-                Web3 _web3 = new Web3(ethereumNetworkUrl);
-                var contractAddress = "0xF416fAa0185070AE542c795f41EC4580Dd35C584"; // Адрес вашего контракта
-                var userAddress = mintData.user_address; // Адрес пользователя
-                var quantity = mintData.quantity; // Количество монет для монетного двора
-                string contractABI;
-                using (var reader = new System.IO.StreamReader("wwwroot/ContractABI.json"))
-                {
-                    contractABI = reader.ReadToEnd();
-                }
-                var contract = _web3.Eth.GetContract(contractABI, contractAddress);
-                var function = contract.GetFunction("safeMint");
-
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<JsonResult> Mint([FromBody] string userAddress)
+        //{
+        //   if(ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            _cache.TryGetValue("VerifyedUserAddress", out string? _userAddress);
+        //            if( _userAddress == userAddress)
+        //            {
+        //                return new JsonResult(Ok());
+        //            }
+        //            return new JsonResult(BadRequest($"Invalid address! {userAddress}"));
+        //        }
+        //        catch (Exception)
+        //        {
+        //            return new JsonResult(BadRequest($"Ssession is out of date!"));
+        //        }
                 
-                var gasLimit = new HexBigInteger(2000000);
-                var nonce = await _web3.Eth.Transactions.GetTransactionCount.SendRequestAsync(userAddress);
-                var encodedInput = function.GetData(quantity);
-                var transactionInput = new TransactionInput
-                {
-                    From = userAddress,
-                    To = contractAddress,
-                    GasPrice = new HexBigInteger(await GetGasPriceAsync(ethereumNetworkUrl)),
-                    Gas = gasLimit,
-                    Nonce = new HexBigInteger(nonce),
-                    Value = new HexBigInteger(0),
-                    Data = encodedInput
-                };
+        //    }
+        //    else
+        //    {
+        //        return new JsonResult(BadRequest(""));
+        //    }
+        //}
 
-                return new JsonResult(Ok(new { TransactionInput = transactionInput }));
+        //public class MintData
+        //{
+        //    public string user_address { get; set; }
 
-            }
-            catch (Exception ex)
-            {
-                return new JsonResult(BadRequest(new { Message = ex.Message }));
-            }
-        }
-
-        public class MintData
-        {
-            public string user_address { get; set; }
-
-            public int quantity { get; set; }
+        //    public int quantity { get; set; }
             
-        }
+        //}
+
+        
         //public async Task<bool> Mint(string senderAddress = "0xEefeED9305B87a571CBA2974D9643c7BA1106547")
         //{
         //    string ethereumNetworkUrl = "https://mainnet.infura.io/v3/96eb1666f8a142ed9c21d5e2fa776874";
@@ -186,6 +175,30 @@ namespace Yukidzaki.Controllers
         public ActionResult ConnectWallet()
         {
             return PartialView("_ModalWallets");
+        }
+
+        [HttpPost]
+        public ActionResult GetButton([FromBody] UserAddressModel userAddressModel)
+        {
+            if(userAddressModel.userAddress != null)
+            {
+                ViewBag.userAddress = userAddressModel.userAddress;
+                return PartialView("_MintBtn");
+            }
+            else
+            {
+                return PartialView("_ConnectWalletBtn");
+            }
+        }
+
+        public class UserAddressModel
+        {
+            public string? userAddress { get; set; }
+        }
+        [HttpGet]
+        public ActionResult GetMintModal()
+        {
+            return PartialView("_ModalMint");
         }
 
 

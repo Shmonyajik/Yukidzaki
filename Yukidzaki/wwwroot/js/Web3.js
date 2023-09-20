@@ -1,33 +1,35 @@
 ﻿window.userAddress = null;
-//window.onload = async () => {
-//    // Init Web3 connected to ETH network
-//    console.log("onload!")
-//    if (window.ethereum) {
-//        debugger
-//        window.web3 = new Web3(window.ethereum);
-//        chainId = await ethereum.request({ method: 'eth_chainId' });
-//        if (chainId === '0x1') {
-//            window.userAddress = window.localStorage.getItem("userAddress");
-//            //showAddress();
-//        }
-//        else {
-//            console.log("ElseOnload")
-//        }
-
-//    } else {
-//        alert("No ETH brower extension detected.");
-//    }
-//}
+let elementToDelete = document.getElementById("wrapper");
     // Load in Localstore key
 window.onload = async () => {
     // Init Web3 connected to ETH network
-    console.log("onload")
+    console.log("onload");
     if (window.ethereum) {
         window.web3 = new Web3(window.ethereum);
-        checkChainId();
-        // Load in Localstore key
-        window.userAddress = window.localStorage.getItem("userAddress");
-        //showAddress();
+        const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+
+        if (Array.isArray(accounts) && accounts.length > 0) {
+            window.ethereum.request({ method: 'eth_chainId' })
+                .then(chainIdHex => {
+                    // Convert the hexadecimal chainId to a decimal number
+                    /*const chainId = parseInt(chainIdHex, 16).toString();*/
+                    console.log('Chain ID:', chainIdHex);
+                    checkChainId(chainIdHex);
+                    
+                })
+                .catch(error => {
+                    console.error('Error getting chain ID from MetaMask:', error);
+                });
+            
+            
+            // Load in Localstore key
+            window.userAddress = window.localStorage.getItem("userAddress");
+            changeBtn(window.userAddress);
+            //showAddress();
+
+            // Вы можете продолжить взаимодействие с аккаунтом, например, отправлять транзакции или получать баланс
+        }
+       
     } else {
         alert("No ETH brower extension detected.");
     }
@@ -120,10 +122,22 @@ async function loginWithEth() {
 
                         })
                             .then(response => {
-                                debugger
+                                window.ethereum.request({ method: 'eth_chainId' })
+                                    .then(chainIdHex => {
+                                        // Convert the hexadecimal chainId to a decimal number
+                                        /*const chainId = parseInt(chainIdHex, 16).toString();*/
+                                        console.log('Chain ID:', chainIdHex);
+                                        checkChainId(chainIdHex);
+
+                                    })
+                                    .catch(error => {
+                                        console.error('Error getting chain ID from MetaMask:', error);
+                                    });
                                 window.userAddress = selectedAccount;
                                 window.localStorage.setItem("userAddress", selectedAccount);
-                                //showAddress();
+                                
+                                
+                                changeBtn(window.userAddress);
                                 console.log("7" + response);
                             })
                             .catch(error => {
@@ -148,8 +162,39 @@ async function loginWithEth() {
         alert("No ETH browser extension detected.");
     }
 }
+async function changeBtn(userAddress) {
+
+    console.log('CHANGE BUTTON!' + userAddress);
+
+    var button = document.getElementById("connectwallet/mint-btn");
+    var requestData = {
+        userAddress: userAddress
+    };
+    $.ajax({
+        type: 'POST',
+        url: '/MetaMaskAuth/GetButton/',
+        contentType: 'application/json',
+        data: JSON.stringify(requestData),
+        success: function (html) {
+            console.log("success")
+            button.innerHTML = html;
+            
+            /*modal.modal('show')*/
+        },
+        failure: function () {
+            console.log("failure");
+            /* modal.modal('hide')*/
+        },
+        error: function (response) {
+            console.log("error")
+            alert(response.responseText)
+        }
+    });
+        
+}
 
 async function mint() {
+
     const CONTRACT_ADDRESS = "0xF416fAa0185070AE542c795f41EC4580Dd35C584";
     const contract = new window.web3.eth.Contract(
         window.ABI,
@@ -169,9 +214,13 @@ function handleAccountChange(accounts) {
     if (accounts.length > 0) {
         const selectedAccount = accounts[0];
         console.log('Selected account:', selectedAccount);
+        changeBtn(selectedAccount)
         // You can perform actions or updates here when the account changes
     } else {
         console.log('No account is currently connected');
+        window.userAddress = null;
+        unlockUserScreen()
+        changeBtn()
         // Handle the case where no account is connected (user locked MetaMask)
     }
 }
@@ -181,72 +230,71 @@ ethereum.on('chainChanged', (chainId) => {
 });
 // Listen for account changes
 window.ethereum.on('accountsChanged', handleAccountChange);
-window.addEventListener('ethereum#initialized', checkWalletAvailability);
+//window.addEventListener('ethereum#initialized', checkWalletAvailability);
 ///////////////////////////////////////
 function checkChainId(chainId) {
-    // chainId содержит идентификатор текущей сети
-    if (chainId === '0x1') {
-        // Ethereum Mainnet
-        //TODO: разблокируем экран
-        console.log('Подключено к Ethereum Mainnet');
+    //window.web3 = new Web3(window.ethereum);
+    //const accounts = window.ethereum.request({ method: 'eth_accounts' });
+    //console.log(accounts[0])
+    if (window.userAddress) {
+        // chainId содержит идентификатор текущей сети
+        if (chainId === '0x1') {
 
-    } else if (chainId === '0x90') {
-        // Sepolia
-        //TODO: блокируем экран
-        console.log('Подключено к Sepolia');
-        switchToEthereumMainnet()
-    } else {
-        // Другая сеть
-        //TODO: блокируем экран
-        console.log('Подключено к другой сети');
-        switchToEthereumMainnet()
+            unlockUserScreen();
+
+            // Ethereum Mainnet
+
+
+            console.log('Подключено к Ethereum Mainnet');
+
+        } else if (chainId === '0x90') {
+            // Sepolia
+            //TODO: блокируем экран
+            console.log('Подключено к Sepolia');
+            switchToEthereumMainnet()
+        } else {
+            // Другая сеть
+            //TODO: блокируем экран
+            console.log('Подключено к другой сети');
+            switchToEthereumMainnet()
+        }
     }
 }
 
  //Функция для изменения сети на Ethereum Mainnet
 function switchToEthereumMainnet() {
-    
-    
-    debugger
+    blockUserScreen();
     ethereum.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: '0x1' }], // Идентификатор Ethereum Mainnet
-    }).catch((err) => {
-        debugger
-        //console.error('Ошибка при переключении на Arbitrum One:', error);
-        if (err.code === 4902) {
-            console.log("Сеть не добавлена!")
-            window.ethereum.request({
-                method: "wallet_addEthereumChain",
-                params: [
-                    {
-                        chainId: "0x1",
-                        rpcUrls: ["https://mainnet.infura.io/v3/96eb1666f8a142ed9c21d5e2fa776874", "https://mainnet.infura.io/v3/"],
-                        chainName: "Ethereum Mainnet",
-                        nativeCurrency: { name: "ETH", decimals: 18, symbol: "ETH" },
-                    },
-                ],
-            });
-        }
-        if (err.code === 4001) {
-            console.log("Пользователь отказался менять сеть!")
-            
-        }
+    })
+        .catch((err) => {
+        
+            if (err.code === 4001) {
+                console.log("Пользователь отказался менять сеть!")
+                blockUserScreen();
+
+            }
+            else {
+                blockUserScreen();
+                console.log(err);
+            }      
     });
     
-    //console.log('Переключено на Arbitrum One');
+  
     
 }
-function checkWalletAvailability() {
-    if (typeof window.ethereum === 'undefined') {
-        console.log('Wallet is disabled or not available.');
-        // Handle the case where the wallet is disabled or not available
-        logout();
-    } else {
-        console.log('Wallet is enabled and available.');
-        // Handle the case where the wallet is enabled and available
-    }
-}
+//function checkWalletAvailability() {
+//    if (typeof window.ethereum === 'undefined') {
+//        console.log('Wallet is disabled or not available.');
+//        //changeBtn();
+//        // Handle the case where the wallet is disabled or not available
+//        //logout();
+//    } else {
+//        console.log('Wallet is enabled and available.');
+//        // Handle the case where the wallet is enabled and available
+//    }
+//}
 function showAddress() {
     if (!window.userAddress) {
         document.getElementById("userAddress").innerText = "";
@@ -263,8 +311,46 @@ function logout() {
         window.userAddress = null;
         window.localStorage.removeItem("userAddress");
         showAddress();
-    }
+}
 
+function blockUserScreen() {
+    elementToDelete = document.getElementById("wrapper");
+    if (elementToDelete) {
+        elementToDelete.innerHTML = "";
+    }
+    
+}
+function unlockUserScreen() {
+    if (elementToDelete.innerHTML === "") {
+        console.log("innerHTML is null")
+        location.reload(true);
+    }
+    
+}
+function OpenModalMint(parameters) {
+    console.log("Click");
+
+    const modal = $('#popupID')
+
+    $.ajax({
+        url: parameters.url,
+        type: 'GET',
+        success: function (response) {
+            console.log("success")
+            modal.find(".modalbody").html(response);
+            modal.modal('show')
+        },
+        failure: function () {
+            console.log("failure");
+            modal.modal('hide')
+        },
+        error: function (response) {
+            console.log("error")
+            alert(response.responseText)
+        }
+    });
+    /* return false;*/
+}
 // Функция для изменения сети на Sepolia
 // function switchToSepolia() {
 //    try {

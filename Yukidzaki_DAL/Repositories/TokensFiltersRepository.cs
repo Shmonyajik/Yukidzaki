@@ -21,6 +21,11 @@ namespace Yukidzaki_DAL.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task CreateMultiple(IEnumerable<TokensFilters> model)
+        {
+            await _context.AddRangeAsync(model);
+        }
+
         public async Task Delete(TokensFilters model)
         {
             _context.TokensFilters.Remove(model);

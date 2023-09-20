@@ -229,6 +229,13 @@ body {
   display: block;
   color : white;
 }
+#ConnectWalletBtn {
+    background-color: transparent;
+    border-color: transparent;
+    outline: 0;
+    outline-offset: 0;
+    cursor: pointer;
+}
 .tf-button .effect::before, .tf-button .effect::after {
   content: "";
   width: 2px;

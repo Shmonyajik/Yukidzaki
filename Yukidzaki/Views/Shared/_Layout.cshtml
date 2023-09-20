@@ -19,7 +19,8 @@
     <link rel="shortcut icon" href="~/assets/images/favicon.png" asp-append-version="true">
 
 </head>
-<body class="header-fixed main pg-roadmap cs-dark">
+<body class="header-fixed main pg-roadmap cs-dark" id="headerToFill">
+
     <div class="preload preload-container">
         <div class="preload-logo">
 
@@ -104,10 +105,13 @@
                             </li>
                         </ul>
                     </nav><!-- /#main-nav -->
-                    <a class="tf-button btn-effect" data-toggle="modal" data-target="#popupID">
-                        <span class="boder-fade"></span>
-                        <input class="effect" id="ConnectWalletBtn" onclick="OpenModalWallets({url: '/MetaMaskAuth/ConnectWallet'})" value="Connect wallet" />
-                    </a>
+                    <div id="connectwallet/mint-btn">
+                        <a class="tf-button btn-effect" data-toggle="modal" data-target="#popupID">
+                            <span class="boder-fade"></span>
+                            <input class="effect" id="ConnectWalletBtn" onclick="OpenModalWallets({url: '/MetaMaskAuth/ConnectWallet'})" value="Connect wallet" />
+                        </a>
+                    </div>
+                    
 
  
 
