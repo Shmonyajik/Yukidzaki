@@ -353,6 +353,12 @@ function OpenModalMint(parameters) {
         error: function (response) {
             console.log("error")
             alert(response.responseText)
+        },
+        complete: function () {
+            if (userAddress) {
+                document.getElementById("ConnectWalletBtn").textContent = userAddress;
+            }
+
         }
     });
     /* return false;*/
