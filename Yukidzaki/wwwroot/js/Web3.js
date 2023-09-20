@@ -166,7 +166,7 @@ async function changeBtn(userAddress) {
 
     console.log('CHANGE BUTTON!' + userAddress);
 
-    var button = document.getElementById("connectwallet/mint-btn");
+    var button = document.getElementById("connectwallet-mint-btn");
     var requestData = {
         userAddress: userAddress
     };
@@ -275,7 +275,7 @@ function switchToEthereumMainnet() {
         params: [{ chainId: '0x1' }], // Идентификатор Ethereum Mainnet
     })
         .catch((err) => {
-        
+
             if (err.code === 4001) {
                 console.log("Пользователь отказался менять сеть!")
                 //blockUserScreen();
@@ -284,11 +284,11 @@ function switchToEthereumMainnet() {
             else {
                 //blockUserScreen();
                 console.log(err);
-            }      
-    });
-    
-  
-    
+            }
+        });
+
+
+
 }
 //function checkWalletAvailability() {
 //    if (typeof window.ethereum === 'undefined') {

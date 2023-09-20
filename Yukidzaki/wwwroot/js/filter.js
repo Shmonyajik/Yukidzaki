@@ -75,18 +75,13 @@ function GetData(filtersPageVM) {
         success: function (response) {
             console.log("success")
             tokenCardGalleryContainer.find(".tokenCardGallery").html(response);
-
         },
         complete: function (xhr, textStatus) {
             console.log("complete!");
             var tokensCount = document.getElementById("tokenCardGalleryCount").getAttribute('value');
             console.log(tokensCount);
             localStorage.setItem("tokensCount", tokensCount);
-            $('#tokensCount').val(tokensCount);
-
-           
-
-            
+            $('#tokensCount').val(tokensCount);                       
         },
         //failure: function () {
         //    console.log("failure");

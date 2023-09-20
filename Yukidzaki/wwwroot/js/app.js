@@ -332,7 +332,7 @@
               .children("ul")
               .removeAttr("style")
               .hide()
-              .before('<span class="arrow"></span>');
+                .before('<span class="arrow"></span>','<div class="menu-item-has-children"></div>');
           } else {
             $("#main-nav-mobi")
               .attr("id", "main-nav")

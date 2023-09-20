@@ -44,16 +44,21 @@ body {
 .header #site-header-inner .tf-button {
   margin-left: auto;
 }
+
+#connectwallet-mint-btn{
+    margin-left: auto;
+}
+
 .header .main-nav {
-  position: absolute;
-  left: 31%;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  -o-transform: translateY(-50%);
-  transform: translateY(-50%);
-  padding-left: 4px;
-  letter-spacing: 0.6px;
+    position: absolute;
+    left: 31%;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+    padding-left: 4px;
+    letter-spacing: 0.6px;
 }
 
 .inner-page .header {
@@ -155,7 +160,7 @@ body {
 #header_main.is-fixed.is-fixed.is-small {
   top: -1px;
   visibility: visible;
-  height: 90px;
+  height: 80px;
   opacity: 1;
 }
 
@@ -413,6 +418,7 @@ body {
         font-family: 'Roboto Slab', serif;
         margin-bottom: 8px;
         letter-spacing: 0.6px;
+        font-size: 35px;
     }
 .tf-title .title {
   text-transform: uppercase;
@@ -1137,6 +1143,17 @@ body {
 }
 .wrap-about.style2 .box-text {
   margin-bottom: 30px;
+}
+
+#manga-corner-box {
+    text-align: center;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.wrap-about.style2 .box-text img {
+    max-width: 100%;
 }
 
 .box-text {
@@ -2325,7 +2342,22 @@ body {
 
 .modal .modal-dialog {
   position: relative;
-  max-width: 515px;
+}
+
+
+.modal-dialog-centered {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    /*top: 30%;*/
+    align-items: center;
+    /* min-height: calc(100% - 1rem); */
+    justify-content: center;
+}
+
+.modalbody {
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #nftTOKENnow {
@@ -2341,7 +2373,8 @@ body {
 .modal .modal-content .header-popup {
   margin-bottom: 30px;
   position: relative;
-  margin-left: 35px;
+  /*margin-left: 35px;*/
+  text-align: center;
 }
 .modal .modal-content .header-popup h5 {
   color: #fff;
@@ -2944,29 +2977,31 @@ body {
     }
 
 /* Sub Menu */
+.sub-menu svg{
+    margin-right: 5px;
+}
 #main-nav .sub-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 180px;
-  background-color: #fff;
-  box-shadow: 0 0px 32px 0 rgba(34, 183, 143, 0.5);
-  border-radius: 20px;
-  z-index: 9999;
-  opacity: 0;
-  visibility: hidden;
-  -webkit-transition: all 0.3s ease;
-  -moz-transition: all 0.3s ease;
-  -ms-transition: all 0.3s ease;
-  -o-transition: all 0.3s ease;
-  transition: all 0.3s ease;
-  -webkit-transform: translateY(15px);
-  -moz-transform: translateY(15px);
-  -ms-transform: translateY(15px);
-  -o-transform: translateY(15px);
-  transform: translateY(15px);
-  padding: 5px 0;
-
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 170px;
+    background-color: #fff;
+    box-shadow: 0 0px 32px 0 rgba(34, 183, 143, 0.5);
+    border-radius: 20px;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+    -webkit-transform: translateY(15px);
+    -moz-transform: translateY(15px);
+    -ms-transform: translateY(15px);
+    -o-transform: translateY(15px);
+    transform: translateY(15px);
+    padding: 5px 0;
 }
 #main-nav .sub-menu li {
   margin-right: 0;
@@ -7571,7 +7606,6 @@ img.mfp-img {
         z-index: 100;
         margin-left: auto;
         margin-right: auto;
-        /*background-image: url("./../../assets/images/logo/preload.gif");*/
         background-repeat: no-repeat;
         background-position: center center;
         animation: preload 1s linear infinite alternate;
