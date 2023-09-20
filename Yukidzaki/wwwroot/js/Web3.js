@@ -1,6 +1,6 @@
 ﻿window.userAddress = null;
 let elementToDelete = document.getElementById("wrapper");
-    // Load in Localstore key
+// Load in Localstore key
 window.onload = async () => {
     // Init Web3 connected to ETH network
     console.log("onload");
@@ -15,13 +15,13 @@ window.onload = async () => {
                     /*const chainId = parseInt(chainIdHex, 16).toString();*/
                     console.log('Chain ID:', chainIdHex);
                     checkChainId(chainIdHex);
-                    
+
                 })
                 .catch(error => {
                     console.error('Error getting chain ID from MetaMask:', error);
                 });
-            
-            
+
+
             // Load in Localstore key
             window.userAddress = window.localStorage.getItem("userAddress");
             changeBtn(window.userAddress);
@@ -29,13 +29,13 @@ window.onload = async () => {
 
             // Вы можете продолжить взаимодействие с аккаунтом, например, отправлять транзакции или получать баланс
         }
-       
+
     } else {
         alert("No ETH brower extension detected.");
     }
 
-    
-};   
+
+};
 
 // Use this function to turn a 42 character ETH address
 // into an address like 0x345...12345
@@ -55,109 +55,109 @@ function truncateAddress(address) {
 async function loginWithEth() {
     if (window.ethereum) {
         window.web3 = new Web3(window.ethereum);
-        
-        
-    
-            try {
-                // We use this since ethereum.enable() is deprecated. This method is not
-                // available in Web3JS - so we call it directly from metamasks' library
-                debugger
-                const selectedAccount = await window.ethereum
-                    .request({
-                        method: "eth_requestAccounts",
-                    })
-                    .then((accounts) => accounts[0])
-                    .catch(() => {
-                        throw Error("No account selected!");
-                    });
 
 
-    /////////////////Проверка подписи на бэке
-                const oneTimeCode = await $.ajax({
-                    url: '/MetaMaskAuth/GenerateOneTimeCode',
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function (response) {
-                        console.log("response:", response)
 
-
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        throw Error(errorThrown);
-                    }
+        try {
+            // We use this since ethereum.enable() is deprecated. This method is not
+            // available in Web3JS - so we call it directly from metamasks' library
+            debugger
+            const selectedAccount = await window.ethereum
+                .request({
+                    method: "eth_requestAccounts",
                 })
+                .then((accounts) => accounts[0])
+                .catch(() => {
+                    throw Error("No account selected!");
+                });
 
-                signAndSendSignature()
 
-                async function signAndSendSignature() {
-                
-                    const signature = await window.web3.eth.personal.sign(oneTimeCode.Value, selectedAccount, ''); // Sign the code with MetaMask
-                    console.log("signature: " + signature)
-                    const antiForgeryToken = $('input[name="__RequestVerificationToken"]').val();
-                    console.log("antiForgeryToken: " + antiForgeryToken)
-                    VerifySignatureRequest = {
-                        walletAddress: selectedAccount,
-                        oneTimeCode: oneTimeCode.Value,
-                        signature: signature
-                    }
-                    if (antiForgeryToken) {
-                        return new Promise((resolve, reject) => {
-                            const xhr = new XMLHttpRequest()
-                            xhr.open('POST', '/MetaMaskAuth/VerifySignature')
-                            xhr.responseType = 'json'
-                            xhr.setRequestHeader('Content-Type', 'application/json')
-                            xhr.setRequestHeader('X-ANTI-FORGERY-TOKEN', antiForgeryToken)
-                            debugger
-                            xhr.onload = () => {
-                                if (xhr.status >= 400) {
-                                    reject(xhr.response)
-                                }
-                                else
-                                    resolve(xhr.response)
-                            }
-                            xhr.onerror = () => {
+            /////////////////Проверка подписи на бэке
+            const oneTimeCode = await $.ajax({
+                url: '/MetaMaskAuth/GenerateOneTimeCode',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    console.log("response:", response)
+
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    throw Error(errorThrown);
+                }
+            })
+
+            signAndSendSignature()
+
+            async function signAndSendSignature() {
+
+                const signature = await window.web3.eth.personal.sign(oneTimeCode.Value, selectedAccount, ''); // Sign the code with MetaMask
+                console.log("signature: " + signature)
+                const antiForgeryToken = $('input[name="__RequestVerificationToken"]').val();
+                console.log("antiForgeryToken: " + antiForgeryToken)
+                VerifySignatureRequest = {
+                    walletAddress: selectedAccount,
+                    oneTimeCode: oneTimeCode.Value,
+                    signature: signature
+                }
+                if (antiForgeryToken) {
+                    return new Promise((resolve, reject) => {
+                        const xhr = new XMLHttpRequest()
+                        xhr.open('POST', '/MetaMaskAuth/VerifySignature')
+                        xhr.responseType = 'json'
+                        xhr.setRequestHeader('Content-Type', 'application/json')
+                        xhr.setRequestHeader('X-ANTI-FORGERY-TOKEN', antiForgeryToken)
+                        debugger
+                        xhr.onload = () => {
+                            if (xhr.status >= 400) {
                                 reject(xhr.response)
                             }
-                            xhr.send(JSON.stringify(VerifySignatureRequest))
+                            else
+                                resolve(xhr.response)
+                        }
+                        xhr.onerror = () => {
+                            reject(xhr.response)
+                        }
+                        xhr.send(JSON.stringify(VerifySignatureRequest))
 
+                    })
+                        .then(response => {
+                            window.ethereum.request({ method: 'eth_chainId' })
+                                .then(chainIdHex => {
+                                    // Convert the hexadecimal chainId to a decimal number
+                                    /*const chainId = parseInt(chainIdHex, 16).toString();*/
+                                    console.log('Chain ID:', chainIdHex);
+                                    checkChainId(chainIdHex);
+
+                                })
+                                .catch(error => {
+                                    console.error('Error getting chain ID from MetaMask:', error);
+                                });
+                            window.userAddress = selectedAccount;
+                            window.localStorage.setItem("userAddress", selectedAccount);
+
+
+                            changeBtn(window.userAddress);
+                            console.log("7" + response);
                         })
-                            .then(response => {
-                                window.ethereum.request({ method: 'eth_chainId' })
-                                    .then(chainIdHex => {
-                                        // Convert the hexadecimal chainId to a decimal number
-                                        /*const chainId = parseInt(chainIdHex, 16).toString();*/
-                                        console.log('Chain ID:', chainIdHex);
-                                        checkChainId(chainIdHex);
-
-                                    })
-                                    .catch(error => {
-                                        console.error('Error getting chain ID from MetaMask:', error);
-                                    });
-                                window.userAddress = selectedAccount;
-                                window.localStorage.setItem("userAddress", selectedAccount);
-                                
-                                
-                                changeBtn(window.userAddress);
-                                console.log("7" + response);
-                            })
-                            .catch(error => {
-                                // Handle errors
-                                console.error("Ошибка проверки подписи" + error);
-                            });
-                    }
-                    else {
-                        throw Error('Anti-forgery token not found.');
-                    }
-
+                        .catch(error => {
+                            // Handle errors
+                            console.error("Ошибка проверки подписи" + error);
+                        });
                 }
-        
+                else {
+                    throw Error('Anti-forgery token not found.');
+                }
 
-
-    /////////////////////////////////////////
-            
-            } catch (error) {
-                alert(error);
             }
+
+
+
+            /////////////////////////////////////////
+
+        } catch (error) {
+            alert(error);
+        }
     } else {
         alert("No ETH browser extension detected.");
     }
@@ -178,7 +178,7 @@ async function changeBtn(userAddress) {
         success: function (html) {
             console.log("success")
             button.innerHTML = html;
-            
+
             /*modal.modal('show')*/
         },
         failure: function () {
@@ -193,10 +193,10 @@ async function changeBtn(userAddress) {
             if (userAddress) {
                 document.getElementById("ConnectWalletBtn").textContent = userAddress;
             }
-            
+
         }
     });
-        
+
 }
 
 async function mint() {
@@ -207,7 +207,7 @@ async function mint() {
         CONTRACT_ADDRESS
     );
     const mintPrice = await contract.methods
-        .publicMintPrice() 
+        .publicMintPrice()
         .call({ from: window.userAddress }) * 100;
     const hash = contract.methods.safeMint(2).send({ from: window.userAddress, value: mintPrice })
     alert(`Transaction hash: ${hash}`);
@@ -267,7 +267,7 @@ function checkChainId(chainId) {
     }
 }
 
- //Функция для изменения сети на Ethereum Mainnet
+//Функция для изменения сети на Ethereum Mainnet
 function switchToEthereumMainnet() {
     blockUserScreen();
     ethereum.request({
@@ -314,9 +314,9 @@ function showAddress() {
 }
 
 function logout() {
-        window.userAddress = null;
-        window.localStorage.removeItem("userAddress");
-        showAddress();
+    window.userAddress = null;
+    window.localStorage.removeItem("userAddress");
+    showAddress();
 }
 
 function blockUserScreen() {
@@ -324,14 +324,14 @@ function blockUserScreen() {
     if (elementToDelete) {
         elementToDelete.innerHTML = "";
     }
-    
+
 }
 function unlockUserScreen() {
     if (elementToDelete.innerHTML === "") {
         console.log("innerHTML is null")
         location.reload(true);
     }
-    
+
 }
 function OpenModalMint(parameters) {
     console.log("Click");
