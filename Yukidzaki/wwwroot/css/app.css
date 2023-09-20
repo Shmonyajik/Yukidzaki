@@ -44,16 +44,21 @@ body {
 .header #site-header-inner .tf-button {
   margin-left: auto;
 }
+
+#connectwallet-mint-btn{
+    margin-left: auto;
+}
+
 .header .main-nav {
-  position: absolute;
-  left: 31%;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  -o-transform: translateY(-50%);
-  transform: translateY(-50%);
-  padding-left: 4px;
-  letter-spacing: 0.6px;
+    position: absolute;
+    left: 31%;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+    padding-left: 4px;
+    letter-spacing: 0.6px;
 }
 
 .inner-page .header {

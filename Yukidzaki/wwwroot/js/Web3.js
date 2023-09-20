@@ -166,7 +166,7 @@ async function changeBtn(userAddress) {
 
     console.log('CHANGE BUTTON!' + userAddress);
 
-    var button = document.getElementById("connectwallet/mint-btn");
+    var button = document.getElementById("connectwallet-mint-btn");
     var requestData = {
         userAddress: userAddress
     };
