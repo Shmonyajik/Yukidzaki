@@ -135,12 +135,16 @@
                             </li>
                         </ul>
                     </nav><!-- /#main-nav -->
-                    <a class="tf-button btn-effect" data-toggle="modal" data-target="#popupID">
-                        <span class="boder-fade"></span>
-                        <span class="effect" id="ConnectWalletBtn" onclick="OpenModalWallets({url: '/MetaMaskAuth/ConnectWallet'})" value="Connect wallet">Connect wallet</span>
 
-                    </a>
+                    <div id="connectwallet/mint-btn">
+                        <a class="tf-button btn-effect" data-toggle="modal" data-target="#popupID">
+                            <span class="boder-fade"></span>
+                            <input class="effect" id="ConnectWalletBtn" onclick="OpenModalWallets({url: '/MetaMaskAuth/ConnectWallet'})" value="Connect wallet">
+                        </a>
+                    </div>
 
+
+                   
  
 
                     <div class="mobile-button"><span></span></div><!-- /.mobile-button -->

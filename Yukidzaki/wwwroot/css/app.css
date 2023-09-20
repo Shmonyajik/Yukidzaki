@@ -2337,7 +2337,22 @@ body {
 
 .modal .modal-dialog {
   position: relative;
-  max-width: 515px;
+}
+
+
+.modal-dialog-centered {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    /*top: 30%;*/
+    align-items: center;
+    /* min-height: calc(100% - 1rem); */
+    justify-content: center;
+}
+
+.modalbody {
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #nftTOKENnow {
@@ -2353,7 +2368,8 @@ body {
 .modal .modal-content .header-popup {
   margin-bottom: 30px;
   position: relative;
-  margin-left: 35px;
+  /*margin-left: 35px;*/
+  text-align: center;
 }
 .modal .modal-content .header-popup h5 {
   color: #fff;

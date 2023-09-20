@@ -263,28 +263,26 @@ function checkChainId(chainId) {
 
  //Функция для изменения сети на Ethereum Mainnet
 function switchToEthereumMainnet() {
-    
-    
-   
+    blockUserScreen();
     ethereum.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: '0x1' }], // Идентификатор Ethereum Mainnet
     })
         .catch((err) => {
-        
+
             if (err.code === 4001) {
                 console.log("Пользователь отказался менять сеть!")
-                blockUserScreen();
+                /*blockUserScreen();*/
 
             }
             else {
-                blockUserScreen();
+                /*blockUserScreen();*/
                 console.log(err);
-            }      
-    });
-    
-  
-    
+            }
+        });
+
+
+
 }
 //function checkWalletAvailability() {
 //    if (typeof window.ethereum === 'undefined') {
