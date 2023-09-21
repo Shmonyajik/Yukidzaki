@@ -18,13 +18,13 @@ window.onload = async () => {
                     /*const chainId = parseInt(chainIdHex, 16).toString();*/
                     console.log('Chain ID:', chainIdHex);
                     checkChainId(chainIdHex);
-                    
+
                 })
                 .catch(error => {
                     console.error('Error getting chain ID from MetaMask:', error);
                 });
-            
-            
+
+
             // Load in Localstore key
             window.userAddress = window.localStorage.getItem("userAddress");
             changeBtn(window.userAddress);
@@ -32,13 +32,13 @@ window.onload = async () => {
 
             // Вы можете продолжить взаимодействие с аккаунтом, например, отправлять транзакции или получать баланс
         }
-       
+
     } else {
         alert("No ETH brower extension detected.");
     }
 
-    
-};   
+
+};
 
 // Use this function to turn a 42 character ETH address
 // into an address like 0x345...12345
@@ -120,7 +120,7 @@ async function changeBtn(userAddress) {
         success: function (html) {
             console.log("success")
             button.innerHTML = html;
-            
+
             /*modal.modal('show')*/
         },
         failure: function () {
@@ -135,10 +135,10 @@ async function changeBtn(userAddress) {
             if (userAddress) {
                 document.getElementById("ConnectWalletBtn").textContent = userAddress;
             }
-            
+
         }
     });
-        
+
 }
 function checkContractInfo() {
     const CONTRACT_ADDRESS = "0xd075875c6C3718c40e0F0eBbBeA46a6e09ec14D1";
@@ -173,7 +173,7 @@ async function mint() {
         CONTRACT_ADDRESS
     );
     const mintPrice = await contract.methods
-        .publicMintPrice() 
+        .publicMintPrice()
         .call({ from: window.userAddress }) * 100;
     const hash = contract.methods.safeMint(2).send({ from: window.userAddress, value: mintPrice })
     alert(`Transaction hash: ${hash}`);
@@ -233,7 +233,7 @@ function checkChainId(chainId) {
     }
 }
 
- //Функция для изменения сети на Ethereum Mainnet
+//Функция для изменения сети на Ethereum Mainnet
 function switchToEthereumMainnet() {
     blockUserScreen();
     ethereum.request({
@@ -280,9 +280,9 @@ function showAddress() {
 }
 
 function logout() {
-        window.userAddress = null;
-        window.localStorage.removeItem("userAddress");
-        showAddress();
+    window.userAddress = null;
+    window.localStorage.removeItem("userAddress");
+    showAddress();
 }
 
 function blockUserScreen() {
@@ -290,14 +290,14 @@ function blockUserScreen() {
     if (elementToDelete) {
         elementToDelete.innerHTML = "";
     }
-    
+
 }
 function unlockUserScreen() {
     if (elementToDelete.innerHTML === "") {
         console.log("innerHTML is null")
         location.reload(true);
     }
-    
+
 }
 
 function VerifyAccount(callback) {
