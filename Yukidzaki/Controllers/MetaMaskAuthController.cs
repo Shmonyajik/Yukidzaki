@@ -3,19 +3,11 @@ using System.Security.Cryptography;
 
 using Nethereum.Signer;
 using Nethereum.Hex.HexConvertors.Extensions;
-using Nethereum.Util;
-using Nethereum.Web3;
-using Nethereum.RLP;
+
 using Yukidzaki.ViewModel;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Nethereum.Hex.HexTypes;
-using Nethereum.RPC.Eth.DTOs;
-using System.Numerics;
-using Nethereum.ABI;
-using Yukidzaki_Domain.ViewModels;
-using NuGet.Protocol;
-using Nethereum.ABI.Model;
 using Microsoft.Extensions.Caching.Memory;
+using Yukidzaki_Domain;
+using Yukidzaki_Domain.Responses;
 
 namespace Yukidzaki.Controllers
 {
@@ -54,38 +46,62 @@ namespace Yukidzaki.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult VerifySignature([FromBody] VerifySignatureRequest request)
         {
-            if (ModelState.IsValid)
+            try
             {
-                // Get the user's wallet address and one-time code from the request
-                string walletAddress = request.walletAddress;
-                string oneTimeCode = request.oneTimeCode;
-                string signature = request.signature;
-
-                // Verify the signature
-                var signer = new EthereumMessageSigner();
-
-                var signerAddress = signer.EncodeUTF8AndEcRecover(oneTimeCode, signature);
-                var isSignatureValid = signerAddress.Equals(walletAddress, StringComparison.OrdinalIgnoreCase);
-                if (isSignatureValid)
+                var response = new BaseResponse<bool>();
+                if (ModelState.IsValid)
                 {
-                    // Signature is valid
-                    // Proceed with further actions
-                    _cache.Set("VerifyedUserAddress", walletAddress, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
-                    return new JsonResult(Ok(isSignatureValid));
+                    // Get the user's wallet address and one-time code from the request
+                    string walletAddress = request.walletAddress;
+                    string oneTimeCode = request.oneTimeCode;
+                    string signature = request.signature;
+
+                    // Verify the signature
+                    var signer = new EthereumMessageSigner();
+
+                    var signerAddress = signer.EncodeUTF8AndEcRecover(oneTimeCode, signature);
+                    var isSignatureValid = signerAddress.Equals(walletAddress, StringComparison.OrdinalIgnoreCase);
+                    if (isSignatureValid)
+                    {
+                        response.Data = true;
+                        response.StatusCode = Yukidzaki_Domain.Enums.StatusCode.OK;
+                        // Signature is valid
+                        // Proceed with further actions
+                        _cache.Set("VerifyedUserAddress", walletAddress, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
+                        return new JsonResult(Ok(response));
+                    }
+                    else
+                    {
+                        response.Data = false;
+                        response.StatusCode = Yukidzaki_Domain.Enums.StatusCode.AuthenticationFailure;
+                        response.Description = "Invalid Signature";
+                        return new JsonResult(BadRequest(response));
+                    }
+
                 }
+
                 else
                 {
-                    return new JsonResult(BadRequest("Invalid signature!@."));
+                    response.Data = false;
+                    response.StatusCode = Yukidzaki_Domain.Enums.StatusCode.ModelStateIsInvalid;
+                    response.Description = "Model state is invalid";
+                    return new JsonResult(BadRequest(response));
                 }
-
             }
-
-            else
+            catch (Exception ex)
             {
-                return new JsonResult(BadRequest("Invalid signature/one time code/wallet address."));
+                return new JsonResult(new BaseResponse<bool>()
+                {
+                    Description = ex.Message,
+                    StatusCode = Yukidzaki_Domain.Enums.StatusCode.InternalServerError,
+                    Data = false
+                    
+                });
             }
+           
 
         }
+        #region old
         //[HttpPost]
         //[ValidateAntiForgeryToken]
         //public async Task<JsonResult> Mint([FromBody] string userAddress)
@@ -105,7 +121,7 @@ namespace Yukidzaki.Controllers
         //        {
         //            return new JsonResult(BadRequest($"Ssession is out of date!"));
         //        }
-                
+
         //    }
         //    else
         //    {
@@ -118,10 +134,10 @@ namespace Yukidzaki.Controllers
         //    public string user_address { get; set; }
 
         //    public int quantity { get; set; }
-            
+
         //}
 
-        
+
         //public async Task<bool> Mint(string senderAddress = "0xEefeED9305B87a571CBA2974D9643c7BA1106547")
         //{
         //    string ethereumNetworkUrl = "https://mainnet.infura.io/v3/96eb1666f8a142ed9c21d5e2fa776874";
@@ -152,25 +168,26 @@ namespace Yukidzaki.Controllers
 
         //}//recipientAddress, new HexBigInteger(0), new HexBigInteger(500000), recipientAddress, amountToMint
 
-        private async Task<BigInteger> GetGasPriceAsync(string rpcUrl)
-        {
-            var web3 = new Web3(rpcUrl);
-            var gasPrice = await web3.Eth.GasPrice.SendRequestAsync();
-            BigInteger gweiValue = gasPrice.Value / 1_000_000_000;
-            return gweiValue;
+        //private async Task<BigInteger> GetGasPriceAsync(string rpcUrl)
+        //{
+        //    var web3 = new Web3(rpcUrl);
+        //    var gasPrice = await web3.Eth.GasPrice.SendRequestAsync();
+        //    BigInteger gweiValue = gasPrice.Value / 1_000_000_000;
+        //    return gweiValue;
 
-        }
+        //}
 
-        public JsonResult GetContractData()
-        {
-            var smartcontract = new Smartcontract { Address = "0x7631CbEF26474677abcF6B063f53B3741907177C" };  // Replace with your smart contract address
-            using (var reader = new System.IO.StreamReader("wwwroot/ContractABI.json"))
-            {
-                smartcontract.ABI = reader.ReadToEnd();
-            }
-            return new JsonResult(smartcontract.ToJson());
+        //public JsonResult GetContractData()
+        //{
+        //    var smartcontract = new Smartcontract { Address = "0x7631CbEF26474677abcF6B063f53B3741907177C" };  // Replace with your smart contract address
+        //    using (var reader = new System.IO.StreamReader("wwwroot/ContractABI.json"))
+        //    {
+        //        smartcontract.ABI = reader.ReadToEnd();
+        //    }
+        //    return new JsonResult(smartcontract.ToJson());
 
-        }
+        //}
+        #endregion 
         [HttpGet]
         public ActionResult ConnectWallet()
         {

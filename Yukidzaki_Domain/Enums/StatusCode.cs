@@ -7,6 +7,7 @@ namespace Yukidzaki_Domain.Enums
         ModelStateIsInvalid = 400,
         NoMxRecords = 498,
         InternalServerError = 500,
+        AuthenticationFailure = 438,
         NotFound = 404,
         JsonReaderError = 492
     }
