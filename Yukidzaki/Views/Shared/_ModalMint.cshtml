@@ -5,16 +5,16 @@
 
     </div>
 
-    <div class="modal-body center">
-        <div class="box-wallet-inner">
-            <div class="sc-box">
+            <div class="modal-body center">
+                <div class="box-wallet-inner">
+                    <div class="sc-box">
 
                 <input id="GasPrice" name="tokenCount">
                 <input id="MintPrice" name="tokenCount">
 
                 <form id="tokenForm" action="#" method="post">
                     @Html.AntiForgeryToken()
-                    <div>
+                    <div>                        
                         <label for="tokenCount">Количество токенов:</label>
                         <input type="number" id="tokenCount" placeholder="Amount of tokens" name="tokenCount" required>
                         <span id="tokenCountError" style="color: red;"></span>
@@ -22,21 +22,22 @@
                     <br>
                     <div>
                         <button class="tf-button-st2 btn-effect" type="submit" id="subscribe-button"> <span class="effect">Mint</span></button>
+                        @*<input type="submit" value="Отправить">*@
                     </div>
 
-                    @* <div class="col-md-12">
-                    <div class="btn-about" data-aos="fade-in" data-aos-duration="800">
-                    <a class="tf-button st2 btn-effect" href="item.html">
-                    <span class="boder-fade"></span>
-                    <span class="effect">get Nfts</span>
-                    </a>
-                    </div>
+                   @* <div class="col-md-12">
+                        <div class="btn-about" data-aos="fade-in" data-aos-duration="800">
+                            <a class="tf-button st2 btn-effect" href="item.html">
+                                <span class="boder-fade"></span>
+                                <span class="effect">get Nfts</span>
+                            </a>
+                        </div>
                     </div>*@
 
                 </form>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
 
 </div>
 <script></script>
