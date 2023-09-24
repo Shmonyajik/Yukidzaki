@@ -128,6 +128,7 @@ namespace Yukidzaki.Controllers
                 response.StatusCode = Yukidzaki_Domain.Enums.StatusCode.ModelStateIsInvalid;
                 response.Description = "Model state is not valid";
                 response.Data = false;
+                return new JsonResult(Ok(response));
               }
         }
 

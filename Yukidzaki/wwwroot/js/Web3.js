@@ -508,7 +508,7 @@ async function mintSubmit() {
                 success: function (response) {
                     // Обработка успешного ответа от сервера
                     console.log("Успешно отправлено на сервер: " + response);
-                    //await mint(tokenCount, accounts[0]);
+                    mint(tokenCount, accounts[0]);
                 },
                 error: function (error) {
                     // Обработка ошибки
