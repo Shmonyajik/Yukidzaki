@@ -43,7 +43,7 @@ namespace Yukidzaki.Controllers
             return randomHex;
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public JsonResult VerifySignature([FromBody] VerifySignatureRequest request)
         {
             try
@@ -100,6 +100,41 @@ namespace Yukidzaki.Controllers
             }
            
 
+        }
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public JsonResult Mint([FromBody] MintData mintData)
+        {
+            var response = new BaseResponse<bool>();
+            if(ModelState.IsValid)
+            {
+                _cache.TryGetValue("VerifyedUserAddress", out string? _userAddress);
+                if (_userAddress == mintData.userAddress && mintData.userAddress != null)
+                {
+                    response.Data = true;
+                    response.StatusCode = Yukidzaki_Domain.Enums.StatusCode.OK;
+                    return new JsonResult(Ok(response));
+                }
+                else
+                {
+                    response.Data = false;
+                    response.StatusCode = Yukidzaki_Domain.Enums.StatusCode.AuthenticationFailure;
+                    response.Description = "Invalid Signature";
+                    return new JsonResult(Ok(response));
+                }
+            }
+            else
+            {
+                response.StatusCode = Yukidzaki_Domain.Enums.StatusCode.ModelStateIsInvalid;
+                response.Description = "Model state is not valid";
+                response.Data = false;
+              }
+        }
+
+        public class MintData
+        {
+            public string userAddress { get; set; }
+            
         }
         #region old
         //[HttpPost]
@@ -187,7 +222,7 @@ namespace Yukidzaki.Controllers
         //    return new JsonResult(smartcontract.ToJson());
 
         //}
-        #endregion 
+        #endregion
         [HttpGet]
         public ActionResult ConnectWallet()
         {

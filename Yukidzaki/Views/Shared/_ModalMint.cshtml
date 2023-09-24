@@ -9,10 +9,10 @@
         <div class="box-wallet-inner">
             <div class="sc-box">
 
-                <input id="GasPrice" name="tokenCount">
-                <input id="MintPrice" name="tokenCount">
+                <span id="GasPrice" name="tokenCount"></span>
+                <span id="MintPrice" name="tokenCount"></span>
 
-                <form id="tokenForm" action="#" method="post">
+                <form id="tokenForm" method="post" >@*onsubmit="return validateTokenCount()"*@
                     @Html.AntiForgeryToken()
                     <div>
                         <label for="tokenCount">Количество токенов:</label>
@@ -39,4 +39,39 @@
     </div>
 
 </div>
-<script></script>
+<script>
+    var tokenCountInput = document.getElementById("tokenCount");
+    var tokenCountError = document.getElementById("tokenCountError");
+
+    tokenCountInput.addEventListener("input", function () {
+        var tokenCount = parseInt(tokenCountInput.value);
+
+        if (isNaN(tokenCount) || tokenCount < 1 || tokenCount > localStorage.getItem("maxMintSupply")) {
+            tokenCountError.textContent = 'Количество токенов должно быть числом от 1 до ' + localStorage.getItem("maxMintSupply").toString() + '.';
+        } else {
+            tokenCountError.textContent = "";
+        }
+    });
+    function validateTokenCount() {
+        var tokenCountInput = document.getElementById("tokenCount");
+        var tokenCount = parseInt(tokenCountInput.value);
+
+        if (isNaN(tokenCount) || tokenCount < 1 || tokenCount > localStorage.getItem("maxMintSupply")) {
+            tokenCountError.textContent = 'Количество токенов должно быть числом от 1 до ' + localStorage.getItem("maxMintSupply").toString() + '.';
+            alert("Количество токенов должно быть числом от 1 до " + localStorage.getItem("maxMintSupply").toString() + '.');
+            return false; // Остановить отправку формы
+        }
+
+        return true; // Разрешить отправку формы, если значение валидно
+    }
+    
+    $(document).ready(function () {
+        $("#tokenForm").submit(function (event) {
+            console.log("click!");
+            event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+            // Ваша логика обработки формы
+            mintSubmit();
+        });
+    });
+    
+</script>
