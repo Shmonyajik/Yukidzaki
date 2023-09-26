@@ -177,16 +177,18 @@ function checkContractInfo() {
 }
 async function mint(tokensCount, userAddress) {
 
-    const CONTRACT_ADDRESS = "0xF416fAa0185070AE542c795f41EC4580Dd35C584";
+    const CONTRACT_ADDRESS = "0xd075875c6C3718c40e0F0eBbBeA46a6e09ec14D1";
     const contract = new window.web3.eth.Contract(
         window.ABI,
         CONTRACT_ADDRESS
     );
     const mintPrice = await contract.methods
         .publicMintPrice()
-        .call({ from: userAddress }) * 100;
-    const hash = contract.methods.safeMint(tokensCount).send({ from: userAddress, value: mintPrice })
-    alert(`Transaction hash: ${hash}`);
+        .call({ from: userAddress });
+    const valueETHETH = web3.utils.toHex(mintPrice * 1000000000);
+    console.log(valueETHETH);
+    const hash = await contract.methods.safeMint(tokensCount).send({ from: userAddress, value: valueETHETH })
+    alert('Transaction hash: ${ hash }');
 }
 
 

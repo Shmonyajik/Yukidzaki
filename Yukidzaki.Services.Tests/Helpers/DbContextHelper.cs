@@ -10,13 +10,14 @@ namespace Yukidzaki.Services.Tests.Helpers
         public static ApplicationDbContext Create()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase("Unit_TestingDB")
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
             var context = new ApplicationDbContext(options);
             context.Database.EnsureCreated();
-            //context.Tokens.AddRange(GetTestTokens());
-            //context.Emails.AddRange(GetTestEmails());
-            //context.SaveChanges();
+            
+                //context.Tokens.AddRange(GetTestTokens());
+                //context.Emails.AddRange(GetTestEmails());
+                //context.SaveChanges();
             return context;
         }
 

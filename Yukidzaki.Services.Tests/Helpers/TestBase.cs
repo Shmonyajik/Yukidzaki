@@ -10,7 +10,7 @@ namespace Yukidzaki.Services.Tests.Helpers
         protected readonly ApplicationDbContext context;
         public TestBase()
         {
-            context = DbContextHelper.Create();
+            context =  DbContextHelper.Create();
         }
         public void Dispose()
         {

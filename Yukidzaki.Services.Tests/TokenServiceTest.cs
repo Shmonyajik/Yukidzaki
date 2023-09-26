@@ -4,30 +4,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Yukidzaki.Services.Tests.Helpers;
-using Yukidzaki_DAL.Repositories;
-using Yukidzaki_Domain.Responses;
-using Yukidzaki_Domain.ViewModels;
+using FakeItEasy;
+using Yukidzaki_DAL.Interfaces;
+using Yukidzaki_Domain.Models;
 using Yukidzaki_Services.Implementations;
+using Yukidzaki_Services.Interfaces;
+using AutoMapper;
+using Yukidzaki_Domain.Responses;
 
 namespace Yukidzaki.Services.Tests
 {
-    public class TokenServiceTest : TestBase
+    public class TokenServiceTest 
     {
+        private readonly IMapper _mapper;
+        private readonly IBaseRepository<Token> _tokenRepository;
+        private readonly IBaseRepository<SeasonCollection> _seasonCollectionRepository;
+        private readonly IBaseRepository<Filter> _filterRepository;
+        private readonly ITokenService _tokenService;
 
+        public TokenServiceTest() 
+        {
+            _tokenRepository = A.Fake<IBaseRepository<Token>>();
+            _seasonCollectionRepository = A.Fake<IBaseRepository<SeasonCollection>>();
+            _filterRepository = A.Fake<IBaseRepository<Filter>>();
+            _mapper = A.Fake<IMapper>();
+
+            _tokenService = new TokenService(_tokenRepository, _mapper, _seasonCollectionRepository,_filterRepository);
+        }
         [Fact]
-        public async Task GetTokens_Return_BaseResonseWithHomeVM()
+        public async Task GetToken_Return_BaseResonseWithTokenModel()
         {
             // Arrange         
-            var _tokenRepository = new TokenRepository(context);
-            await _tokenRepository.CreateMultiple(GetTestTokens(10));
-            var _emailRepository = new EmailRepository(context);
-            await _emailRepository.CreateMultiple(GetTestEmails(10));
+            var tokens = A.Fake<IQueryable<Token>>();
+            A.CallTo(() => _tokenRepository.GetAll()).Returns(tokens);
 
-            var _tokenService = new HomeService(_tokenRepository, _emailRepository);
             // Act
-            var result = await _tokenService.GetTokens();
+            var result = await _tokenService.GetToken();
             // Assert
-            Assert.IsType<BaseResponse<HomeVM>>(result);
+            Assert.IsType<BaseResponse<IEnumerable<Token>>>(result);
         }
     }
 }

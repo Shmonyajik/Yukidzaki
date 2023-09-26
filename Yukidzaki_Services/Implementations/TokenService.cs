@@ -18,7 +18,7 @@ namespace Yukidzaki_Services.Implementations
     public class TokenService : ITokenService
     {
         
-        private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _webHostEnvironment;
+        //private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _webHostEnvironment;
         private readonly IMapper _mapper;
         private readonly IBaseRepository<Token> _tokenRepository;
         private readonly IBaseRepository<SeasonCollection> _seasonCollectionRepository;
