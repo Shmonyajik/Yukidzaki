@@ -1,0 +1,5 @@
+﻿@Html.AntiForgeryToken()
+<a class="tf-button btn-effect"  data-target="#popupID"> @*data-toggle="modal"*@
+    <span class="boder-fade"></span>
+    <span class="effect" id="ConnectWalletBtn" onclick="OpenModalMint({url: '/MetaMaskAuth/GetMintModal'})"></span>
+</a>

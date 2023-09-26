@@ -1,0 +1,78 @@
+﻿@Html.AntiForgeryToken()
+<div class="modal-content">
+    <div class="header-popup">
+        <h5>Mint</h5>
+
+    </div>
+
+            <div class="modal-body center">
+                <div class="box-wallet-inner">
+                    <div class="sc-box">
+
+                <span id="GasPrice" name="tokenCount"></span>
+                <span id="MintPrice" name="tokenCount"></span>
+
+                <form id="tokenForm" method="post" >@*onsubmit="return validateTokenCount()"*@
+                    @Html.AntiForgeryToken()
+                    <div>                        
+                        <label for="tokenCount">Количество токенов:</label>
+                        <input type="number" id="tokenCount" placeholder="Amount of tokens" name="tokenCount" required>
+                        <span id="tokenCountError" style="color: red;"></span>
+                    </div>
+                    <br>
+                    <div>
+                        <button class="tf-button-st2 btn-effect" type="submit" id="subscribe-button"> <span class="effect">Mint</span></button>
+                        @*<input type="submit" value="Отправить">*@
+                    </div>
+
+                   @* <div class="col-md-12">
+                        <div class="btn-about" data-aos="fade-in" data-aos-duration="800">
+                            <a class="tf-button st2 btn-effect" href="item.html">
+                                <span class="boder-fade"></span>
+                                <span class="effect">get Nfts</span>
+                            </a>
+                        </div>
+                    </div>*@
+
+                </form>
+                    </div>
+                </div>
+            </div>
+
+</div>
+<script>
+    var tokenCountInput = document.getElementById("tokenCount");
+    var tokenCountError = document.getElementById("tokenCountError");
+
+    tokenCountInput.addEventListener("input", function () {
+        var tokenCount = parseInt(tokenCountInput.value);
+
+        if (isNaN(tokenCount) || tokenCount < 1 || tokenCount > localStorage.getItem("maxMintSupply")) {
+            tokenCountError.textContent = 'Количество токенов должно быть числом от 1 до ' + localStorage.getItem("maxMintSupply").toString() + '.';
+        } else {
+            tokenCountError.textContent = "";
+        }
+    });
+    function validateTokenCount() {
+        var tokenCountInput = document.getElementById("tokenCount");
+        var tokenCount = parseInt(tokenCountInput.value);
+
+        if (isNaN(tokenCount) || tokenCount < 1 || tokenCount > localStorage.getItem("maxMintSupply")) {
+            tokenCountError.textContent = 'Количество токенов должно быть числом от 1 до ' + localStorage.getItem("maxMintSupply").toString() + '.';
+            alert("Количество токенов должно быть числом от 1 до " + localStorage.getItem("maxMintSupply").toString() + '.');
+            return false; // Остановить отправку формы
+        }
+
+        return true; // Разрешить отправку формы, если значение валидно
+    }
+    
+    $(document).ready(function () {
+        $("#tokenForm").submit(function (event) {
+            console.log("click!");
+            event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+            // Ваша логика обработки формы
+            mintSubmit();
+        });
+    });
+    
+</script>

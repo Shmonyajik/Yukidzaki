@@ -1,0 +1,6 @@
+﻿@model IEnumerable<Yukidzaki_Domain.Models.Token>
+
+@foreach (var token in Model)
+{
+    <partial name="_IndividualTokenCard" model="token" />
+}
