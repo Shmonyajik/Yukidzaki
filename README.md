@@ -19,4 +19,4 @@ To fully interact with the web application, you need to install the MetaMask bro
   
 ``` docker-compose up ```
 
-* Go to https://localhost:80
+* Go to http://localhost:80
