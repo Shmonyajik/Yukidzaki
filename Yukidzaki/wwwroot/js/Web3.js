@@ -31,7 +31,7 @@ window.onload = async () => {
             changeBtn(window.userAddress);
             //showAddress();
 
-            // Вы можете продолжить взаимодействие с аккаунтом, например, отправлять транзакции или получать баланс
+            
         }
 
     } else {
@@ -91,12 +91,6 @@ async function loginWithEth() {
 
                 changeBtn(window.userAddress);
 
-    /////////////////Проверка подписи на бэке
-                
-        
-
-
-    /////////////////////////////////////////
             
             } catch (error) {
                 alert(error);
@@ -134,7 +128,8 @@ async function changeBtn(userAddress) {
         },
         complete: function () {
             if (userAddress) {
-                document.getElementById("ConnectWalletBtn").textContent = userAddress;
+                var displayUserAddress = userAddress.substr(0, 5) + '...' + userAddress.slice(-5);
+                document.getElementById("ConnectWalletBtn").textContent = displayUserAddress;
             }
 
         }
@@ -149,28 +144,28 @@ function checkContractInfo() {
     );
     contract.methods.publicMintPrice().call({ from: window.userAddress })
         .then(function (result) {
-            console.log('Результат вызова функции publicMintPrice:', result);
+            
             mintPriceInInput = result;
         })
         .catch(function (error) {
-            console.error('Ошибка вызова функции publicMintPrice:', error);
+            console.error('Error:', error);
         });        
     contract.methods.publicMintOpen().call()
         .then(function (result) {
-            console.log('Результат вызова функции publicMintOpen:', result);
+           
             publicMintOpen = result;
         })
         .catch(function (error) {
-            console.error('Ошибка вызова функции publicMintOpen:', error);
+            console.error('Error:', error);
         });
     contract.methods.maxMintSupply().call()
         .then(function (result) {
-            console.log('Результат вызова функции publicMintOpen:', result);
+            
             window.localStorage.setItem("maxMintSupply", result);
             maxMintSupply = result;
         })
         .catch(function (error) {
-            console.error('Ошибка вызова функции publicMintOpen:', error);
+            console.error('Error:', error);
         });
     
 
@@ -214,53 +209,47 @@ ethereum.on('chainChanged', (chainId) => {
 });
 // Listen for account changes
 window.ethereum.on('accountsChanged', handleAccountChange);
-//window.addEventListener('ethereum#initialized', checkWalletAvailability);
-///////////////////////////////////////
+
 function checkChainId(chainId) {
-    //window.web3 = new Web3(window.ethereum);
-    //const accounts = window.ethereum.request({ method: 'eth_accounts' });
-    //console.log(accounts[0])
+    
     if (window.userAddress) {
-        // chainId содержит идентификатор текущей сети
+        
         if (chainId === '0x1') {
 
             unlockUserScreen();
 
-            // Ethereum Mainnet
 
 
-            console.log('Подключено к Ethereum Mainnet');
+            console.log('Ethereum Mainnet Connected');
 
         } else if (chainId === '0x90') {
-            // Sepolia
-            //TODO: блокируем экран
-            console.log('Подключено к Sepolia');
+            
+            console.log('Sepolia Connected');
             switchToEthereumMainnet()
         } else {
-            // Другая сеть
-            //TODO: блокируем экран
-            console.log('Подключено к другой сети');
+            
+            console.log('Connected to another network');
             switchToEthereumMainnet()
         }
     }
 }
 
-//Функция для изменения сети на Ethereum Mainnet
+
 function switchToEthereumMainnet() {
     blockUserScreen();
     ethereum.request({
         method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x1' }], // Идентификатор Ethereum Mainnet
+        params: [{ chainId: '0x1' }], 
     })
         .catch((err) => {
 
             if (err.code === 4001) {
-                console.log("Пользователь отказался менять сеть!")
-                //blockUserScreen();
+                console.log("Network switch canceled!")
+                
 
             }
             else {
-                //blockUserScreen();
+                
                 console.log(err);
             }
         });
@@ -268,25 +257,11 @@ function switchToEthereumMainnet() {
 
 
 }
-//function checkWalletAvailability() {
-//    if (typeof window.ethereum === 'undefined') {
-//        console.log('Wallet is disabled or not available.');
-//        //changeBtn();
-//        // Handle the case where the wallet is disabled or not available
-//        //logout();
-//    } else {
-//        console.log('Wallet is enabled and available.');
-//        // Handle the case where the wallet is enabled and available
-//    }
-//}
 function showAddress() {
     if (!window.userAddress) {
         document.getElementById("userAddress").innerText = "";
         document.getElementById("logoutButton").classList.add("hidden");
         return false;
-    }
-    else {
-        //TODO: выводить снова Connect Wallet
     }
 
 }
@@ -374,7 +349,7 @@ function OpenModalMint(parameters) {
      VerifyAccount(function (result, error) {
          console.log(result);
          if (result === true) {
-            console.log("Аккаунт верифицирован успешно");
+             console.log("Account verified");
             checkContractInfo();
             if (!publicMintOpen) {
                 
@@ -403,8 +378,8 @@ function OpenModalMint(parameters) {
                         
 
                         console.log(gasPriceInInput);
-                        document.getElementById("GasPrice").textContent = `Текущая стоимость газа: $${gasPriceInInput}`;
-                        document.getElementById("MintPrice").textContent = `Текущая стоимость минта: $${mintPriceInInput}`;
+                        document.getElementById("GasPrice").textContent = `Current gus price: $${gasPriceInInput}`;
+                        document.getElementById("MintPrice").textContent = `Current mint price: $${mintPriceInInput}`;
                       
                     }
 
@@ -412,10 +387,10 @@ function OpenModalMint(parameters) {
                 });
             }
             else {
-                alert("Публичный минт закрыт")
+                alert("Publlic mint close")
             }
          } else {
-             console.error("Верификация аккаунта не пройдена");
+             console.error("Account not verified");
         }
     });
     
@@ -427,20 +402,20 @@ function GetGusPrice() {
     if (typeof window.ethereum !== 'undefined') {
         const web3 = new Web3(window.ethereum);
 
-        // Запрашиваем разрешение на доступ к аккаунту MetaMask
+        
         window.ethereum.request({ method: 'eth_requestAccounts' })
             .then(() => {
-                // Получение актуальной стоимости газа
+              
                 web3.eth.getGasPrice()
                     .then(async (gasPrice) => {
                         console.log(`Текущая стоимость газа в Wei: ${gasPrice}`);
 
-                        // Преобразование стоимости газа в Gwei
+                        
                         const gasPriceInGwei = web3.utils.fromWei(gasPrice, 'gwei');
                         console.log(`Текущая стоимость газа в Gwei: ${gasPriceInGwei}`);
 
-                        // Получение текущего курса Ethereum к доллару
-                        const apiKey = 'YOUR_API_KEY'; // Замените на свой API ключ для доступа к данным курса Ethereum к доллару
+                        
+                        const apiKey = 'YOUR_API_KEY'; 
                         const apiUrl = `https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd`;
 
                         try {
@@ -448,28 +423,28 @@ function GetGusPrice() {
                             const data = await response.json();
                             const ethToUsdRate = data.ethereum.usd;
 
-                            // Перевод стоимости газа из Gwei в Ether
+                            
                             const gasPriceInEther = web3.utils.fromWei(gasPrice, 'ether');
                             
-                            // Перевод стоимости газа из Ether в доллары
+                            
                             const gasPriceInUsd = gasPriceInEther * ethToUsdRate;
                             gasPriceInInput = gasPriceInUsd;
                             
-                            console.log(`Текущая стоимость газа в долларах: $${gasPriceInInput}`);
+                            console.log(`Current gus price: $${gasPriceInInput}`);
                             
                         } catch (error) {
-                            console.error('Ошибка при получении курса Ethereum к доллару:', error);
+                            console.error('Error:', error);
                         }
                     })
                     .catch((error) => {
-                        console.error('Ошибка при получении стоимости газа:', error);
+                        console.error('Error:', error);
                     });
             })
             .catch((error) => {
-                console.error('Ошибка при запросе разрешения на доступ к аккаунту MetaMask:', error);
+                console.error('Metamask not available', error);
             });
     } else {
-        console.error('MetaMask не доступен. Убедитесь, что он установлен и активирован в вашем браузере.');
+        console.error('Metamask not available');
     }
     
     
@@ -486,35 +461,33 @@ async function mintSubmit() {
         
         
 
-        // Получаем значение поля "Количество токенов"
         var tokenCount = $("#tokenCount").val();
 
-        // Проверяем, что значение является положительным числом tokenCount > localStorage.getItem("maxMintSupply")
         if (isNaN(tokenCount) || tokenCount <= 0 || tokenCount > 5 ) {
-            $("#tokenCountError").text("Количество токенов должно быть числом от 1 до " + localStorage.getItem("maxMintSupply").toString() + ".");
+            $("#tokenCountError").text("The number of tokens must be a number from 1 to" + localStorage.getItem("maxMintSupply").toString() + ".");
         } else {
-            $("#tokenCountError").text(""); // Очищаем сообщение об ошибке
+            $("#tokenCountError").text(""); 
 
-            // Получаем значение AntiForgeryToken из формы
+           
             var antiForgeryToken = $('input[name="__RequestVerificationToken"]').val();
             data = {
                 userAddress: accounts[0] 
             }
-            // Отправляем данные на сервер с использованием AJAX и AntiForgeryToken
+           
             $.ajax({
-                url: "/MetaMaskAuth/Mint/", // Замените на URL вашего сервера
+                url: "/MetaMaskAuth/Mint/",
                 method: "POST",
                 contentType: 'application/json',
                 data: JSON.stringify(data),
-                headers: { 'X-ANTI-FORGERY-TOKEN': antiForgeryToken }, // Передаем AntiForgeryToken в заголовке
+                headers: { 'X-ANTI-FORGERY-TOKEN': antiForgeryToken },
                 success: function (response) {
-                    // Обработка успешного ответа от сервера
-                    console.log("Успешно отправлено на сервер: " + response);
+                    
+                    console.log("Successfully sent to the server: " + response);
                     mint(tokenCount, accounts[0]);
                 },
                 error: function (error) {
-                    // Обработка ошибки
-                    console.error("Ошибка при отправке на сервер: " + error);
+                    
+                    console.error("Error sending to server: " + error);
                 }
             });
         }
@@ -522,18 +495,7 @@ async function mintSubmit() {
             console.log("No ETH brower extension detected.")
     };
 
-// Функция для изменения сети на Sepolia
-// function switchToSepolia() {
-//    try {
-//         ethereum.request({
-//            method: 'wallet_switchEthereumChain',
-//            params: [{ chainId: '0x90' }], // Идентификатор Sepolia
-//        });
-//        console.log('Переключено на Sepolia');
-//    } catch (error) {
-//        console.error('Ошибка при переключении на Sepolia:', error);
-//    }
-//}
+
 
 
 

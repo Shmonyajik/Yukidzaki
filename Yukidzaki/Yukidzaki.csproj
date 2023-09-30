@@ -9,6 +9,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Log\**" />
+    <Compile Remove="Views\RefactoringTest\**" />
+    <Compile Remove="wwwroot\load-json-tokens\**" />
+    <Content Remove="Log\**" />
+    <Content Remove="Views\RefactoringTest\**" />
+    <Content Remove="wwwroot\load-json-tokens\**" />
+    <EmbeddedResource Remove="Log\**" />
+    <EmbeddedResource Remove="Views\RefactoringTest\**" />
+    <EmbeddedResource Remove="wwwroot\load-json-tokens\**" />
+    <None Remove="Log\**" />
+    <None Remove="Views\RefactoringTest\**" />
+    <None Remove="wwwroot\load-json-tokens\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Controllers\ApiController.cs" />
     <Compile Remove="Controllers\FilterManagementController.cs" />
     <Compile Remove="Controllers\Gallery3Controller.cs" />
@@ -55,13 +70,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Log\Web3AutentificationLog\" />
     <Folder Include="Migrations\" />
-    <Folder Include="Views\RefactoringTest\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\img\token\JSON\" />
     <Folder Include="wwwroot\img\Icons\" />
-    <Folder Include="wwwroot\load-json-tokens\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,7 +1,6 @@
 var valueList = document.getElementById('valueList');
 var text = '<span> Filters : </span>';
 var listArray = [];
-console.log("awdawdawdawd");
 var checkboxes = document.querySelectorAll('.checkbox');
 
 for (var checkbox of checkboxes) {

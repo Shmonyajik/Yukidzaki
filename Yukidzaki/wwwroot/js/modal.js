@@ -4,7 +4,7 @@ function openModal(parameters) {
     const url = parameters.url;
     const modal = $('#nftTOKEN')
     if (id === undefined || url === undefined) {
-        alert('Ошибка')
+        alert('Error')
         return;
     }
         $.ajax({

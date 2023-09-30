@@ -1,18 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.HttpsPolicy;
 
-using Microsoft.AspNetCore.Identity;
-using Babadzaki_Services;
 using Newtonsoft.Json.Serialization;
-using AutoMapper;
+
 using Newtonsoft.Json;
 using Nethereum.Web3;
-using Yukidzaki_Services.Implementations;
-using Yukidzaki_Services.Interfaces;
-using Yukidzaki_DAL.Interfaces;
-using Yukidzaki_Domain.Models;
-using Yukidzaki_DAL.Repositories;
+
 using Yukidzaki;
 using Yukidzaki_DAL;
 using System.Net;
@@ -20,21 +12,21 @@ using System.Security.Cryptography.X509Certificates;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddRazorPages().AddRazorRuntimeCompilation();//компиляция razor страниц в рантайме
+builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
 // Add services to the container.
 
 
 builder.Services.AddControllersWithViews()
-     .AddNewtonsoftJson(options =>//МБ удалить
+     .AddNewtonsoftJson(options =>
     {
         options.SerializerSettings.ContractResolver = new DefaultContractResolver();
         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
     });
 
 
-builder.Services.AddHttpContextAccessor(); //добавление сессий
-builder.Services.AddSession(options => //добавление сесс1ий
+builder.Services.AddHttpContextAccessor(); 
+builder.Services.AddSession(options => 
 { 
     options.IdleTimeout = TimeSpan.FromMinutes(10);
     options.Cookie.HttpOnly = true;

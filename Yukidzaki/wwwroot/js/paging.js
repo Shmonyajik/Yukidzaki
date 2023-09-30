@@ -43,19 +43,7 @@
             }
         }
     }
-// обработка события скроллинга
-//$(window).scroll(function () {
-//    if ($(window).scrollTop() == $(window).height() - $(document).height()) {
-//        console.log("scroll");
-//        loadItems();
-//    }
-//});
 
-//$(window).scroll(_.throttle(function () {
-//    if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
-//        loadItems();
-//    }
-//}, 300));
 
 $(document).ready(function () {
     $(window).scroll(function () {
