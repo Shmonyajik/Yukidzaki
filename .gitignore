@@ -39,6 +39,7 @@ bld/
 /Yukidzaki/wwwroot/img/
 Migrations/
 /Yukidzaki/appsettings.json
+flyway.conf
 
 # Visual Studio 2017 auto generated files
 Generated\ Files/
