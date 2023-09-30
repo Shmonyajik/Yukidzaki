@@ -12,12 +12,14 @@ namespace Yukidzaki.Controllers
     {
         public readonly IHomeService _homeService;
         public readonly IMailService _mailService;
+        public readonly IConfiguration _configuration;
 
         
-        public HomeController(IHomeService homeService, IMailService mailService)
+        public HomeController(IHomeService homeService, IMailService mailService, IConfiguration configuration)
         {
             _mailService = mailService;
             _homeService = homeService;
+            _configuration = configuration;
         }
 
         [HttpGet]
@@ -41,7 +43,7 @@ namespace Yukidzaki.Controllers
                 
                 var sendMessageResponse = await _mailService.SendMessage(
                     email,
-                    WebConstants.EmailFrom,
+                    _configuration.GetSection("EmailSettings:EmailName").Value,
                     WebConstants.SubscribeSubject,
                     WebConstants.SubscribeMessage
                 );

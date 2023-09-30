@@ -40,6 +40,7 @@ bld/
 Migrations/
 /Yukidzaki/appsettings.json
 flyway.conf
+docker-compose.yml
 
 # Visual Studio 2017 auto generated files
 Generated\ Files/

@@ -1,14 +1,12 @@
 ﻿
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.CodeAnalysis.Elfie.Extensions;
 using Yukidzaki_Services.Interfaces;
 using Yukidzaki_Domain.ViewModels;
 using Babadzaki_Services;
 using Yukidzaki_Domain.Models;
 using Yukidzaki_Domain.Responses;
-using Yukidzaki_Services.Implementations;
+
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Yukidzaki.Controllers
@@ -19,11 +17,13 @@ namespace Yukidzaki.Controllers
         
         private readonly IMailService _mailService;
         private readonly IFeedbackService  _feedbackService;
+        public readonly IConfiguration _configuration;
 
-        public FeedbackController( IMailService mailService, IFeedbackService feedbackService )
+        public FeedbackController( IMailService mailService, IFeedbackService feedbackService, IConfiguration configuration )
         {
             _mailService = mailService;
             _feedbackService = feedbackService;
+            _configuration = configuration;
             
         }
         public ActionResult Index()
@@ -41,7 +41,7 @@ namespace Yukidzaki.Controllers
                 
                 var sendMessageResponse = await _mailService.SendMessage(
                     email,
-                    WebConstants.EmailFrom,
+                    _configuration.GetSection("EmailSettings:EmailName").Value,
                     "Question",
                     "Thanks for your question!"
                 );
@@ -49,8 +49,8 @@ namespace Yukidzaki.Controllers
                 if (sendMessageResponse.StatusCode == Yukidzaki_Domain.Enums.StatusCode.OK)
                 {
                     await _mailService.SendMessage(
-                        new Email { Name = WebConstants.EmailFrom},
-                        WebConstants.EmailFrom,
+                        new Email { Name = _configuration.GetSection("EmailSettings:EmailName").Value },
+                        _configuration.GetSection("EmailSettings:EmailName").Value,
                         $"Message from {questionVM.Name}({questionVM.Email})",
                         questionVM.Message);
 
