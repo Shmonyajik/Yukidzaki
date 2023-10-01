@@ -20,3 +20,4 @@ To fully interact with the web application, you need to install the MetaMask bro
 ``` docker-compose up ```
 
 * Go to http://localhost:80
+* To populate the database, go to https://localhost:44378/TokenManagement/LoadToken. Test json files are also in this repository https://github.com/Shmonyajik/Yukidzaki/tree/master/Yukidzaki/LocalLaunch/TestTokens
