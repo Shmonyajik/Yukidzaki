@@ -128,7 +128,7 @@ async function changeBtn(userAddress) {
         },
         complete: function () {
             if (userAddress) {
-                var displayUserAddress = userAddress.substr(0, 5) + '...' + userAddress.slice(-5);
+                var displayUserAddress = userAddress.substr(0, 9) + '...' + userAddress.slice(-9);
                 document.getElementById("ConnectWalletBtn").textContent = displayUserAddress;
             }
 
@@ -152,7 +152,7 @@ function checkContractInfo() {
         });        
     contract.methods.publicMintOpen().call()
         .then(function (result) {
-           
+            debugger;
             publicMintOpen = result;
         })
         .catch(function (error) {
@@ -350,8 +350,9 @@ function OpenModalMint(parameters) {
          console.log(result);
          if (result === true) {
              console.log("Account verified");
+             debugger;
             checkContractInfo();
-            if (!publicMintOpen) {
+            if (publicMintOpen) {
                 
                 const modal = $('#popupID')
 
